@@ -138,7 +138,7 @@
     position: fixed;
     top: 0;
     left: -100%;
-    width: 100vw;
+    width: 99vw;
     height: 100vh;
     flex-direction: column;
     justify-content: center;
@@ -193,7 +193,7 @@
     transition: all 0.4s ease;
     border: 2px solid transparent;
     border-radius: 50px;
-    min-width: 200px;
+     min-width: 200px;
 }
 
 .nav-links.active a {
@@ -217,7 +217,7 @@
 
 /* Cool close button */
 .mobile-menu-toggle.active {
-    color: white;
+    color: rgb(234, 5, 5);
     z-index: 1001;
 }
 
@@ -243,7 +243,11 @@
     height: 100vh;
     z-index: 0;
     background: linear-gradient(135deg, rgba(249, 242, 242, 0.9) 0%, rgba(255, 255, 255, 0.9) 100%), url('https://images.unsplash.com/photo-1522338242992-e1a54906a8da?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
-    background-attachment: fixed; /* This keeps the background image stationary */
+    background-attachment: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 100px 0 50px 0;
 }
 
         .hero-content {
@@ -520,6 +524,14 @@
             margin-top: 5px;
         }
 
+
+        .contact-item a {
+            text-decoration: none;
+            color: var(--primary);
+
+        }
+
+
         .contact-form {
             flex: 1;
             background: var(--light);
@@ -648,7 +660,7 @@
         }
 
         /* Responsive Design */
-        @media (max-width: 992px) {
+        @media (max-width: 1920px) {
             .hero {
                 flex-direction: column;
                 padding-top: 120px;

@@ -1,0 +1,857 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BS Studio | Business Hours</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --primary: #7a1c5e;
+            --primary-dark: #5d1447;
+            --secondary: #f9f2f2;
+            --accent: #e1306c;
+            --text: #333;
+            --light: #fff;
+            --gray: #777;
+            --light-gray: #f5f5f5;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text);
+            background-color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        h1, h2, h3, h4, h5 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+            text-align: center;
+        }
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--light);
+            box-shadow: 0 5px 15px rgba(122, 28, 94, 0.3);
+        }
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(122, 28, 94, 0.4);
+        }
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        .btn-secondary:hover {
+            background-color: var(--secondary);
+            transform: translateY(-3px);
+        }
+        .section {
+            padding: 100px 0;
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+        .section-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 3px;
+        }
+        .section-subtitle {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 50px;
+            color: var(--gray);
+        }
+        /* Header & Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+        .logo {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            letter-spacing: 1px;
+            font-family: 'Playfair Display', serif;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 5px 0;
+        }
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        .join-btn {
+            background-color: var(--primary);
+            color: white;
+            padding: 0.7rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .join-btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(122, 28, 94, 0.3);
+        }
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        /* Business Hours Styles */
+        .business-hours-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--light);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .business-hours-container:hover {
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+        .hours-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            text-align: center;
+            padding: 2.5rem 1.5rem;
+            position: relative;
+        }
+        .hours-header h2 {
+            color: white;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+        .hours-header p {
+            opacity: 0.9;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1.2rem;
+            border-radius: 30px;
+            margin-top: 1.2rem;
+            backdrop-filter: blur(5px);
+        }
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 0.7rem;
+            animation: pulse 2s infinite;
+        }
+        .status-dot.open {
+            background-color: #4ade80; /* Green */
+        }
+        .status-dot.closing {
+            background-color: #fbbf24; /* Yellow */
+        }
+        .status-dot.closed {
+            background-color: #f87171; /* Red */
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+        }
+        .current-time {
+            font-family: 'Courier New', monospace;
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .hours-content {
+            padding: 2rem;
+        }
+        .hours-grid {
+            display: grid;
+            gap: 0.8rem;
+        }
+        .hours-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 1.2rem;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+        }
+        .hours-row:hover {
+            background-color: var(--secondary);
+            transform: translateX(5px);
+        }
+        .hours-row.today {
+            background: linear-gradient(to right, rgba(249, 242, 242, 0.8), rgba(255, 255, 255, 0.8));
+            border-left: 4px solid var(--primary);
+            font-weight: 600;
+        }
+        .hours-row.today .day {
+            color: var(--primary);
+        }
+        .day {
+            font-weight: 500;
+        }
+        .hours-time.open {
+            color: #22c55e; /* Green */
+        }
+        .hours-time.closed {
+            color: #ef4444; /* Red */
+        }
+        .hours-note {
+            background: var(--light-gray);
+            border-radius: 10px;
+            padding: 1.2rem;
+            margin-top: 2rem;
+            font-size: 0.9rem;
+        }
+        .hours-note i {
+            color: var(--primary);
+            margin-right: 0.5rem;
+        }
+        .next-opening {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: var(--secondary);
+            border-radius: 10px;
+            font-weight: 500;
+        }
+        .today-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            gap: 1.5rem;
+        }
+        .today-card {
+            flex: 1;
+            background: var(--light-gray);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        .today-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+            color: var(--primary);
+        }
+        .today-hours {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .time-remaining {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-top: 0.5rem;
+        }
+        .today-status.open {
+            color: #22c55e; /* Green */
+        }
+        .today-status.closing {
+            color: #fbbf24; /* Yellow */
+        }
+        .today-status.closed {
+            color: #ef4444; /* Red */
+        }
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .section {
+                padding: 70px 0;
+            }
+            .hours-header {
+                padding: 2rem 1rem;
+            }
+            .hours-header h2 {
+                font-size: 1.8rem;
+            }
+            .current-time {
+                font-size: 1.5rem;
+            }
+            .hours-content {
+                padding: 1.5rem;
+            }
+            .today-info {
+                flex-direction: column;
+            }
+        }
+        @media (max-width: 480px) {
+            .hours-row {
+                flex-direction: column;
+                gap: 0.5rem;
+                text-align: center;
+            }
+            .status-indicator {
+                font-size: 0.9rem;
+                padding: 0.4rem 1rem;
+            }
+        }
+        /* Footer Styles */
+        footer {
+            background-color: var(--primary);
+            color: var(--light);
+            padding: 70px 0 0;
+            margin-top: 50px;
+        }
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+        .footer-col h4 {
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        .footer-col h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--accent);
+        }
+        .footer-col p {
+            margin-bottom: 20px;
+            color: #f0f0f0;
+        }
+        .footer-links {
+            list-style: none;
+        }
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        .footer-links a {
+            color: #f0f0f0;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .footer-links a:hover {
+            color: var(--accent);
+            padding-left: 5px;
+        }
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: var(--light);
+            transition: all 0.3s ease;
+        }
+        .social-links a:hover {
+            background: var(--accent);
+            transform: translateY(-5px);
+        }
+        .copyright {
+            text-align: center;
+            padding: 20px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #f0f0f0;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container">
+            <div class="navbar">
+                <a href="index.html" class="logo">BS STUDIO</a>
+                <div class="nav-links" id="navLinks">
+                    <a href="#home">HOME</a>
+                    <a href="#services">SERVICES</a>
+                    <a href="#about">ABOUT</a>
+                    <a href="#testimonials">TESTIMONIALS</a>
+                    <a href="#contact">CONTACT</a>
+                </div>
+                <a href="#contact" class="join-btn">BOOK NOW</a>
+                <div class="mobile-menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Business Hours Section -->
+    <section class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Business Hours</h2>
+                <p class="section-subtitle">Check our operating hours and plan your visit</p>
+            </div>
+            
+            <div class="business-hours-container">
+                <div class="hours-header">
+                    <h2>Our Schedule</h2>
+                    <p>We're here to serve you during these hours</p>
+                    <div class="current-time" id="current-time">--:--:--</div>
+                    <div class="status-indicator">
+                        <div class="status-dot" id="status-dot"></div>
+                        <span id="status-text">Checking status...</span>
+                    </div>
+                </div>
+                
+                <div class="hours-content">
+                    <div class="hours-grid" id="business-hours">
+                        <!-- Hours will be populated by JavaScript -->
+                    </div>
+                    
+                    <div class="hours-note">
+                        <p><i class="fas fa-info-circle"></i> <strong>Holiday Hours:</strong> We may have modified hours during holidays. Please call or check our social media for updates.</p>
+                    </div>
+                    
+                    <div class="next-opening" id="next-opening">
+                        <!-- Next opening info will be populated by JavaScript -->
+                    </div>
+                    
+                    <div class="today-info">
+                        <div class="today-card">
+                            <h3>Today's Hours</h3>
+                            <div class="today-hours" id="today-hours">Loading...</div>
+                            <div class="today-status" id="today-status"></div>
+                        </div>
+                        
+                        <div class="today-card">
+                            <h3>Time Remaining</h3>
+                            <p>Until status change</p>
+                            <div class="time-remaining" id="time-remaining">--</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h4>BS Studio</h4>
+                    <p>Your premier destination for beauty and lash extension services. We're dedicated to enhancing your natural beauty with our premium treatments.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#testimonials">Testimonials</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Our Services</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Classic Lash Extensions</a></li>
+                        <li><a href="#">Volume Lash Extensions</a></li>
+                        <li><a href="#">Mega Volume Lash Extensions</a></li>
+                        <li><a href="#">Wipsy Lash Extensions</a></li>
+                        <li><a href="#">Eyebrow Threading</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Newsletter</h4>
+                    <p>Subscribe to our newsletter for the latest updates and special offers.</p>
+                    <form>
+                        <div class="form-group">
+                            <input type="email" placeholder="Your Email Address" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <div class="container">
+                <p>&copy; 2023 BS Studio. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Business hours configuration
+        const businessHours = [
+            { day: 'Sunday', hours: '1:00 PM - 7:00 PM', isOpen: true, openTime: 13, closeTime: 19 },
+            { day: 'Monday', hours: '9:00 AM - 7:00 PM', isOpen: true, openTime: 9, closeTime: 19 },
+            { day: 'Tuesday', hours: '9:00 AM - 7:00 PM', isOpen: true, openTime: 9, closeTime: 19 },
+            { day: 'Wednesday', hours: '9:00 AM - 7:00 PM', isOpen: true, openTime: 9, closeTime: 19 },
+            { day: 'Thursday', hours: '9:00 AM - 7:00 PM', isOpen: true, openTime: 9, closeTime: 19 },
+            { day: 'Friday', hours: '9:00 AM - 7:00 PM', isOpen: true, openTime: 9, closeTime: 19 },
+            { day: 'Saturday', hours: '10:00 AM - 6:00 PM', isOpen: true, openTime: 10, closeTime: 18 }
+        ];
+
+        // State management
+        let currentTime = new Date();
+        let currentStatus = null;
+
+        // DOM elements
+        const statusDot = document.getElementById('status-dot');
+        const statusText = document.getElementById('status-text');
+        const currentTimeDisplay = document.getElementById('current-time');
+        const businessHoursContainer = document.getElementById('business-hours');
+        const nextOpeningContainer = document.getElementById('next-opening');
+        const todayHours = document.getElementById('today-hours');
+        const todayStatus = document.getElementById('today-status');
+        const timeRemaining = document.getElementById('time-remaining');
+
+        // Utility functions
+        function formatTime(date) {
+            return date.toLocaleTimeString('en-US', { 
+                hour12: true, 
+                hour: '2-digit', 
+                minute: '2-digit',
+                second: '2-digit'
+            });
+        }
+
+        function getCurrentDayName() {
+            return currentTime.toLocaleDateString('en-US', { weekday: 'long' });
+        }
+
+        function getCurrentStatus() {
+            const currentDay = getCurrentDayName();
+            const currentHour = currentTime.getHours();
+            const currentMinute = currentTime.getMinutes();
+            const currentTimeNum = currentHour + currentMinute / 60;
+
+            const todayHours = businessHours.find(h => h.day === currentDay);
+            
+            if (!todayHours?.isOpen) {
+                return { status: 'closed', message: 'Closed today', type: 'closed-today' };
+            }
+
+            const { openTime, closeTime } = todayHours;
+
+            if (currentTimeNum < openTime) {
+                const minutesUntilOpen = (openTime - currentTimeNum) * 60;
+                const hoursUntilOpen = Math.floor(minutesUntilOpen / 60);
+                const minsUntilOpen = Math.floor(minutesUntilOpen % 60);
+                
+                let openMessage = `Opens at ${openTime === 10 ? '10:00 AM' : '9:00 AM'}`;
+                if (hoursUntilOpen > 0) {
+                    openMessage += ` (in ${hoursUntilOpen}h ${minsUntilOpen}m)`;
+                } else if (minsUntilOpen > 0) {
+                    openMessage += ` (in ${minsUntilOpen} minutes)`;
+                }
+                
+                return { status: 'closed', message: openMessage, type: 'before-open', timeUntil: minutesUntilOpen };
+            } else if (currentTimeNum >= closeTime) {
+                return { status: 'closed', message: 'Closed for today', type: 'after-close' };
+            } else {
+                const minutesUntilClose = (closeTime - currentTimeNum) * 60;
+                const hoursUntilClose = Math.floor(minutesUntilClose / 60);
+                const minsUntilClose = Math.floor(minutesUntilClose % 60);
+                
+                if (minutesUntilClose <= 30) {
+                    return { 
+                        status: 'closing', 
+                        message: `Closing in ${minsUntilClose} minutes`, 
+                        type: 'closing-soon',
+                        timeUntil: minutesUntilClose 
+                    };
+                } else if (minutesUntilClose <= 60) {
+                    return { 
+                        status: 'closing', 
+                        message: 'Closing soon', 
+                        type: 'closing-hour',
+                        timeUntil: minutesUntilClose 
+                    };
+                }
+                return { 
+                    status: 'open', 
+                    message: `Open now (closes at ${closeTime >= 20 ? '8:00 PM' : closeTime >= 19 ? '7:00 PM' : '6:00 PM'})`, 
+                    type: 'open',
+                    timeUntil: minutesUntilClose 
+                };
+            }
+        }
+
+        function getNextOpeningTime() {
+            const currentDay = getCurrentDayName();
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const currentDayIndex = days.indexOf(currentDay);
+            
+            // Check if we can still open today
+            const todayHours = businessHours.find(h => h.day === currentDay);
+            const currentHour = currentTime.getHours();
+            const currentMinute = currentTime.getMinutes();
+            const currentTimeNum = currentHour + currentMinute / 60;
+            
+            if (todayHours?.isOpen && currentTimeNum < todayHours.openTime) {
+                return { day: currentDay, time: todayHours.openTime, isToday: true };
+            }
+            
+            // Look for next opening day
+            for (let i = 1; i <= 7; i++) {
+                const nextDayIndex = (currentDayIndex + i) % 7;
+                const nextDay = days[nextDayIndex];
+                const nextDayHours = businessHours.find(h => h.day === nextDay);
+                
+                if (nextDayHours?.isOpen) {
+                    return { day: nextDay, time: nextDayHours.openTime, isToday: false };
+                }
+            }
+            
+            return null;
+        }
+
+        function updateStatusIndicator() {
+            currentStatus = getCurrentStatus();
+            
+            // Update status text
+            statusText.textContent = currentStatus.message;
+            
+            // Update status dot styling
+            statusDot.className = 'status-dot';
+            
+            switch (currentStatus.status) {
+                case 'open':
+                    statusDot.classList.add('open');
+                    break;
+                case 'closing':
+                    statusDot.classList.add('closing');
+                    break;
+                case 'closed':
+                default:
+                    statusDot.classList.add('closed');
+                    break;
+            }
+        }
+
+        function renderBusinessHours() {
+            const currentDay = getCurrentDayName();
+            
+            businessHoursContainer.innerHTML = businessHours.map((day, index) => {
+                const isToday = day.day === currentDay;
+                const isClosed = !day.isOpen;
+                
+                return `
+                    <div class="hours-row ${isToday ? 'today' : ''}">
+                        <div class="day">${day.day} ${isToday ? '<span class="today-badge">(Today)</span>' : ''}</div>
+                        <div class="hours-time ${isClosed ? 'closed' : 'open'}">
+                            ${day.hours}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateTodayInfo() {
+            const currentDay = getCurrentDayName();
+            const todayData = businessHours.find(h => h.day === currentDay);
+            
+            todayHours.textContent = todayData ? todayData.hours : 'Not available';
+            
+            let statusMessage = '';
+            let statusClass = '';
+            
+            switch (currentStatus?.status) {
+                case 'open':
+                    statusMessage = '🟢 Currently Open';
+                    statusClass = 'open';
+                    break;
+                case 'closing':
+                    statusMessage = '⚠️ Closing Soon';
+                    statusClass = 'closing';
+                    break;
+                case 'closed':
+                    statusMessage = '🔴 Currently Closed';
+                    statusClass = 'closed';
+                    break;
+            }
+            
+            todayStatus.textContent = statusMessage;
+            todayStatus.className = 'today-status ' + statusClass;
+        }
+
+        function updateTimeRemaining() {
+            if (!currentStatus?.timeUntil) {
+                timeRemaining.textContent = '--';
+                return;
+            }
+            
+            const totalMinutes = Math.floor(currentStatus.timeUntil);
+            const hours = Math.floor(totalMinutes / 60);
+            const minutes = totalMinutes % 60;
+            
+            if (hours > 0) {
+                timeRemaining.textContent = `${hours}h ${minutes}m`;
+            } else {
+                timeRemaining.textContent = `${minutes} min`;
+            }
+        }
+
+        function updateNextOpening() {
+            const nextOpening = getNextOpeningTime();
+            
+            if (!nextOpening || currentStatus?.status === 'open') {
+                nextOpeningContainer.style.display = 'none';
+                return;
+            }
+            
+            nextOpeningContainer.style.display = 'block';
+            
+            const timeStr = nextOpening.time === 10 ? '10:00 AM' : '9:00 AM';
+            const dayStr = nextOpening.isToday ? 'today' : `on ${nextOpening.day}`;
+            
+            nextOpeningContainer.innerHTML = `<i class="fas fa-clock"></i> Next opening: ${timeStr} ${dayStr}`;
+        }
+
+        function updateDisplay() {
+            currentTime = new Date();
+            currentTimeDisplay.textContent = formatTime(currentTime);
+            updateStatusIndicator();
+            updateTodayInfo();
+            updateTimeRemaining();
+            updateNextOpening();
+        }
+
+        function init() {
+            renderBusinessHours();
+            updateDisplay();
+            
+            // Update every second
+            setInterval(updateDisplay, 1000);
+            
+            // Re-render hours every minute (in case day changes)
+            setInterval(renderBusinessHours, 60000);
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+        
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            menuToggle.innerHTML = navLinks.classList.contains('active') ?
+                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                    menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+                }
+            });
+        });
+        // Sticky header
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.1)';
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+            } else {
+                header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+            }
+        });
+    </script>
+</body>
+</html>
+```
