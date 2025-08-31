@@ -125,6 +125,7 @@
             padding: 1rem 2rem;
         }
 
+
         .logo {
             font-size: 2.2rem;
             font-weight: 700;
@@ -142,7 +143,7 @@
     height: 100vh;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: flex;
     background: linear-gradient(135deg, 
         rgba(0, 0, 0, 0.95) 0%, 
         rgba(122, 28, 94, 0.9) 50%, 
@@ -857,3 +858,13 @@
             background: var(--primary-dark);
             transform: translateY(-5px);
         }
+
+
+
+        .Gelo a{
+            text-decoration: none;
+            color: rgb(4, 207, 4);
+            font-weight: 900;
+        }
+
+       
