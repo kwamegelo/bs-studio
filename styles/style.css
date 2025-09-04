@@ -113,19 +113,20 @@ body {
     opacity: 0.8;
 }
 
-/* Loading Screen */
+/* === LOADING SCREEN === */
 .loading-screen {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100vh;
-    background: var(--gradient-primary);
+    background: var(--secondary);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 10000;
-    transition: opacity 0.5s ease, visibility 0.5s ease;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+    text-align: center;
 }
 
 .loading-screen.hidden {
@@ -134,41 +135,152 @@ body {
 }
 
 .loading-content {
-    text-align: center;
-    color: var(--white);
+    color: var(--text-dark);
+    padding: 2rem;
+    max-width: 90%;
+    z-index: 2;
+    animation: fadeIn 0.8s ease-in;
 }
 
-.loading-logo {
-    font-family: var(--font-heading);
-    font-size: 3rem;
+/* Logo Container */
+.loading-logo-container {
+    margin-bottom: 1.5rem;
+}
+
+/* Logo Image */
+.loading-logo-img {
+    width: 280px;
+    height: auto;
+    animation: popIn 0.6s ease-out;
+}
+
+/* Use this if you're using text instead of image */
+.loading-logo-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
     font-weight: 700;
+    color: white;
+    margin: 0;
+    letter-spacing: 2px;
+    animation: popIn 0.6s ease-out;
+}
+
+/* Tagline */
+.loading-tagline {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 300;
     margin-bottom: 2rem;
-    animation: pulse 2s infinite;
+    opacity: 0.95;
+    letter-spacing: 1px;
+    animation: slideUp 0.6s ease-out 0.2s both;
 }
 
+/* Spinner */
 .loading-spinner {
-    width: 50px;
-    height: 50px;
-    border: 3px solid rgba(255, 255, 255, 0.3);
-    border-top: 3px solid var(--white);
+    width: 60px;
+    height: 60px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid white;
     border-radius: 50%;
-    margin: 0 auto 1rem;
-    animation: spin 1s linear infinite;
+    margin: 1.5rem auto;
+    animation: spin 1.2s linear infinite;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }
 
+/* Loading Text */
 .loading-text {
-    font-size: 1.1rem;
-    opacity: 0.9;
+    font-size: 1rem;
+    opacity: 0.85;
+    margin-bottom: 2rem;
+    font-weight: 300;
+    animation: fadeIn 0.6s ease 0.4s both;
 }
 
+/* Developer Credit */
+.loading-powered-by {
+    position: absolute;
+    bottom: 2rem;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 0.9rem;
+    opacity: 0.8;
+    animation: fadeIn 0.6s ease 0.8s both;
+}
+
+.loading-powered-by .developer-name {
+    color: #07c21a;
+    font-weight: 600;
+}
+
+/* Animations */
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
 
-@keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.7; }
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes popIn {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    70% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .loading-logo-img {
+        width: 220px;
+    }
+    .loading-logo-text {
+        font-size: 2.8rem;
+    }
+    .loading-tagline {
+        font-size: 1.1rem;
+    }
+    .loading-powered-by {
+        font-size: 0.85rem;
+        bottom: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .loading-logo-img {
+        width: 180px;
+    }
+    .loading-logo-text {
+        font-size: 2.3rem;
+    }
+    .loading-tagline {
+        font-size: 1rem;
+    }
+    .loading-spinner {
+        width: 50px;
+        height: 50px;
+    }
 }
 
 /* Header */
