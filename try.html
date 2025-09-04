@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volume Lash Extensions | BS Studio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #7a1c5e;
+            --primary-light: #9a2973;
+            --primary-dark: #5d1447;
+            --secondary: #f9f2f2;
+            --accent: #e1306c;
+            --text: #333;
+            --text-light: #777;
+            --white: #ffffff;
+            --light-gray: #f5f5f5;
+            --success: #27ae60;
+            --warning: #e74c3c;
+            --card-shadow: 0 8px 30px rgba(122, 28, 94, 0.15);
+            --hover-shadow: 0 15px 50px rgba(122, 28, 94, 0.25);
+            --border-radius: 16px;
+            --gradient: linear-gradient(135deg, #7a1c5e 0%, #e1306c 100%);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            background: #f8fafc;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism Effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Modern Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Enhanced Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(122, 28, 94, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            height: 80px;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .book-btn {
+            background: var(--gradient);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .book-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .book-btn:hover::before {
+            left: 100%;
+        }
+
+        .book-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--hover-shadow);
+        }
+
+        /* Mobile Menu */
+        .mobile-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-toggle:hover {
+            background: rgba(122, 28, 94, 0.1);
+        }
+
+        .mobile-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--primary);
+            margin: 3px 0;
+            transition: 0.3s;
+            border-radius: 2px;
+        }
+
+        .mobile-toggle.active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+
+        .mobile-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .mobile-toggle.active span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+
+        /* Service Detail Header */
+        .service-header {
+            padding: 120px 0 60px;
+            background: var(--white);
+            text-align: center;
+        }
+
+        .service-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .service-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Modern Image Swiper */
+        .image-gallery {
+            padding: 60px 0;
+            background: var(--light-gray);
+        }
+
+        .swiper-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+        }
+
+        .swiper {
+            position: relative;
+            height: 500px;
+            overflow: hidden;
+        }
+
+        .swiper-wrapper {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .swiper-slide {
+            min-width: 100%;
+            position: relative;
+        }
+
+        .swiper-slide img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .slide-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+            color: white;
+            padding: 2rem;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .swiper-slide:hover .slide-overlay {
+            transform: translateY(0);
+        }
+
+        .swiper-navigation {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+        }
+
+        .swiper-btn {
+            background: rgba(122, 28, 94, 0.8);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .swiper-btn:hover {
+            background: var(--primary);
+            transform: scale(1.1);
+        }
+
+        .swiper-btn-prev {
+            left: 20px;
+        }
+
+        .swiper-btn-next {
+            right: 20px;
+        }
+
+        .swiper-pagination {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .pagination-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pagination-dot.active {
+            background: white;
+            transform: scale(1.2);
+        }
+
+        /* Modern Feature Cards */
+        .features-section {
+            padding: 80px 0;
+            background: var(--white);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(122, 28, 94, 0.1);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--hover-shadow);
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            font-family: 'Playfair Display', serif;
+        }
+
+        .card-list {
+            list-style: none;
+        }
+
+        .card-list li {
+            padding: 0.5rem 0;
+            position: relative;
+            padding-left: 1.5rem;
+            color: var(--text-light);
+        }
+
+        .card-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        .card-list.cons li::before {
+            content: '⚠';
+            color: var(--warning);
+        }
+
+        /* Enhanced Pricing Section */
+        .pricing-section {
+            padding: 80px 0;
+            background: var(--secondary);
+        }
+
+        .pricing-card {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 3rem;
+            max-width: 500px;
+            margin: 0 auto;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid rgba(122, 28, 94, 0.1);
+        }
+
+        .pricing-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: var(--gradient);
+        }
+
+        .price-badge {
+            background: var(--gradient);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .price-badge::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .price-amount {
+            font-size: 4rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 1rem 0;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .price-note {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+
+        .cta-button {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--card-shadow);
+            width: 100%;
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--hover-shadow);
+        }
+
+        .secondary-btn {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .secondary-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Modern Footer */
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 60px 0 20px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-col h4 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: white;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .footer-col h4::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 3px;
+            background: var(--accent);
+            margin-top: 10px;
+            border-radius: 2px;
+        }
+
+        .footer-col p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 20px;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: var(--accent);
+            transform: translateY(-3px) rotate(5deg);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Newsletter Form */
+        .newsletter-form {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .newsletter-form input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .newsletter-form button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .newsletter-form button:hover {
+            background: #c1235a;
+            transform: translateY(-2px);
+        }
+
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            font-size: 1.5rem;
+        }
+
+        .fab:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: var(--hover-shadow);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 2rem;
+                box-shadow: var(--card-shadow);
+                border-radius: 0 0 20px 20px;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-toggle {
+                display: flex;
+            }
+
+            .service-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .swiper {
+                height: 300px;
+            }
+
+            .swiper-slide img {
+                height: 300px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .price-amount {
+                font-size: 3rem;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+
+            .fab {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .service-header h1 {
+                font-size: 2rem;
+            }
+            
+            .feature-card {
+                padding: 1.5rem;
+            }
+
+            .pricing-card {
+                padding: 2rem;
+            }
+
+            .swiper-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="index.html" class="logo">BS STUDIO</a>
+                <div class="nav-links" id="navLinks">
+                    <a href="index.html#home">HOME</a>
+                    <a href="index.html#services">SERVICES</a>
+                    <a href="index.html#about">ABOUT</a>
+                    <a href="index.html#testimonials">TESTIMONIALS</a>
+                    <a href="index.html#contact">CONTACT</a>
+                </div>
+                <a href="index.html#contact" class="book-btn">BOOK NOW</a>
+                <div class="mobile-toggle" id="mobileToggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Service Header -->
+    <section class="service-header">
+        <div class="container">
+            <h1 class="fade-in-up">Volume Lash Extensions</h1>
+            <p class="service-subtitle fade-in-up">Light, airy fans for a fuller look while maintaining a natural feel and elegance</p>
+        </div>
+    </section>
+
+    <!-- Image Gallery with Auto/Manual Swiper -->
+    <section class="image-gallery">
+        <div class="container">
+            <div class="swiper-container">
+                <div class="swiper" id="imageSwiper">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <img src="images/lash4.jpg">
+                                <h3>Professional Volume Application</h3>
+                                <p>Expert technique for stunning results</p>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="images/BS_logo.png">
+                                <h3>Beautiful Volume Results</h3>
+                                <p>Fuller lashes that look naturally gorgeous</p>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="images/lash4.jpg" alt="Volume Lash Extensions - Different Angles">
+                            <div class="slide-overlay">
+                                <h3>Premium Quality Materials</h3>
+                                <p>Only the finest lashes for lasting beauty</p>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="images/lash4.jpg">
+                            <div class="slide-overlay">
+                                <h3>Client Satisfaction</h3>
+                                <p>Hundreds of happy clients love their new look</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Navigation -->
+                    <div class="swiper-navigation">
+                        <button class="swiper-btn swiper-btn-prev" id="prevBtn">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="swiper-btn swiper-btn-next" id="nextBtn">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="swiper-pagination" id="pagination"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card fade-in-up">
+                    <div class="card-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="card-title">Service Duration</h3>
+                    <ul class="card-list">
+                        <li><strong>Full Set:</strong> Approximately 2 - 2.5 hours</li>
+                        <li><strong>Refill:</strong> Typically takes 1 - 1.5 hours</li>
+                        <li>Comfortable, relaxing environment</li>
+                        <li>Professional consultation included</li>
+                        <li>Aftercare instructions provided</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card fade-in-up">
+                    <div class="card-icon">
+                        <i class="fas fa-plus-circle"></i>
+                    </div>
+                    <h3 class="card-title">Benefits & Advantages</h3>
+                    <ul class="card-list">
+                        <li>Fuller, more dramatic look than classic</li>
+                        <li>Still feels relatively lightweight</li>
+                        <li>Great for adding subtle drama</li>
+                        <li>Wide range of fan styles available</li>
+                        <li>Popular and versatile style</li>
+                        <li>Long-lasting results</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card fade-in-up">
+                    <div class="card-icon">
+                        <i class="fas fa-minus-circle"></i>
+                    </div>
+                    <h3 class="card-title">Important Considerations</h3>
+                    <ul class="card-list cons">
+                        <li>Requires a skilled technician</li>
+                        <li>More expensive than classic extensions</li>
+                        <li>Slightly longer appointment time</li>
+                        <li>May need more careful maintenance</li>
+                        <li>Regular touch-ups recommended</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Enhanced Pricing Section -->
+    <section class="pricing-section">
+        <div class="container">
+            <div class="pricing-card fade-in-up">
+                <div class="price-badge">Premium Service</div>
+                <h3 class="card-title">Volume Lash Extensions</h3>
+                <div class="price-amount">₵150</div>
+                <p class="price-note">Price varies based on density, fan size, and stylist experience. Refills start at ₵75.</p>
+                <button class="cta-button" onclick="bookAppointment()">
+                    <i class="fas fa-calendar-alt"></i> Book Volume Lash Extensions
+                </button>
+                <a href="index.html#services" class="secondary-btn">
+                    <i class="fas fa-arrow-left"></i> Back to Services
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modern Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>BS Studio</h4>
+                    <p>Your premier destination for beauty and lash extension services. We're dedicated to enhancing your natural beauty with our premium treatments.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html#home">Home</a></li>
+                        <li><a href="index.html#services">Services</a></li>
+                        <li><a href="index.html#about">About Us</a></li>
+                        <li><a href="index.html#testimonials">Testimonials</a></li>
+                        <li><a href="index.html#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Our Services</h4>
+                    <ul class="footer-links">
+                        <li><a href="classic-lash-extensions.html">Classic Lash Extensions</a></li>
+                        <li><a href="volume-lash-extensions.html">Volume Lash Extensions</a></li>
+                        <li><a href="mega-volume-lash-extensions.html">Mega Volume Lash Extensions</a></li>
+                        <li><a href="wipsy-lash-extensions.html">Wipsy Lash Extensions</a></li>
+                        <li><a href="index.html#services">Eyebrow Threading</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Newsletter</h4>
+                    <p>Subscribe to our newsletter for the latest updates and special offers.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Your Email Address" required>
+                        <button type="submit">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 BS Studio. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Action Button -->
+    <a href="index.html#contact" class="fab" title="Book Appointment">
+        <i class="fas fa-calendar-plus"></i>
+    </a>
+
+    <script>
+        // Image Swiper Implementation
+        class ImageSwiper {
+            constructor(selector) {
+                this.swiper = document.querySelector(selector);
+                this.wrapper = this.swiper.querySelector('.swiper-wrapper');
+                this.slides = this.swiper.querySelectorAll('.swiper-slide');
+                this.prevBtn = document.getElementById('prevBtn');
+                this.nextBtn = document.getElementById('nextBtn');
+                this.pagination = document.getElementById('pagination');
+                
+                this.currentIndex = 0;
+                this.totalSlides = this.slides.length;
+                this.autoPlayInterval = null;
+                this.isAutoPlaying = true;
+                
+                this.init();
+            }
+            
+            init() {
+                this.createPagination();
+                this.bindEvents();
+                this.startAutoPlay();
+                this.updateSlider();
+            }
+            
+            createPagination() {
+                for (let i = 0; i < this.totalSlides; i++) {
+                    const dot = document.createElement('div');
+                    dot.classList.add('pagination-dot');
+                    if (i === 0) dot.classList.add('active');
+                    dot.addEventListener('click', () => this.goToSlide(i));
+                    this.pagination.appendChild(dot);
+                }
+            }
+            
+            bindEvents() {
+                this.prevBtn.addEventListener('click', () => this.prevSlide());
+                this.nextBtn.addEventListener('click', () => this.nextSlide());
+                
+                // Pause auto-play on hover
+                this.swiper.addEventListener('mouseenter', () => this.pauseAutoPlay());
+                this.swiper.addEventListener('mouseleave', () => this.resumeAutoPlay());
+                
+                // Touch/swipe support for mobile
+                let startX = 0;
+                let endX = 0;
+                
+                this.swiper.addEventListener('touchstart', (e) => {
+                    startX = e.touches[0].clientX;
+                    this.pauseAutoPlay();
+                });
+                
+                this.swiper.addEventListener('touchend', (e) => {
+                    endX = e.changedTouches[0].clientX;
+                    this.handleSwipe();
+                    this.resumeAutoPlay();
+                });
+                
+                const handleSwipe = () => {
+                    const diff = startX - endX;
+                    if (Math.abs(diff) > 50) { // Minimum swipe distance
+                        if (diff > 0) {
+                            this.nextSlide();
+                        } else {
+                            this.prevSlide();
+                        }
+                    }
+                };
+                
+                this.handleSwipe = handleSwipe;
+            }
+            
+            updateSlider() {
+                const translateX = -this.currentIndex * 100;
+                this.wrapper.style.transform = `translateX(${translateX}%)`;
+                
+                // Update pagination
+                const dots = this.pagination.querySelectorAll('.pagination-dot');
+                dots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === this.currentIndex);
+                });
+            }
+            
+            nextSlide() {
+                this.currentIndex = (this.currentIndex + 1) % this.totalSlides;
+                this.updateSlider();
+            }
+            
+            prevSlide() {
+                this.currentIndex = (this.currentIndex - 1 + this.totalSlides) % this.totalSlides;
+                this.updateSlider();
+            }
+            
+            goToSlide(index) {
+                this.currentIndex = index;
+                this.updateSlider();
+            }
+            
+            startAutoPlay() {
+                if (this.isAutoPlaying) {
+                    this.autoPlayInterval = setInterval(() => {
+                        this.nextSlide();
+                    }, 4000); // Change slide every 4 seconds
+                }
+            }
+            
+            pauseAutoPlay() {
+                if (this.autoPlayInterval) {
+                    clearInterval(this.autoPlayInterval);
+                }
+            }
+            
+            resumeAutoPlay() {
+                if (this.isAutoPlaying) {
+                    this.startAutoPlay();
+                }
+            }
+        }
+
+        // Initialize swiper when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            new ImageSwiper('#imageSwiper');
+        });
+
+        // Mobile menu toggle
+        const mobileToggle = document.getElementById('mobileToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        mobileToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            mobileToggle.classList.toggle('active');
+        });
+
+        // Close mobile menu on link click
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                mobileToggle.classList.remove('active');
+            });
+        });
+
+        // Enhanced header scroll effect
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+                header.style.boxShadow = '0 10px 30px rgba(122, 28, 94, 0.15)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+                header.style.boxShadow = '0 2px 10px rgba(122, 28, 94, 0.1)';
+            }
+            
+            // Hide/show header on scroll
+            if (currentScroll > lastScroll && currentScroll > 200) {
+                header.style.transform = 'translateY(-100%)';
+            } else {
+                header.style.transform = 'translateY(0)';
+            }
+            
+            lastScroll = currentScroll;
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationDelay = `${Math.random() * 0.3}s`;
+                    entry.target.classList.add('fade-in-up');
+                    observer.unobserve(entry.target); // Only animate once
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animatable elements
+        document.querySelectorAll('.feature-card, .pricing-card, .service-header h1, .service-header .service-subtitle').forEach(element => {
+            observer.observe(element);
+        });
+
+        // Book appointment function with smooth animation
+        function bookAppointment() {
+            // Add click animation to button
+            const button = event.target;
+            button.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                button.style.transform = '';
+            }, 150);
+            
+            // Smooth scroll to contact section or redirect
+            const contactSection = document.querySelector('#contact');
+            if (contactSection) {
+                contactSection.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                // Show loading state
+                const originalText = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Redirecting...';
+                
+                setTimeout(() => {
+                    window.location.href = 'index.html#contact';
+                }, 1000);
+            }
+        }
+
+        // Newsletter form with enhanced UX
+        document.querySelector('.newsletter-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = e.target.querySelector('input[type="email"]').value;
+            const button = e.target.querySelector('button');
+            const originalText = button.textContent;
+            
+            // Show loading state
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            button.disabled = true;
+            
+            // Simulate API call
+            setTimeout(() => {
+                button.innerHTML = '<i class="fas fa-check"></i> Subscribed!';
+                button.style.background = 'var(--success)';
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = '';
+                    button.disabled = false;
+                    e.target.reset();
+                }, 3000);
+            }, 2000);
+        });
+
+        // Smooth page load animation
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s ease';
+            
+            requestAnimationFrame(() => {
+                document.body.style.opacity = '1';
+            });
+        });
+
+        // Add parallax effect to hero images
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const imageSlides = document.querySelectorAll('.swiper-slide img');
+            
+            imageSlides.forEach(img => {
+                const rect = img.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    const speed = scrolled * 0.1;
+                    img.style.transform = `translateY(${speed}px)`;
+                }
+            });
+        });
+
+        // Add click ripple effect to buttons
+        document.querySelectorAll('.cta-button, .book-btn, .secondary-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.classList.add('ripple');
+                
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+
+        // Add ripple CSS
+        const rippleStyle = document.createElement('style');
+        rippleStyle.textContent = `
+            .ripple {
+                position: absolute;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.3);
+                transform: scale(0);
+                animation: ripple-animation 0.6s linear;
+                pointer-events: none;
+            }
+            
+            @keyframes ripple-animation {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+            
+            .cta-button, .book-btn, .secondary-btn {
+                position: relative;
+                overflow: hidden;
+            }
+        `;
+        document.head.appendChild(rippleStyle);
+
+    </script>
+</body>
+</html>
