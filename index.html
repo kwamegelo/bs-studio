@@ -3,247 +3,296 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BS Studio | Premium Beauty & Lash Extensions</title>
+    <title>BS Studio | Beauty & Lash Extensions</title>
     <link rel="stylesheet" href="styles/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <meta name="description" content="Experience premium lash extensions and beauty treatments at BS Studio. Book your appointment today for a transformation that will leave you feeling confident and beautiful">
-    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="images/browser.png">
+    <meta name="description" content="Experience premium lash extensions and beauty treatments at BS Studio. Book your appointment today for a transformation that will leave you feeling confident and beautiful" />
 </head>
 <body>
-    <!-- Header -->
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <div class="loading-logo">BS STUDIO</div>
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Preparing your beauty experience...</div>
+        </div>
+    </div>
+
+    <!-- Cursor -->
+    <div class="custom-cursor" id="cursor">
+        <div class="cursor-inner"></div>
+    </div>
+
+    <!-- Header & Navigation -->
     <header class="header" id="header">
         <div class="container">
-            <nav class="navbar">
-                <a href="#" class="logo">BS STUDIO</a>
-                <ul class="nav-menu" id="navMenu">
-                    <li><a href="#home" class="nav-link">Home</a></li>
-                    <li><a href="#services" class="nav-link">Services</a></li>
-                    <li><a href="#about" class="nav-link">About</a></li>
-                    <li><a href="#testimonials" class="nav-link">Reviews</a></li>
-                    <li><a href="#contact" class="nav-link">Contact</a></li>
-                    <li><a href="#book" class="btn btn-primary btn-nav">Book Now</a></li>
-                </ul>
-                <div class="menu-toggle" id="menuToggle">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+            <div class="navbar">
+                <a href="#" class="logo">
+                    <span class="logo-text">BS STUDIO</span>
+                    <div class="logo-underline"></div>
+                </a>
+                
+                <nav class="nav-links" id="navLinks">
+                    <a href="#home" class="nav-link" data-text="HOME">HOME</a>
+                    <a href="#services" class="nav-link" data-text="SERVICES">SERVICES</a>
+                    <a href="#about" class="nav-link" data-text="ABOUT">ABOUT</a>
+                    <a href="#testimonials" class="nav-link" data-text="TESTIMONIALS">TESTIMONIALS</a>
+                    <a href="#contact" class="nav-link" data-text="CONTACT">CONTACT</a>
+                    <div class="nav-background"></div>
+                </nav>
+                
+                <div class="header-actions">
+                    <a href="booking.html" class="book-btn">
+                        <span>Book Now</span>
+                        <i class="fas fa-calendar-alt"></i>
+                    </a>
+                    <div class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </div>
+                    <div class="mobile-menu-toggle" id="menuToggle">
+                        <span class="hamburger-line"></span>
+                        <span class="hamburger-line"></span>
+                        <span class="hamburger-line"></span>
+                    </div>
                 </div>
-            </nav>
+            </div>
         </div>
     </header>
 
     <!-- Hero Section -->
     <section class="hero" id="home">
-        <div class="floating-elements">
-            <div class="floating-card">
-                <div class="card-header">
-                    <i class="fas fa-star"></i>
-                    <span>5.0 Rating</span>
-                </div>
-                <p class="card-text">500+ Happy Clients</p>
-            </div>
-            <div class="floating-card">
-                <div class="card-header">
-                    <i class="fas fa-award"></i>
-                    <span>Certified</span>
-                </div>
-                <p class="card-text">Premium Quality</p>
-            </div>
-            <div class="floating-card">
-                <div class="card-header">
-                    <i class="fas fa-clock"></i>
-                    <span>5+ Years</span>
-                </div>
-                <p class="card-text">Experience</p>
+        <div class="hero-background">
+            <div class="hero-overlay"></div>
+            <div class="floating-elements">
+                <div class="floating-element"></div>
+                <div class="floating-element"></div>
+                <div class="floating-element"></div>
             </div>
         </div>
         
         <div class="container">
             <div class="hero-content">
-                <div class="hero-text scroll-reveal">
-                    <h1 class="hero-title">Enhance Your Beauty Effortlessly</h1>
-                    <p class="hero-subtitle">
+                <div class="hero-text">
+                    <h1 class="hero-title">
+                        <span class="title-line" data-aos="fade-up" data-aos-delay="100">Enhance Your</span>
+                        <span class="title-line accent-text" data-aos="fade-up" data-aos-delay="200">Beauty</span>
+                        <span class="title-line" data-aos="fade-up" data-aos-delay="300">Effortlessly</span>
+                    </h1>
+                    <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="400">
                         Experience premium lash extensions and beauty treatments at BS Studio. 
-                        Transform your look with our expert techniques and premium products that will 
-                        leave you feeling confident and beautiful.
+                        Book your appointment today for a transformation that will leave you feeling 
+                        confident and beautiful.
                     </p>
-                    <div class="hero-buttons">
-                        <a href="#book" class="btn btn-primary">
-                            <i class="fas fa-calendar-alt"></i>
-                            Book Appointment
+                    <div class="hero-buttons" data-aos="fade-up" data-aos-delay="500">
+                        <a href="booking.html" class="btn btn-primary">
+                            <span>Book Appointment</span>
+                            <div class="btn-bg"></div>
                         </a>
                         <a href="#services" class="btn btn-secondary">
-                            <i class="fas fa-eye"></i>
-                            View Services
+                            <span>View Services</span>
+                            <div class="btn-bg"></div>
                         </a>
                     </div>
-                    <div class="hero-stats">
-                        <div class="stat-item">
-                            <span class="stat-number" data-target="500">0</span>
-                            <span class="stat-label">Happy Clients</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-number" data-target="5">0</span>
-                            <span class="stat-label">Years Experience</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-number" data-target="99">0</span>
-                            <span class="stat-label">Satisfaction Rate</span>
-                        </div>
+                </div>
+                
+                <div class="hero-stats" data-aos="fade-up" data-aos-delay="600">
+                    <div class="stat-card">
+                        <div class="stat-number" data-count="500">0</div>
+                        <div class="stat-label">Happy Clients</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" data-count="5">0</div>
+                        <div class="stat-label">Years Experience</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" data-count="99">0</div>
+                        <div class="stat-label">Satisfaction Rate</div>
                     </div>
                 </div>
-                <div class="hero-visual scroll-reveal">
-                    <img src="https://images.unsplash.com/photo-1522338242992-e1a54906a8da?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Beautiful lash extensions" class="hero-image">
-                    <div class="hero-decorative"></div>
-                </div>
             </div>
+        </div>
+        
+        <div class="scroll-indicator">
+            <div class="scroll-text">Scroll to explore</div>
+            <div class="scroll-arrow"></div>
         </div>
     </section>
 
     <!-- Services Section -->
     <section class="services section" id="services">
         <div class="container">
-            <div class="section-header scroll-reveal">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-subtitle">What We Offer</span>
                 <h2 class="section-title">Our Premium Services</h2>
-                <p class="section-subtitle">
+                <p class="section-description">
                     Discover our range of professional beauty services designed to enhance 
                     your natural beauty and make you feel confident
                 </p>
             </div>
             
-            <div class="services-grid">
-                <div class="service-card scroll-reveal">
+            <div class="services-filter" data-aos="fade-up" data-aos-delay="100">
+                <button class="filter-btn active" data-filter="all">All Services</button>
+                <button class="filter-btn" data-filter="lashes">Lash Extensions</button>
+                <button class="filter-btn" data-filter="beauty">Beauty Treatments</button>
+            </div>
+            
+            <div class="services-grid" data-aos="fade-up" data-aos-delay="200">
+                <div class="service-card" data-category="lashes">
                     <div class="service-image">
-                        <img src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Classic Lash Extensions">
-                        <div class="service-badge">Popular</div>
+                        <img src="images/lash4.jpg" alt="Classic Lash Extensions">
+                        <div class="service-overlay">
+                            <div class="service-icons">
+                                <button class="service-icon" data-service="classic">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="service-icon">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     <div class="service-content">
-                        <h3 class="service-title">Classic Lash Extensions</h3>
-                        <p class="service-description">
-                            Individual lashes applied one-to-one for a natural, defined look. 
-                            Perfect for beginners seeking elegant enhancement.
-                        </p>
-                        <ul class="service-features">
-                            <li><i class="fas fa-check"></i> Natural look</li>
-                            <li><i class="fas fa-check"></i> 2-3 weeks duration</li>
-                            <li><i class="fas fa-check"></i> Perfect for daily wear</li>
-                        </ul>
+                        <div class="service-badge">Most Popular</div>
+                        <h3 class="service-name">Classic Lash Extensions</h3>
+                        <p class="service-description">Individual lashes applied one-to-one for a natural, defined look. Perfect for beginners.</p>
+                        <div class="service-features">
+                            <span class="feature-tag">Natural Look</span>
+                            <span class="feature-tag">Long Lasting</span>
+                        </div>
                         <div class="service-footer">
-                            <div class="service-price">From $120</div>
-                            <a href="#book" class="btn btn-primary btn-sm">Book Now</a>
+                            <div class="service-price">From ₵120</div>
+                            <a href="classic-lash-extensions.html" class="btn-service">
+                                <span>Book Now</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
 
-                <div class="service-card scroll-reveal">
+                <div class="service-card" data-category="lashes">
                     <div class="service-image">
-                        <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Volume Lash Extensions">
-                        <div class="service-badge">Premium</div>
+                        <img src="images/lash4.jpg" alt="Volume Lash Extensions">
+                        <div class="service-overlay">
+                            <div class="service-icons">
+                                <button class="service-icon">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="service-icon">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     <div class="service-content">
-                        <h3 class="service-title">Volume Lash Extensions</h3>
-                        <p class="service-description">
-                            Light, airy fans for a fuller look while maintaining a natural feel. 
-                            Ideal for adding subtle drama to your eyes.
-                        </p>
-                        <ul class="service-features">
-                            <li><i class="fas fa-check"></i> Fuller appearance</li>
-                            <li><i class="fas fa-check"></i> 3-4 weeks duration</li>
-                            <li><i class="fas fa-check"></i> Lightweight feel</li>
-                        </ul>
+                        <h3 class="service-name">Volume Lash Extensions</h3>
+                        <p class="service-description">Light, airy fans for a fuller look while maintaining a natural feel. Ideal for adding subtle drama.</p>
+                        <div class="service-features">
+                            <span class="feature-tag">Dramatic Volume</span>
+                            <span class="feature-tag">Lightweight</span>
+                        </div>
                         <div class="service-footer">
-                            <div class="service-price">From $150</div>
-                            <a href="#book" class="btn btn-primary btn-sm">Book Now</a>
+                            <div class="service-price">From ₵150</div>
+                            <a href="volume-lash-extensions.html" class="btn-service">
+                                <span>Book Now</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
 
-                <div class="service-card scroll-reveal">
+                <div class="service-card" data-category="lashes">
                     <div class="service-image">
-                        <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Hybrid Lash Extensions">
+                        <img src="images/lash4.jpg" alt="Wispy Lash Extensions">
+                        <div class="service-overlay">
+                            <div class="service-icons">
+                                <button class="service-icon">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="service-icon">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     <div class="service-content">
-                        <h3 class="service-title">Hybrid Lash Extensions</h3>
-                        <p class="service-description">
-                            Combination of classic and volume techniques for a textured, 
-                            dimensional effect that's uniquely yours.
-                        </p>
-                        <ul class="service-features">
-                            <li><i class="fas fa-check"></i> Best of both worlds</li>
-                            <li><i class="fas fa-check"></i> Textured look</li>
-                            <li><i class="fas fa-check"></i> Customizable style</li>
-                        </ul>
+                        <div class="service-badge new">New</div>
+                        <h3 class="service-name">Wispy Lash Extensions</h3>
+                        <p class="service-description">Hybrid technique combining classic and volume lashes for a textured, dimensional effect.</p>
+                        <div class="service-features">
+                            <span class="feature-tag">Hybrid Style</span>
+                            <span class="feature-tag">Textured Look</span>
+                        </div>
                         <div class="service-footer">
-                            <div class="service-price">From $160</div>
-                            <a href="#book" class="btn btn-primary btn-sm">Book Now</a>
+                            <div class="service-price">From ₵160</div>
+                            <a href="wispy-lash-extensions.html" class="btn-service">
+                                <span>Book Now</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
 
-                <div class="service-card scroll-reveal">
+                <div class="service-card" data-category="lashes">
                     <div class="service-image">
-                        <img src="https://images.unsplash.com/photo-1559599101-f09722fb4948?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Mega Volume Extensions">
-                        <div class="service-badge">Luxury</div>
+                        <img src="https://images.unsplash.com/photo-1598974357801-cbca100e65d3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Mega Volume">
+                        <div class="service-overlay">
+                            <div class="service-icons">
+                                <button class="service-icon">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="service-icon">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     <div class="service-content">
-                        <h3 class="service-title">Mega Volume Extensions</h3>
-                        <p class="service-description">
-                            Ultra-dramatic volume with lightweight fans for maximum impact. 
-                            Perfect for special occasions and glamorous looks.
-                        </p>
-                        <ul class="service-features">
-                            <li><i class="fas fa-check"></i> Maximum volume</li>
-                            <li><i class="fas fa-check"></i> Dramatic effect</li>
-                            <li><i class="fas fa-check"></i> Special events ready</li>
-                        </ul>
+                        <div class="service-badge premium">Premium</div>
+                        <h3 class="service-name">Mega Volume Extensions</h3>
+                        <p class="service-description">Ultra-full, glamorous lashes for maximum impact. Perfect for special occasions.</p>
+                        <div class="service-features">
+                            <span class="feature-tag">Maximum Volume</span>
+                            <span class="feature-tag">Glamorous</span>
+                        </div>
                         <div class="service-footer">
-                            <div class="service-price">From $200</div>
-                            <a href="#book" class="btn btn-primary btn-sm">Book Now</a>
+                            <div class="service-price">From ₵200</div>
+                            <a href="#contact" class="btn-service">
+                                <span>Book Now</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
 
-                <div class="service-card scroll-reveal">
+                <div class="service-card" data-category="beauty">
                     <div class="service-image">
-                        <img src="https://images.unsplash.com/photo-1552693673-1bf958298935?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Lash Lift and Tint">
-                    </div>
-                    <div class="service-content">
-                        <h3 class="service-title">Lash Lift & Tint</h3>
-                        <p class="service-description">
-                            Enhance your natural lashes with a professional lift and tint. 
-                            Perfect alternative to extensions for a more natural approach.
-                        </p>
-                        <ul class="service-features">
-                            <li><i class="fas fa-check"></i> Natural enhancement</li>
-                            <li><i class="fas fa-check"></i> No maintenance needed</li>
-                            <li><i class="fas fa-check"></i> 6-8 weeks duration</li>
-                        </ul>
-                        <div class="service-footer">
-                            <div class="service-price">From $65</div>
-                            <a href="#book" class="btn btn-primary btn-sm">Book Now</a>
+                        <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Lash Lift">
+                        <div class="service-overlay">
+                            <div class="service-icons">
+                                <button class="service-icon">
+                                    <i class="fas fa-spa"></i>
+                                </button>
+                                <button class="service-icon">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="service-card scroll-reveal">
-                    <div class="service-image">
-                        <img src="https://images.unsplash.com/photo-1598974357801-cbca100e65d3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Eyebrow Services">
-                    </div>
                     <div class="service-content">
-                        <h3 class="service-title">Eyebrow Shaping</h3>
-                        <p class="service-description">
-                            Professional eyebrow shaping and tinting services to frame your face 
-                            perfectly and complement your lash treatments.
-                        </p>
-                        <ul class="service-features">
-                            <li><i class="fas fa-check"></i> Perfect shaping</li>
-                            <li><i class="fas fa-check"></i> Professional tinting</li>
-                            <li><i class="fas fa-check"></i> Face-framing results</li>
-                        </ul>
+                        <h3 class="service-name">Eyelash Lift & Tint</h3>
+                        <p class="service-description">Enhance your natural lashes with a lift and tint. Perfect alternative to extensions for a more natural look.</p>
+                        <div class="service-features">
+                            <span class="feature-tag">Natural Enhancement</span>
+                            <span class="feature-tag">Low Maintenance</span>
+                        </div>
                         <div class="service-footer">
-                            <div class="service-price">From $45</div>
-                            <a href="#book" class="btn btn-primary btn-sm">Book Now</a>
+                            <div class="service-price">From ₵65</div>
+                            <a href="#contact" class="btn-service">
+                                <span>Book Now</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -255,26 +304,36 @@
     <section class="about section" id="about">
         <div class="container">
             <div class="about-content">
-                <div class="about-image scroll-reveal">
-                    <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="BS Studio Interior">
-                    <div class="about-decorative"></div>
+                <div class="about-image" data-aos="fade-right">
+                    <div class="image-wrapper">
+                        <img src="images/lash4.jpg" alt="BS Studio Interior">
+                        <div class="image-overlay"></div>
+                        <div class="experience-badge">
+                            <div class="badge-number">5+</div>
+                            <div class="badge-text">Years of Excellence</div>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="about-text scroll-reveal">
-                    <h2 class="section-title">Your Beauty, Our Passion</h2>
+                <div class="about-text" data-aos="fade-left">
+                    <div class="section-header">
+                        <span class="section-subtitle">About BS Studio</span>
+                        <h2 class="section-title">Your Beauty, Our Passion</h2>
+                    </div>
+                    
                     <p class="about-description">
                         Founded in 2018, BS Studio has been dedicated to providing premium beauty 
-                        services that enhance natural beauty and boost confidence. Our team of certified 
-                        professionals uses only the highest quality products and techniques to deliver 
-                        exceptional results.
-                    </p>
-                    <p class="about-description">
-                        We believe that every person deserves to feel beautiful and confident in their 
-                        own skin. That's why we take the time to understand each client's unique needs 
-                        and customize our services accordingly.
+                        services that enhance natural beauty and boost confidence. Our team of 
+                        certified professionals uses only the highest quality products and techniques.
                     </p>
                     
-                    <div class="features-grid">
+                    <p class="about-description">
+                        We believe that every person deserves to feel beautiful and confident in 
+                        their own skin. That's why we take the time to understand each client's 
+                        unique needs and customize our services accordingly.
+                    </p>
+                    
+                    <div class="about-features">
                         <div class="feature-item">
                             <div class="feature-icon">
                                 <i class="fas fa-certificate"></i>
@@ -287,7 +346,7 @@
                         
                         <div class="feature-item">
                             <div class="feature-icon">
-                                <i class="fas fa-gem"></i>
+                                <i class="fas fa-star"></i>
                             </div>
                             <div class="feature-content">
                                 <h4>Premium Products</h4>
@@ -306,10 +365,22 @@
                         </div>
                     </div>
                     
-                    <a href="#book" class="btn btn-primary">
-                        <i class="fas fa-calendar-check"></i>
-                        Book Your Visit
-                    </a>
+                    <div class="about-actions">
+                        <a href="booking.html" class="btn btn-primary">
+                            <span>Book Your Visit</span>
+                            <div class="btn-bg"></div>
+                        </a>
+                        <div class="about-stats">
+                            <div class="stat-item">
+                                <span class="stat-value">500+</span>
+                                <span class="stat-label">Happy Clients</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value">99%</span>
+                                <span class="stat-label">Satisfaction</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -318,94 +389,112 @@
     <!-- Testimonials Section -->
     <section class="testimonials section" id="testimonials">
         <div class="container">
-            <div class="section-header scroll-reveal">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-subtitle">Client Reviews</span>
                 <h2 class="section-title">What Our Clients Say</h2>
-                <p class="section-subtitle">
+                <p class="section-description">
                     Hear what our clients have to say about their experience at BS Studio
                 </p>
             </div>
             
-            <div class="testimonials-grid">
-                <div class="testimonial-card scroll-reveal">
-                    <div class="testimonial-quote">
-                        <i class="fas fa-quote-left"></i>
-                    </div>
-                    <p class="testimonial-content">
-                        I've been coming to BS Studio for over two years now, and I'm always amazed 
-                        by the quality of service. My lashes look absolutely stunning every time, 
-                        and the team is incredibly professional and welcoming.
-                    </p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">
-                            <img src="https://images.unsplash.com/photo-1494790108755-2616b612b422?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Sarah Johnson">
+            <div class="testimonials-slider" data-aos="fade-up" data-aos-delay="200">
+                <div class="testimonial-card active">
+                    <div class="testimonial-content">
+                        <div class="quote-icon">
+                            <i class="fas fa-quote-right"></i>
                         </div>
-                        <div class="author-info">
-                            <h4>Sarah Johnson</h4>
-                            <p>Regular Client</p>
-                            <div class="rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
+                        <p class="testimonial-text">
+                            "I've been coming to BS Studio for over two years now, and I'm always 
+                            amazed by the quality of service. My lashes look absolutely stunning every time!"
+                        </p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
                         </div>
                     </div>
-                </div>
-
-                <div class="testimonial-card scroll-reveal">
-                    <div class="testimonial-quote">
-                        <i class="fas fa-quote-left"></i>
-                    </div>
-                    <p class="testimonial-content">
-                        The attention to detail and personalized care was exceptional. I was nervous 
-                        about getting lash extensions for the first time, but the team made me feel 
-                        comfortable and explained everything thoroughly.
-                    </p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">
-                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Michael Chen">
+                    <div class="client-info">
+                        <div class="client-avatar">
+                            <img src="images/lash4.jpg" alt="Sarah Johnson">
                         </div>
-                        <div class="author-info">
-                            <h4>Michael Chen</h4>
-                            <p>First-time Client</p>
-                            <div class="rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
+                        <div class="client-details">
+                            <h4 class="client-name">Sarah Johnson</h4>
+                            <p class="client-title">Regular Client</p>
                         </div>
                     </div>
                 </div>
-
-                <div class="testimonial-card scroll-reveal">
-                    <div class="testimonial-quote">
-                        <i class="fas fa-quote-left"></i>
-                    </div>
-                    <p class="testimonial-content">
-                        BS Studio has become my go-to place for all my beauty needs. The results are 
-                        consistently amazing, and I always leave feeling confident and beautiful. 
-                        I recommend them to all my friends!
-                    </p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">
-                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Emma Rodriguez">
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="quote-icon">
+                            <i class="fas fa-quote-right"></i>
                         </div>
-                        <div class="author-info">
-                            <h4>Emma Rodriguez</h4>
-                            <p>Loyal Customer</p>
-                            <div class="rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
+                        <p class="testimonial-text">
+                            "The facial treatment I received was absolutely rejuvenating. My skin has 
+                            never looked better. The attention to detail and personalized care was exceptional."
+                        </p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <div class="client-info">
+                        <div class="client-avatar">
+                            <img src="images/lash4.jpg" alt="Michael Chen">
+                        </div>
+                        <div class="client-details">
+                            <h4 class="client-name">Michael Chen</h4>
+                            <p class="client-title">First-time Client</p>
                         </div>
                     </div>
                 </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="quote-icon">
+                            <i class="fas fa-quote-right"></i>
+                        </div>
+                        <p class="testimonial-text">
+                            "The eyebrow threading service is the best I've ever had. Precise, painless, 
+                            and the results last for weeks. I recommend BS Studio to all my friends!"
+                        </p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <div class="client-info">
+                        <div class="client-avatar">
+                            <img src="images/lash4.jpg" alt="Emma Rodriguez">
+                        </div>
+                        <div class="client-details">
+                            <h4 class="client-name">Emma Rodriguez</h4>
+                            <p class="client-title">Loyal Customer</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="slider-controls">
+                <button class="slider-btn prev" id="prevBtn">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="slider-dots">
+                    <span class="dot active" data-slide="0"></span>
+                    <span class="dot" data-slide="1"></span>
+                    <span class="dot" data-slide="2"></span>
+                </div>
+                <button class="slider-btn next" id="nextBtn">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
             </div>
         </div>
     </section>
@@ -413,138 +502,113 @@
     <!-- Contact Section -->
     <section class="contact section" id="contact">
         <div class="container">
-            <div class="section-header scroll-reveal">
-                <h2 class="section-title">Get In Touch</h2>
-                <p class="section-subtitle">
-                    Ready to enhance your beauty? Get in touch with us to book your appointment 
-                    or ask any questions
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-subtitle">Get in Touch</span>
+                <h2 class="section-title">Contact Us</h2>
+                <p class="section-description">
+                    Ready to book your appointment or have questions? We'd love to hear from you
                 </p>
             </div>
             
             <div class="contact-content">
-                <div class="contact-info scroll-reveal">
-                    <h3>Contact Information</h3>
-                    <p class="contact-description">
-                        Have questions or ready to book your appointment? Reach out to us using 
-                        the contact information below.
-                    </p>
+                <div class="contact-info" data-aos="fade-right">
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Visit Our Studio</h4>
+                            <p>
+                                <a href="https://maps.app.goo.gl/b1G32MZmwKGa8f1m7" target="_blank">
+                                    North-Legon, Madina<br>Accra, MRG8+35
+                                </a>
+                            </p>
+                        </div>
+                    </div>
                     
-                    <div class="contact-details">
-                        <div class="contact-item">
-                            <div class="contact-icon">
-                                <i class="fas fa-map-marker-alt"></i>
-                            </div>
-                            <div class="contact-content-text">
-                                <h4><a href="https://maps.app.goo.gl/b1G32MZmwKGa8f1m7" target="_blank">Our Location</a></h4>
-                                <p>North-Legon, Madina<br>Accra, MRG8+35</p>
-                            </div>
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone-alt"></i>
                         </div>
-                        
-                        <div class="contact-item">
-                            <div class="contact-icon">
-                                <i class="fas fa-phone-alt"></i>
-                            </div>
-                            <div class="contact-content-text">
-                                <h4>Phone Number</h4>
-                                <p><a href="tel:+233591529491">+233 59 152 9491</a></p>
-                            </div>
+                        <div class="contact-details">
+                            <h4>Call Us</h4>
+                            <p>
+                                <a href="tel:+233591529491">+233 59 152 9491</a>
+                            </p>
                         </div>
-                        
-                        <div class="contact-item">
-                            <div class="contact-icon">
-                                <i class="fas fa-envelope"></i>
-                            </div>
-                            <div class="contact-content-text">
-                                <h4>Email Address</h4>
-                                <p><a href="mailto:info@bsstudio.com">info@bsstudio.com</a></p>
-                            </div>
+                    </div>
+                    
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
                         </div>
-                        
-                        <div class="contact-item">
-                            <div class="contact-icon">
-                                <i class="fas fa-clock"></i>
-                            </div>
-                            <div class="contact-content-text">
-                                <h4>Working Hours</h4>
-                                <p>Monday - Friday: 9:00 AM - 7:00 PM<br>
-                                   Saturday: 10:00 AM - 5:00 PM<br>
-                                   Sunday: Closed</p>
-                            </div>
+                        <div class="contact-details">
+                            <h4>Email Us</h4>
+                            <p>
+                                <a href="mailto:info@bsstudio.com">info@bsstudio.com</a>
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Working Hours</h4>
+                            <p>
+                                Mon - Fri: 9:00 AM - 7:00 PM<br>
+                                Saturday: 10:00 AM - 5:00 PM<br>
+                                Sunday: Closed
+                            </p>
                         </div>
                     </div>
                 </div>
                 
-                <div class="contact-form-container scroll-reveal">
-                    <div class="booking-card" id="book">
-                        <h3>Book Your Appointment</h3>
-                        <form class="contact-form" id="appointmentForm">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="firstName">First Name</label>
-                                    <input type="text" id="firstName" name="firstName" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="lastName">Last Name</label>
-                                    <input type="text" id="lastName" name="lastName" required>
-                                </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="email">Email Address</label>
-                                <input type="email" id="email" name="email" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="phone">Phone Number</label>
-                                <input type="tel" id="phone" name="phone" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="service">Select Service</label>
-                                <select id="service" name="service" required>
-                                    <option value="">Choose a service</option>
-                                    <option value="classic">Classic Lash Extensions</option>
-                                    <option value="volume">Volume Lash Extensions</option>
-                                    <option value="hybrid">Hybrid Lash Extensions</option>
-                                    <option value="mega-volume">Mega Volume Extensions</option>
-                                    <option value="lash-lift">Lash Lift & Tint</option>
-                                    <option value="eyebrow">Eyebrow Shaping</option>
-                                </select>
-                            </div>
-                            
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="date">Preferred Date</label>
-                                    <input type="date" id="date" name="date" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="time">Preferred Time</label>
-                                    <select id="time" name="time" required>
-                                        <option value="">Select time</option>
-                                        <option value="09:00">9:00 AM</option>
-                                        <option value="10:00">10:00 AM</option>
-                                        <option value="11:00">11:00 AM</option>
-                                        <option value="12:00">12:00 PM</option>
-                                        <option value="13:00">1:00 PM</option>
-                                        <option value="14:00">2:00 PM</option>
-                                        <option value="15:00">3:00 PM</option>
-                                        <option value="16:00">4:00 PM</option>
-                                        <option value="17:00">5:00 PM</option>
-                                    </select>
-                                </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="message">Additional Notes (Optional)</label>
-                                <textarea id="message" name="message" rows="4" placeholder="Any special requests or questions..."></textarea>
-                            </div>
-                            
-                            <button type="submit" class="btn btn-primary btn-full">
-                                <i class="fas fa-paper-plane"></i>
-                                Book Appointment
-                            </button>
-                        </form>
-                    </div>
+                <div class="contact-form-wrapper" data-aos="fade-left">
+                    <form class="contact-form" id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="name" required>
+                            <span class="form-line"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" required>
+                            <span class="form-line"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone">
+                            <span class="form-line"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="service">Service Interested In</label>
+                            <select id="service" name="service" required>
+                                <option value="">Select a service</option>
+                                <option value="classic">Classic Lash Extensions</option>
+                                <option value="volume">Volume Lash Extensions</option>
+                                <option value="wispy">Wispy Lash Extensions</option>
+                                <option value="mega">Mega Volume Extensions</option>
+                                <option value="lift">Lash Lift & Tint</option>
+                            </select>
+                            <span class="form-line"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="5"></textarea>
+                            <span class="form-line"></span>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">
+                            <span>Send Message</span>
+                            <div class="btn-bg"></div>
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -554,57 +618,62 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <div class="footer-brand">
-                    <h3>BS Studio</h3>
-                    <p>
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <h3>BS Studio</h3>
+                        <div class="logo-underline"></div>
+                    </div>
+                    <p class="footer-description">
                         Your premier destination for beauty and lash extension services. 
                         We're dedicated to enhancing your natural beauty with our premium treatments.
                     </p>
                     <div class="social-links">
-                        <a href="#" class="social-link" aria-label="Facebook">
+                        <a href="#" class="social-link">
                             <i class="fab fa-facebook-f"></i>
                         </a>
-                        <a href="#" class="social-link" aria-label="Instagram">
+                        <a href="#" class="social-link">
                             <i class="fab fa-instagram"></i>
                         </a>
-                        <a href="#" class="social-link" aria-label="Snapchat">
-                            <i class="fab fa-snapchat-ghost"></i>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-snapchat"></i>
                         </a>
-                        <a href="#" class="social-link" aria-label="WhatsApp">
+                        <a href="#" class="social-link">
                             <i class="fab fa-whatsapp"></i>
                         </a>
                     </div>
                 </div>
                 
-                <div class="footer-links">
-                    <h4>Quick Links</h4>
-                    <ul>
+                <div class="footer-section">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-links">
                         <li><a href="#home">Home</a></li>
                         <li><a href="#services">Services</a></li>
                         <li><a href="#about">About Us</a></li>
-                        <li><a href="#testimonials">Reviews</a></li>
+                        <li><a href="#testimonials">Testimonials</a></li>
                         <li><a href="#contact">Contact</a></li>
                     </ul>
                 </div>
                 
-                <div class="footer-links">
-                    <h4>Our Services</h4>
-                    <ul>
-                        <li><a href="#services">Classic Lash Extensions</a></li>
-                        <li><a href="#services">Volume Lash Extensions</a></li>
-                        <li><a href="#services">Hybrid Extensions</a></li>
-                        <li><a href="#services">Lash Lift & Tint</a></li>
-                        <li><a href="#services">Eyebrow Shaping</a></li>
+                <div class="footer-section">
+                    <h4 class="footer-title">Our Services</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Classic Lash Extensions</a></li>
+                        <li><a href="#">Volume Lash Extensions</a></li>
+                        <li><a href="#">Wispy Lash Extensions</a></li>
+                        <li><a href="#">Mega Volume Extensions</a></li>
+                        <li><a href="#">Lash Lift & Tint</a></li>
                     </ul>
                 </div>
                 
-                <div class="footer-newsletter">
-                    <h4>Stay Updated</h4>
-                    <p>Subscribe to our newsletter for the latest updates and special offers.</p>
-                    <form class="newsletter-form" id="newsletterForm">
+                <div class="footer-section">
+                    <h4 class="footer-title">Newsletter</h4>
+                    <p class="newsletter-text">
+                        Subscribe to our newsletter for the latest updates and special offers.
+                    </p>
+                    <form class="newsletter-form">
                         <div class="newsletter-input">
-                            <input type="email" placeholder="Your email address" required>
-                            <button type="submit" class="btn btn-primary">
+                            <input type="email" placeholder="Your Email Address" required>
+                            <button type="submit" class="newsletter-btn">
                                 <i class="fas fa-paper-plane"></i>
                             </button>
                         </div>
@@ -613,7 +682,9 @@
             </div>
             
             <div class="footer-bottom">
-                <p>&copy; 2025 BS Studio. All Rights Reserved.</p>
+                <div class="copyright">
+                    <p>&copy; 2025 BS Studio. All Rights Reserved.</p>
+                </div>
                 <div class="developer-credit">
                     <a href="#" class="developer-link">
                         <i class="fas fa-code"></i>
@@ -626,18 +697,13 @@
 
     <!-- Scroll to Top Button -->
     <div class="scroll-top" id="scrollTop">
-        <i class="fas fa-arrow-up"></i>
-    </div>
-
-    <!-- Loading Screen -->
-    <div class="loading-screen" id="loadingScreen">
-        <div class="loading-content">
-            <div class="loading-logo">BS</div>
-            <div class="loading-text">BS Studio</div>
-            <div class="loading-spinner"></div>
+        <div class="scroll-icon">
+            <i class="fas fa-arrow-up"></i>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="scripts/script.js"></script>
 </body>
 </html>
