@@ -404,7 +404,7 @@ document.querySelectorAll('.nav-link').forEach(link => {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    new BSStudio();
+    new BSStudio(); 
 });
 
 // Error handling
