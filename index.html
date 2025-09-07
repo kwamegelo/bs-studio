@@ -14,23 +14,16 @@
    <!-- Loading Screen -->
 <div class="loading-screen" id="loadingScreen">
     <div class="loading-content">
-        <!-- Your Logo (Image or Text) -->
         <div class="loading-logo-container">
             <img src="images/BS_logo_transparent.png" alt="BS STUDIO" class="loading-logo-img">
-            <!-- OR use text if you don't have a logo image -->
-            <!-- <h1 class="loading-logo-text">BS STUDIO</h1> -->
         </div>
 
+        <div class="loading-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>        
 
-        <!-- Spinner -->
-<div class="loading-dots">
-    <span></span>
-    <span></span>
-    <span></span>
-</div>        
-
-
-        <!-- Developer Credit -->
         <div class="loading-powered-by">
             <p>Powered by <span class="developer-name"><i class="fas fa-code"></i>anGelo</span></p>
         </div>
@@ -62,12 +55,10 @@
                 
                 <div class="header-actions">
                     <a href="booking.html" class="book-btn">
-
+                        <span class="book">Book Now</span>
                         <i class="fas fa-calendar-alt"></i>
                     </a>
-                    <div class="theme-toggle" id="themeToggle">
-                        <i class="fas fa-moon"></i>
-                    </div>
+                    
                     <div class="mobile-menu-toggle" id="menuToggle">
                         <span class="hamburger-line"></span>
                         <span class="hamburger-line"></span>
@@ -80,59 +71,95 @@
 
     <!-- Hero Section -->
     <section class="hero" id="home">
-        <div class="hero-background"></div>
-        <div class="hero-overlay"></div>
-        <div class="floating-elements">
-            <div class="floating-element"></div>
-            <div class="floating-element"></div>
-            <div class="floating-element"></div>
+        <div class="hero-background">
+            <div class="hero-pattern"></div>
         </div>
+        <div class="hero-overlay"></div>
         
         <div class="container">
             <div class="hero-content">
-                <div class="hero-text">
-                    <h1 class="hero-title">
-                        <span class="title-line" data-aos="fade-up" data-aos-delay="100">Enhance Your</span>
-                        <span class="title-line accent-text" data-aos="fade-up" data-aos-delay="200">Beauty</span>
-                        <span class="title-line" data-aos="fade-up" data-aos-delay="300">Effortlessly</span>
-                    </h1>
-                    <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="400">
-                        Experience premium lash extensions and beauty treatments at BS Studio. 
-                        Book your appointment today for a transformation that will leave you feeling 
-                        confident and beautiful.
-                    </p>
-                    <div class="hero-buttons" data-aos="fade-up" data-aos-delay="500">
-                        <a href="booking.html" class="btn btn-primary">
-                            <span>Book Appointment</span>
-                            <div class="btn-bg"></div>
-                        </a>
-                        <a href="#services" class="btn btn-secondary">
-                            <span>View Services</span>
-                            <div class="btn-bg"></div>
-                        </a>
+                <div class="hero-left">
+                    <div class="hero-text">
+                        <h1 class="hero-title">
+                            <span class="title-line" data-aos="fade-up" data-aos-delay="100">Enhance Your</span>
+                            <span class="title-line accent-text" data-aos="fade-up" data-aos-delay="200">Natural Beauty</span>
+                            <span class="title-line" data-aos="fade-up" data-aos-delay="300">Effortlessly</span>
+                        </h1>
+                        <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="400">
+                            Experience premium lash extensions and beauty treatments at BS Studio. 
+                            Transform your look with our expert care and personalized service.
+                        </p>
+                        <div class="hero-buttons" data-aos="fade-up" data-aos-delay="500">
+                            <a href="booking.html" class="btn btn-primary">
+                                <span>Book Appointment</span>
+                                <div class="btn-bg"></div>
+                            </a>
+                            <a href="#services" class="btn btn-secondary">
+                                <span>View Services</span>
+                                <div class="btn-bg"></div>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="hero-stats" data-aos="fade-up" data-aos-delay="600">
+                        <div class="stat-item">
+                            <div class="stat-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number" data-count="500" data-suffix="+">0+</div>
+                                <div class="stat-label">Happy Clients</div>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon">
+                                <i class="fas fa-award"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number" data-count="5" data-suffix="+">0+</div>
+                                <div class="stat-label">Years Experience</div>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number" data-count="99" data-suffix="%">0%</div>
+                                <div class="stat-label">Satisfaction Rate</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="hero-stats" data-aos="fade-up" data-aos-delay="600">
-                    <div class="stat-card">
-                        <div class="stat-number" data-count="500" data-suffix="+">0</div>
-                        <div class="stat-label">Happy Clients</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number" data-count="5" data-suffix="+">0</div>
-                        <div class="stat-label">Years Experience</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number" data-count="99" data-suffix="%">0</div>
-                        <div class="stat-label">Satisfaction Rate</div>
+                <div class="hero-right" data-aos="fade-left" data-aos-delay="300">
+                    <div class="owner-image-container">
+                        <div class="image-frame">
+                            <!-- Replace with actual owner's image -->
+                            <img src="images/lash4.jpg" alt="BS Studio Owner" class="owner-image">
+                            <div class="image-overlay"></div>
+                        </div>
+                        <div class="owner-badge">
+                            <div class="badge-content">
+                                <h4>Meet the Expert</h4>
+                                <p>Certified Lash Artist</p>
+                            </div>
+                        </div>
+                        <div class="floating-elements">
+                            <div class="floating-dot dot-1"></div>
+                            <div class="floating-dot dot-2"></div>
+                            <div class="floating-dot dot-3"></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         
         <div class="scroll-indicator">
-            <div class="scroll-text">Scroll to explore</div>
-            <div class="scroll-arrow"></div>
+            <div class="scroll-text">Discover More</div>
+            <div class="scroll-arrow">
+                <i class="fas fa-chevron-down"></i>
+            </div>
         </div>
     </section>
 
@@ -155,7 +182,7 @@
             </div>
             
             <div class="services-grid" data-aos="fade-up" data-aos-delay="200">
-                <div class="service-card" data-category="lashes">
+                <div class="service-card" data-category="lashes" onclick="window.location.href='services/classic-lash-extensions.html'">
                     <div class="service-image">
                         <img src="images/lash4.jpg" alt="Classic Lash Extensions">
                         <div class="service-overlay">
@@ -179,7 +206,7 @@
                         </div>
                         <div class="service-footer">
                             <div class="service-price">From ₵120</div>
-                            <a href="booking.html" class="btn-service">
+                            <a href="booking.html" class="btn-service" onclick="event.stopPropagation();">
                                 <span>Book Now</span>
                                 <i class="fas fa-arrow-right"></i>
                             </a>
@@ -187,7 +214,7 @@
                     </div>
                 </div>
 
-                <div class="service-card" data-category="lashes">
+                <div class="service-card" data-category="lashes" onclick="window.location.href='services/volume-lashes.html'">
                     <div class="service-image">
                         <img src="images/lash4.jpg" alt="Volume Lash Extensions">
                         <div class="service-overlay">
@@ -210,7 +237,7 @@
                         </div>
                         <div class="service-footer">
                             <div class="service-price">From ₵150</div>
-                            <a href="booking.html" class="btn-service">
+                            <a href="booking.html" class="btn-service" onclick="event.stopPropagation();">
                                 <span>Book Now</span>
                                 <i class="fas fa-arrow-right"></i>
                             </a>
@@ -218,7 +245,7 @@
                     </div>
                 </div>
 
-                <div class="service-card" data-category="lashes">
+                <div class="service-card" data-category="lashes" onclick="window.location.href='services/wispy-lashes.html'">
                     <div class="service-image">
                         <img src="images/lash4.jpg" alt="Wispy Lash Extensions">
                         <div class="service-overlay">
@@ -242,7 +269,7 @@
                         </div>
                         <div class="service-footer">
                             <div class="service-price">From ₵160</div>
-                            <a href="booking.html" class="btn-service">
+                            <a href="booking.html" class="btn-service" onclick="event.stopPropagation();">
                                 <span>Book Now</span>
                                 <i class="fas fa-arrow-right"></i>
                             </a>
@@ -250,7 +277,7 @@
                     </div>
                 </div>
 
-                <div class="service-card" data-category="lashes">
+                <div class="service-card" data-category="lashes" onclick="window.location.href='services/mega-volume.html'">
                     <div class="service-image">
                         <img src="https://images.unsplash.com/photo-1598974357801-cbca100e65d3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Mega Volume">
                         <div class="service-overlay">
@@ -274,7 +301,7 @@
                         </div>
                         <div class="service-footer">
                             <div class="service-price">From ₵200</div>
-                            <a href="booking.html" class="btn-service">
+                            <a href="booking.html" class="btn-service" onclick="event.stopPropagation();">
                                 <span>Book Now</span>
                                 <i class="fas fa-arrow-right"></i>
                             </a>
@@ -282,7 +309,7 @@
                     </div>
                 </div>
 
-                <div class="service-card" data-category="beauty">
+                <div class="service-card" data-category="beauty" onclick="window.location.href='services/lash-lift.html'">
                     <div class="service-image">
                         <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Lash Lift">
                         <div class="service-overlay">
@@ -305,7 +332,7 @@
                         </div>
                         <div class="service-footer">
                             <div class="service-price">From ₵65</div>
-                            <a href="booking.html" class="btn-service">
+                            <a href="booking.html" class="btn-service" onclick="event.stopPropagation();">
                                 <span>Book Now</span>
                                 <i class="fas fa-arrow-right"></i>
                             </a>
@@ -387,13 +414,23 @@
                             <div class="btn-bg"></div>
                         </a>
                         <div class="about-stats">
-                            <div class="stat-item">
-                                <span class="stat-value">500+</span>
-                                <span class="stat-label">Happy Clients</span>
+                            <div class="premium-stat-card">
+                                <div class="premium-stat-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="premium-stat-content">
+                                    <span class="premium-stat-number">500+</span>
+                                    <span class="premium-stat-label">Happy Clients</span>
+                                </div>
                             </div>
-                            <div class="stat-item">
-                                <span class="stat-value">99%</span>
-                                <span class="stat-label">Satisfaction</span>
+                            <div class="premium-stat-card">
+                                <div class="premium-stat-icon">
+                                    <i class="fas fa-thumbs-up"></i>
+                                </div>
+                                <div class="premium-stat-content">
+                                    <span class="premium-stat-number">99%</span>
+                                    <span class="premium-stat-label">Satisfaction</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -673,11 +710,11 @@
                 <div class="footer-section">
                     <h4 class="footer-title">Our Services</h4>
                     <ul class="footer-links">
-                        <li><a href="#">Classic Lash Extensions</a></li>
-                        <li><a href="#">Volume Lash Extensions</a></li>
-                        <li><a href="#">Wispy Lash Extensions</a></li>
-                        <li><a href="#">Mega Volume Extensions</a></li>
-                        <li><a href="#">Lash Lift & Tint</a></li>
+                        <li><a href="services/classic-lashes.html">Classic Lash Extensions</a></li>
+                        <li><a href="services/volume-lashes.html">Volume Lash Extensions</a></li>
+                        <li><a href="services/wispy-lashes.html">Wispy Lash Extensions</a></li>
+                        <li><a href="services/mega-volume.html">Mega Volume Extensions</a></li>
+                        <li><a href="services/lash-lift.html">Lash Lift & Tint</a></li>
                     </ul>
                 </div>
                 
@@ -702,7 +739,7 @@
                     <p>&copy; 2025 BS Studio. All Rights Reserved.</p>
                 </div>
                 <div class="developer-credit">
-                    <a href="#" class="developer-link">
+                    <a href="https://kwamegelo.web.app" class="developer-link">
                         <i class="fas fa-code"></i>
                         <span>anGelo</span>
                     </a>

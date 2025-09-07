@@ -77,9 +77,6 @@ document.querySelectorAll('.nav-link').forEach(link => {
     });
 });
 
-        if (this.elements.themeToggle) {
-            this.elements.themeToggle.addEventListener('click', () => this.toggleTheme());
-        }
 
         if (this.elements.scrollTop) {
             this.elements.scrollTop.addEventListener('click', () => this.scrollToTop());
