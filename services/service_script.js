@@ -4,6 +4,7 @@ class BSStudioWebsite {
     constructor() {
         this.currentSlide = 0;
         this.totalSlides = 0;
+        this.autoPlayInterval = null;
         this.init();
     }
 
@@ -77,7 +78,7 @@ class BSStudioWebsite {
             });
         });
 
-        // Auto-play slideshow (optional)
+        // Auto-play slideshow
         this.startAutoPlay();
 
         // Pause auto-play on hover
@@ -162,7 +163,7 @@ class BSStudioWebsite {
 
         slideshowContainer.addEventListener('touchend', (e) => {
             endX = e.changedTouches[0].clientX;
-            this.handleSwipe();
+            this.handleSwipe(startX, endX);
         });
 
         // Prevent default touch behavior to avoid interference
@@ -171,7 +172,7 @@ class BSStudioWebsite {
         }, { passive: false });
     }
 
-    handleSwipe() {
+    handleSwipe(startX, endX) {
         const threshold = 50; // Minimum distance for swipe
         const diff = startX - endX;
 
@@ -215,7 +216,7 @@ class BSStudioWebsite {
             if (button.textContent.includes('Book') || button.textContent.includes('Appointment')) {
                 button.addEventListener('click', (e) => {
                     e.preventDefault();
-                    const bookingSection = document.querySelector('.booking');
+                    const bookingSection = document.querySelector('.booking') || document.querySelector('#contact');
                     if (bookingSection) {
                         const headerHeight = document.querySelector('.header')?.offsetHeight || 0;
                         const targetPosition = bookingSection.offsetTop - headerHeight - 20;
@@ -297,7 +298,7 @@ class BSStudioWebsite {
     }
 
     setupForm() {
-        const form = document.querySelector('.appointment-form');
+        const form = document.querySelector('.appointment-form') || document.querySelector('.newsletter-form');
         if (!form) return;
 
         form.addEventListener('submit', (e) => {
@@ -333,7 +334,7 @@ class BSStudioWebsite {
             }
 
             if (isValid) {
-                this.submitForm(formObject);
+                this.submitForm(formObject, form);
             }
         });
 
@@ -392,12 +393,12 @@ class BSStudioWebsite {
         return emailRegex.test(email);
     }
 
-    async submitForm(formData) {
-        const submitButton = document.querySelector('.appointment-form button[type="submit"]');
+    async submitForm(formData, form) {
+        const submitButton = form.querySelector('button[type="submit"]');
         const originalText = submitButton.textContent;
         
         // Show loading state
-        submitButton.textContent = 'Booking...';
+        submitButton.textContent = 'Submitting...';
         submitButton.disabled = true;
 
         try {
@@ -408,11 +409,11 @@ class BSStudioWebsite {
             this.showSuccessMessage();
             
             // Reset form
-            document.querySelector('.appointment-form').reset();
+            form.reset();
             
         } catch (error) {
             console.error('Form submission error:', error);
-            this.showErrorMessage('Sorry, there was an error booking your appointment. Please try again or call us directly.');
+            this.showErrorMessage('Sorry, there was an error submitting your form. Please try again or contact us directly.');
         } finally {
             // Reset button state
             submitButton.textContent = originalText;
@@ -426,7 +427,7 @@ class BSStudioWebsite {
             setTimeout(() => {
                 // Simulate success (90% success rate for demo)
                 if (Math.random() > 0.1) {
-                    resolve({ success: true, message: 'Appointment booked successfully!' });
+                    resolve({ success: true, message: 'Form submitted successfully!' });
                 } else {
                     reject(new Error('Simulated server error'));
                 }
@@ -436,8 +437,8 @@ class BSStudioWebsite {
 
     showSuccessMessage() {
         const message = this.createNotification(
-            'Appointment Booked Successfully!',
-            'Thank you for your booking. We\'ll contact you shortly to confirm your appointment.',
+            'Success!',
+            'Thank you! We\'ll get back to you soon.',
             'success'
         );
         this.showNotification(message);
@@ -445,7 +446,7 @@ class BSStudioWebsite {
 
     showErrorMessage(text) {
         const message = this.createNotification(
-            'Booking Error',
+            'Error',
             text,
             'error'
         );
@@ -584,11 +585,6 @@ class BSStudioWebsite {
     }
 }
 
-// Initialize the website when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    new BSStudioWebsite();
-});
-
 // Global functions for backward compatibility
 function plusSlides(n) {
     if (window.bsStudio) {
@@ -600,12 +596,7 @@ function plusSlides(n) {
     }
 }
 
-// Store instance globally for external access
-document.addEventListener('DOMContentLoaded', () => {
-    window.bsStudio = new BSStudioWebsite();
-});
-
-// Additional enhancements
+// Performance optimization class
 class PerformanceOptimizer {
     static init() {
         // Lazy load images
@@ -626,7 +617,9 @@ class PerformanceOptimizer {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         const img = entry.target;
-                        img.src = img.dataset.src || img.src;
+                        if (img.dataset.src) {
+                            img.src = img.dataset.src;
+                        }
                         img.classList.remove('lazy');
                         observer.unobserve(img);
                     }
@@ -637,7 +630,9 @@ class PerformanceOptimizer {
         } else {
             // Fallback for older browsers
             images.forEach(img => {
-                img.src = img.dataset.src || img.src;
+                if (img.dataset.src) {
+                    img.src = img.dataset.src;
+                }
             });
         }
     }
@@ -649,8 +644,20 @@ class PerformanceOptimizer {
             const link = document.createElement('link');
             link.rel = 'preload';
             link.as = 'image';
-            link.href = heroImage.src || heroImage.style.backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/, '$1');
-            document.head.appendChild(link);
+            
+            if (heroImage.src) {
+                link.href = heroImage.src;
+            } else if (heroImage.style.backgroundImage) {
+                const bgImage = heroImage.style.backgroundImage;
+                const urlMatch = bgImage.match(/url\(['"]?(.*?)['"]?\)/);
+                if (urlMatch) {
+                    link.href = urlMatch[1];
+                }
+            }
+            
+            if (link.href) {
+                document.head.appendChild(link);
+            }
         }
     }
 
@@ -660,13 +667,18 @@ class PerformanceOptimizer {
                 // Register service worker if sw.js exists
                 navigator.serviceWorker.register('/sw.js').catch(() => {
                     // Service worker not available, continue without it
+                    console.log('Service worker not available');
                 });
             });
         }
     }
 }
 
-// Initialize performance optimizations
+// Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
+    // Store instance globally for external access
+    window.bsStudio = new BSStudioWebsite();
+    
+    // Initialize performance optimizations
     PerformanceOptimizer.init();
 });
