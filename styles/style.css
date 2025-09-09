@@ -1338,11 +1338,16 @@ body {
 }
 
 .client-avatar {
-    width: 60px;
-    height: 60px;
+    width: 48px;
+    height: 48px;
+    background: var(--gradient-primary);
     border-radius: 50%;
-    overflow: hidden;
-    border: 3px solid var(--secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 18px;
 }
 
 .client-avatar img {
