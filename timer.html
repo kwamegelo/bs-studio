@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,21 +10,34 @@
     :root {
     --primary-plum: #7a1c5e;
     --plum-light: #9d2571;
-    --plum-dark: #5d1447;;
-    --plum-pale: #f8f2f7;;
+    --plum-dark: #5d1447;
+    --plum-pale: #f8f2f7;
     --plum-gradient: linear-gradient(135deg, #7a1c5e 0%, #9d2571 100%);
-    --plum-gradient-dark: linear-gradient(135deg, #7a1c5e 0%, #9d2571 100%);
+    --plum-gradient-dark: linear-gradient(135deg, #5d1447 0%, #7a1c5e 100%);
     --text-primary: #2C2C2C;
     --text-secondary: #666666;
     --text-muted: #999999;
     --white: #FFFFFF;
     --light-gray: #F8F9FA;
     --border-light: #E9ECEF;
-    --shadow-light: 0 2px 15px rgba(139, 74, 156, 0.08);
-    --shadow-medium: 0 8px 30px rgba(139, 74, 156, 0.12);
-    --shadow-heavy: 0 15px 45px rgba(139, 74, 156, 0.15);
+    --shadow-light: 0 2px 15px rgba(122, 28, 94, 0.08);
+    --shadow-medium: 0 8px 30px rgba(122, 28, 94, 0.12);
+    --shadow-heavy: 0 15px 45px rgba(122, 28, 94, 0.15);
     --border-radius: 12px;
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Status colors that complement the plum theme */
+    --status-open: #2ECC71;
+    --status-open-bg: rgba(46, 204, 113, 0.1);
+    --status-closing: #F39C12;
+    --status-closing-bg: rgba(243, 156, 18, 0.1);
+    --status-closed: #E74C3C;
+    --status-closed-bg: rgba(231, 76, 60, 0.1);
+    
+    /* Alert colors that work with plum */
+    --alert-warning: #F39C12;
+    --alert-warning-bg: #FEF9E7;
+    --alert-warning-border: #FCF3CF;
 }
 
 * {
@@ -38,7 +50,7 @@ body {
     font-family: 'Poppins', sans-serif;
     line-height: 1.6;
     color: var(--text-primary);
-    background: linear-gradient(135deg, #fefefe 0%, #f8f4f9 100%);
+    background: linear-gradient(135deg, #fefefe 0%, var(--plum-pale) 100%);
     min-height: 100vh;
 }
 
@@ -57,7 +69,7 @@ header {
     z-index: 1000;
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(139, 74, 156, 0.1);
+    border-bottom: 1px solid rgba(122, 28, 94, 0.1);
     transition: var(--transition);
     box-shadow: var(--shadow-light);
 }
@@ -200,7 +212,7 @@ header {
     border-radius: 24px;
     box-shadow: var(--shadow-medium);
     overflow: hidden;
-    border: 1px solid rgba(139, 74, 156, 0.1);
+    border: 1px solid rgba(122, 28, 94, 0.1);
 }
 
 .hours-header {
@@ -281,17 +293,17 @@ header {
 }
 
 .status-dot.open {
-    background: #2ECC71;
+    background: var(--status-open);
     box-shadow: 0 0 20px rgba(46, 204, 113, 0.5);
 }
 
 .status-dot.closing {
-    background: #F39C12;
+    background: var(--status-closing);
     box-shadow: 0 0 20px rgba(243, 156, 18, 0.5);
 }
 
 .status-dot.closed {
-    background: #E74C3C;
+    background: var(--status-closed);
     box-shadow: 0 0 20px rgba(231, 76, 60, 0.5);
 }
 
@@ -325,14 +337,16 @@ header {
     background: var(--plum-pale);
     transform: translateY(-2px);
     box-shadow: var(--shadow-light);
+    border-color: var(--primary-plum);
 }
 
 .hours-row.today {
-    background: #f46bcb;
+    background: var(--plum-gradient);
+    color: var(--white);
     padding: 1.5rem;
     border-radius: var(--border-radius);
     margin-bottom: 2rem;
-    border-left: 4px solid #7a1c5e;
+    border: 2px solid var(--plum-light);
     animation: glow 3s infinite;
 }
 
@@ -378,11 +392,12 @@ header {
 
 /* Hours Note */
 .hours-note {
-    background: linear-gradient(135deg, #FEF9E7 0%, #FCF3CF 100%);
+    background: var(--alert-warning-bg);
     padding: 1.5rem;
     border-radius: var(--border-radius);
     margin-bottom: 2rem;
-    border-left: 4px solid #F39C12;
+    border-left: 4px solid var(--alert-warning);
+    border: 1px solid var(--alert-warning-border);
 }
 
 .hours-note p {
@@ -392,7 +407,7 @@ header {
 }
 
 .hours-note i {
-    color: #F39C12;
+    color: var(--alert-warning);
     margin-right: 0.5rem;
 }
 
@@ -435,6 +450,7 @@ header {
 .today-card:hover {
     transform: translateY(-5px);
     box-shadow: var(--shadow-medium);
+    border-color: var(--primary-plum);
 }
 
 .today-card h3 {
@@ -460,18 +476,21 @@ header {
 }
 
 .today-status.open {
-    background: rgba(46, 204, 113, 0.1);
-    color: #27AE60;
+    background: var(--status-open-bg);
+    color: var(--status-open);
+    border: 1px solid var(--status-open);
 }
 
 .today-status.closing {
-    background: rgba(243, 156, 18, 0.1);
-    color: #E67E22;
+    background: var(--status-closing-bg);
+    color: var(--status-closing);
+    border: 1px solid var(--status-closing);
 }
 
 .today-status.closed {
-    background: rgba(231, 76, 60, 0.1);
-    color: #C0392B;
+    background: var(--status-closed-bg);
+    color: var(--status-closed);
+    border: 1px solid var(--status-closed);
 }
 
 .time-remaining {
@@ -597,11 +616,11 @@ footer {
 
 .btn-primary {
     background: var(--white);
-    color: var(--primary);
+    color: var(--primary-plum);
 }
 
 .btn-primary:hover {
-    background: var(--secondary);
+    background: var(--plum-pale);
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
 }
@@ -835,30 +854,28 @@ footer {
                     <h4>BS Studio</h4>
                     <p>Your premier destination for beauty and lash extension services. We're dedicated to enhancing your natural beauty with our premium treatments.</p>
                     <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-snapchat"></i></a>
                         <a href="#"><i class="fab fa-instagram"></i></a>
                         <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
                     </div>
                 </div>
                 <div class="footer-col">
                     <h4>Quick Links</h4>
                     <ul class="footer-links">
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#services">Services</a></li>
-                        <li><a href="#about">About Us</a></li>
-                        <li><a href="#testimonials">Testimonials</a></li>
-                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#services">Services</a></li>
+                        <li><a href="index.html#about">About Us</a></li>
+                        <li><a href="index.html#testimonials">Testimonials</a></li>
+                        <li><a href="index.html#contact">Contact</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
                     <h4>Our Services</h4>
                     <ul class="footer-links">
-                        <li><a href="#">Classic Lash Extensions</a></li>
-                        <li><a href="#">Volume Lash Extensions</a></li>
-                        <li><a href="#">Mega Volume Lash Extensions</a></li>
-                        <li><a href="#">Wipsy Lash Extensions</a></li>
-                        <li><a href="#">Eyebrow Threading</a></li>
+                        <li><a href="services/classic-lash-extensions.html">Classic Lash Extensions</a></li>
+                        <li><a href="services/volume-lash-extensions.html">Volume Lash Extensions</a></li>
+                        <li><a href="services/hybrid.html">Hybrid Lash Extensions</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
@@ -875,7 +892,7 @@ footer {
         </div>
         <div class="copyright">
             <div class="container">
-                <p>&copy; 2023 BS Studio. All Rights Reserved.</p>
+                <p>&copy; 2025 BS Studio. All Rights Reserved.</p>
             </div>
         </div>
     </footer>
@@ -938,7 +955,7 @@ footer {
                 const hoursUntilOpen = Math.floor(minutesUntilOpen / 60);
                 const minsUntilOpen = Math.floor(minutesUntilOpen % 60);
                 
-                let openMessage = `Opens at ${openTime === 10 ? '10:00 AM' : '9:00 AM'}`;
+                let openMessage = `Opens at ${openTime === 10 ? '10:00 AM' : openTime === 13 ? '1:00 PM' : '9:00 AM'}`;
                 if (hoursUntilOpen > 0) {
                     openMessage += ` (in ${hoursUntilOpen}h ${minsUntilOpen}m)`;
                 } else if (minsUntilOpen > 0) {
@@ -970,7 +987,7 @@ footer {
                 }
                 return { 
                     status: 'open', 
-                    message: `Open now (closes at ${closeTime >= 20 ? '8:00 PM' : closeTime >= 19 ? '7:00 PM' : '6:00 PM'})`, 
+                    message: `Open now (closes at ${closeTime >= 19 ? '7:00 PM' : closeTime >= 18 ? '6:00 PM' : '5:00 PM'})`, 
                     type: 'open',
                     timeUntil: minutesUntilClose 
                 };
@@ -1102,7 +1119,7 @@ footer {
             
             nextOpeningContainer.style.display = 'block';
             
-            const timeStr = nextOpening.time === 10 ? '10:00 AM' : '9:00 AM';
+            const timeStr = nextOpening.time === 10 ? '10:00 AM' : nextOpening.time === 13 ? '1:00 PM' : '9:00 AM';
             const dayStr = nextOpening.isToday ? 'today' : `on ${nextOpening.day}`;
             
             nextOpeningContainer.innerHTML = `<i class="fas fa-clock"></i> Next opening: ${timeStr} ${dayStr}`;
@@ -1162,4 +1179,3 @@ footer {
     </script>
 </body>
 </html>
-```

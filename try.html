@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Form - Functional</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 2rem;
+            text-align: center;
+            font-size: 2rem;
+        }
+
+        .contact-form {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-line {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 2px;
+            width: 0%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            transition: width 0.3s ease;
+        }
+
+        .form-group input:focus + .form-line,
+        .form-group select:focus + .form-line,
+        .form-group textarea:focus + .form-line {
+            width: 100%;
+        }
+
+        .btn {
+            position: relative;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-bg {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1));
+            transition: left 0.6s ease;
+        }
+
+        .btn:hover .btn-bg {
+            left: 100%;
+        }
+
+        .status-message {
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            font-weight: 500;
+            text-align: center;
+            display: none;
+        }
+
+        .status-success {
+            background: rgba(34, 197, 94, 0.1);
+            color: #16a34a;
+            border: 2px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .status-error {
+            background: rgba(239, 68, 68, 0.1);
+            color: #dc2626;
+            border: 2px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .method-info {
+            background: rgba(102, 126, 234, 0.1);
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .method-info h3 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .method-info p {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Contact Form</h1>
+        
+        <div class="method-info">
+            <h3>🚀 Ready to Send!</h3>
+            <p>This form uses EmailJS to send messages directly to your admin email. No backend required! Just add your EmailJS credentials and you're good to go.</p>
+        </div>
+
+        <form class="contact-form" id="contactForm">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" required>
+                <span class="form-line"></span>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required>
+                <span class="form-line"></span>
+            </div>
+            
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone">
+                <span class="form-line"></span>
+            </div>
+            
+            <div class="form-group">
+                <label for="service">Service Interested In</label>
+                <select id="service" name="service" required>
+                    <option value="">Select a service</option>
+                    <option value="classic">Classic Lash Extensions</option>
+                    <option value="volume">Volume Lash Extensions</option>
+                    <option value="wispy">Wispy Lash Extensions</option>
+                    <option value="mega">Mega Volume Extensions</option>
+                    <option value="lift">Lash Lift & Tint</option>
+                </select>
+                <span class="form-line"></span>
+            </div>
+            
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="5"></textarea>
+                <span class="form-line"></span>
+            </div>
+            
+            <button type="submit" class="btn btn-primary" id="submitBtn">
+                <span id="btnText">Send Message</span>
+                <div class="btn-bg"></div>
+            </button>
+        </form>
+
+        <div class="status-message" id="statusMessage"></div>
+    </div>
+
+    <!-- EmailJS SDK -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/emailjs-com/3.2.0/email.min.js"></script>
+    
+    <script>
+        // Initialize EmailJS with your User ID
+        (function(){
+            emailjs.init("_LGZ_eZJ8tAdWli6s"); // Replace with your EmailJS User ID
+        })();
+
+        // Form submission handler
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const btn = document.getElementById('submitBtn');
+            const btnText = document.getElementById('btnText');
+            const statusMessage = document.getElementById('statusMessage');
+            
+            // Show loading state
+            btnText.innerHTML = '<div class="loading"></div>Sending...';
+            btn.disabled = true;
+            statusMessage.style.display = 'none';
+            
+            // Get form data
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                service: document.getElementById('service').value,
+                message: document.getElementById('message').value,
+                to_email: 'kamoateng432@gmail.com' // Add your admin email here
+            };
+            
+            // Debug: Log form data
+            console.log('Sending form data:', formData);
+            console.log('Service ID:', 'service_4p4w9i9');
+            console.log('Template ID:', 'template_nup8ewe');
+            
+            // Send email using EmailJS
+            emailjs.send('service_4p4w9i9', 'template_nup8ewe', formData)
+                .then(function(response) {
+                    console.log('✅ SUCCESS!', response.status, response.text);
+                    console.log('Full response:', response);
+                    showStatus('Message sent successfully! We\'ll get back to you soon.', 'success');
+                    document.getElementById('contactForm').reset();
+                }, function(error) {
+                    console.error('❌ FAILED!', error);
+                    console.error('Error details:', error.text || error.message);
+                    console.error('Status:', error.status);
+                    
+                    let errorMsg = 'Failed to send message. ';
+                    if (error.text) {
+                        errorMsg += 'Error: ' + error.text;
+                    } else if (error.status === 400) {
+                        errorMsg += 'Please check your EmailJS configuration.';
+                    } else if (error.status === 401) {
+                        errorMsg += 'Invalid EmailJS credentials.';
+                    } else {
+                        errorMsg += 'Please try again.';
+                    }
+                    showStatus(errorMsg, 'error');
+                })
+                .finally(() => {
+                    // Reset button
+                    btnText.textContent = 'Send Message';
+                    btn.disabled = false;
+                });
+        });
+        
+        function showStatus(message, type) {
+            const statusMessage = document.getElementById('statusMessage');
+            statusMessage.textContent = message;
+            statusMessage.className = `status-message status-${type}`;
+            statusMessage.style.display = 'block';
+            
+            // Hide message after 5 seconds
+            setTimeout(() => {
+                statusMessage.style.display = 'none';
+            }, 5000);
+        }
+
+        // Alternative: Form submission without EmailJS (for backend processing)
+        // Uncomment this and comment out the EmailJS code above if you have a backend
+        
+        /*
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const btn = document.getElementById('submitBtn');
+            const btnText = document.getElementById('btnText');
+            const statusMessage = document.getElementById('statusMessage');
+            
+            // Show loading state
+            btnText.innerHTML = '<div class="loading"></div>Sending...';
+            btn.disabled = true;
+            statusMessage.style.display = 'none';
+            
+            // Get form data
+            const formData = new FormData(this);
+            
+            // Send to your backend
+            fetch('/contact', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showStatus('Message sent successfully! We\'ll get back to you soon.', 'success');
+                    this.reset();
+                } else {
+                    showStatus('Failed to send message. Please try again.', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showStatus('Failed to send message. Please try again.', 'error');
+            })
+            .finally(() => {
+                // Reset button
+                btnText.textContent = 'Send Message';
+                btn.disabled = false;
+            });
+        });
+        */
+    </script>
+</body>
+</html>

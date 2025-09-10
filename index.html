@@ -45,12 +45,15 @@
                     <div class="logo-underline"></div>
                 </a>
                 
+
+                
                 <nav class="nav-links" id="navLinks">
                     <a href="#home" class="nav-link" data-text="HOME">HOME</a>
                     <a href="#services" class="nav-link" data-text="SERVICES">SERVICES</a>
                     <a href="#about" class="nav-link" data-text="ABOUT">ABOUT</a>
                     <a href="#testimonials" class="nav-link" data-text="TESTIMONIALS">TESTIMONIALS</a>
                     <a href="#contact" class="nav-link" data-text="CONTACT">CONTACT</a>
+                    <a href="business-hours.html" class="nav-link" data-text="HOURS">HOURS</a>
                     <div class="nav-background"></div>
                 </nav>
                 
@@ -90,6 +93,20 @@
                             Experience premium lash extensions and beauty treatments at BS Studio. 
                             Transform your look with our expert care and personalized service.
                         </p>
+                        
+                        <!-- Hero Time Status -->
+                        <div class="hero-time-status" data-aos="fade-up" data-aos-delay="450">
+                            <div class="hero-status-card" onclick="window.location.href='timer.html'">
+                                <div class="status-icon">
+                                    <div class="status-dot" id="heroStatusDot"></div>
+                                </div>
+                                <div class="status-content">
+                                    <span class="status-label" id="heroStatusText">Checking status...</span>
+                                    <span class="status-hours" id="heroTodayHours">Loading hours...</span>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <div class="hero-buttons" data-aos="fade-up" data-aos-delay="500">
                             <a href="booking.html" class="btn btn-primary">
                                 <span>Book Appointment</span>
@@ -136,7 +153,6 @@
                 <div class="hero-right" data-aos="fade-left" data-aos-delay="300">
                     <div class="owner-image-container">
                         <div class="image-frame">
-                            <!-- Replace with actual owner's image -->
                             <img src="images/lash4.jpg" alt="BS Studio Owner" class="owner-image">
                             <div class="image-overlay"></div>
                         </div>
@@ -206,7 +222,7 @@
                             <span class="feature-tag">Long Lasting</span>
                         </div>
                         <div class="service-footer">
-                            <div class="service-price">From ₵130</div>
+                            <div class="service-price">From ₵130 - ₵180 </div>
                             <a href="booking.html" class="btn-service" onclick="event.stopPropagation();">
                                 <span>Book Now</span>
                                 <i class="fas fa-arrow-right"></i>
@@ -237,7 +253,7 @@
                             <span class="feature-tag">Lightweight</span>
                         </div>
                         <div class="service-footer">
-                            <div class="service-price">From ₵220</div>
+                            <div class="service-price">From ₵220 - ₵300</div>
                             <a href="booking.html" class="btn-service" onclick="event.stopPropagation();">
                                 <span>Book Now</span>
                                 <i class="fas fa-arrow-right"></i>
@@ -269,7 +285,7 @@
                             <span class="feature-tag">Textured Look</span>
                         </div>
                         <div class="service-footer">
-                            <div class="service-price">From ₵180</div>
+                            <div class="service-price">From ₵180 - ₵200</div>
                             <a href="booking.html" class="btn-service" onclick="event.stopPropagation();">
                                 <span>Book Now</span>
                                 <i class="fas fa-arrow-right"></i>
@@ -277,10 +293,6 @@
                         </div>
                     </div>
                 </div>
-
-                
-
-                
             </div>
         </div>
     </section>
@@ -311,7 +323,7 @@
                     </p>
                     
                     <p class="about-description">
-                        With a commitment to quality and comfort, BS Studio blends skill with passion to provide redults that are both timeless and transformative. Whether you're looking for a subtle enhancement or a bold new look, we'll help you achieve lashes that truly complement your beauty.
+                        With a commitment to quality and comfort, BS Studio blends skill with passion to provide results that are both timeless and transformative. Whether you're looking for a subtle enhancement or a bold new look, we'll help you achieve lashes that truly complement your beauty.
                     </p>
                     
                     <div class="about-features">
@@ -340,7 +352,7 @@
                                 <i class="fas fa-heart"></i>
                             </div>
                             <div class="feature-content">
-                                <h4>Expert Application</h4>
+                                <h4>Welcoming Environment</h4>
                                 <p>Where comfort, care, and beauty meet.</p>
                             </div>
                         </div>
@@ -545,11 +557,20 @@
                         </div>
                         <div class="contact-details">
                             <h4>Working Hours</h4>
-                            <p>
-                                Mon - Fri: 9:00 AM - 7:00 PM<br>
-                                Saturday: 10:00 AM - 5:00 PM<br>
-                                Sunday: Closed
-                            </p>
+                            <div class="hours-info">
+                                <div class="current-status">
+                                    <div class="status-dot" id="contactStatusDot"></div>
+                                    <span id="contactStatusText">Loading...</span>
+                                </div>
+                                <div class="hours-list" id="contactHoursList">
+                                    <p>Mon - Fri: 9:00 AM - 7:00 PM</p>
+                                    <p>Saturday: 10:00 AM - 6:00 PM</p>
+                                    <p>Sunday: 1:00 PM - 7:00 PM</p>
+                                </div>
+                                <div class="next-opening" id="contactNextOpening" style="display: none;">
+                                    <!-- Next opening info -->
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -616,6 +637,19 @@
                         Your premier destination for beauty and lash extension services. 
                         We're dedicated to enhancing your natural beauty with our premium treatments.
                     </p>
+                    
+                    <!-- Footer Time Display -->
+                    <div class="footer-time-widget">
+                        <div class="footer-time-display">
+                            <div class="time-label">Current Time</div>
+                            <div class="current-time" id="footerTime">--:--:--</div>
+                        </div>
+                        <div class="footer-status">
+                            <div class="status-dot" id="footerStatusDot"></div>
+                            <span id="footerStatusText">Loading...</span>
+                        </div>
+                    </div>
+                    
                     <div class="social-links">
                         <a href="#" class="social-link">
                             <i class="fab fa-facebook-f"></i>
@@ -640,6 +674,7 @@
                         <li><a href="#about">About Us</a></li>
                         <li><a href="#testimonials">Testimonials</a></li>
                         <li><a href="#contact">Contact</a></li>
+                        <li><a href="business-hours.html">Business Hours</a></li>
                     </ul>
                 </div>
                 
@@ -693,6 +728,206 @@
 
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        // Business hours configuration
+        const businessHours = [
+            { day: 'Sunday', hours: '1:00 PM - 7:00 PM', isOpen: true, openTime: 13, closeTime: 19 },
+            { day: 'Monday', hours: '9:00 AM - 7:00 PM', isOpen: true, openTime: 9, closeTime: 19 },
+            { day: 'Tuesday', hours: '9:00 AM - 7:00 PM', isOpen: true, openTime: 9, closeTime: 19 },
+            { day: 'Wednesday', hours: '9:00 AM - 7:00 PM', isOpen: true, openTime: 9, closeTime: 19 },
+            { day: 'Thursday', hours: '9:00 AM - 7:00 PM', isOpen: true, openTime: 9, closeTime: 19 },
+            { day: 'Friday', hours: '9:00 AM - 7:00 PM', isOpen: true, openTime: 9, closeTime: 19 },
+            { day: 'Saturday', hours: '10:00 AM - 6:00 PM', isOpen: true, openTime: 10, closeTime: 18 }
+        ];
+
+        // Time-related functions
+        function formatTime(date) {
+            return date.toLocaleTimeString('en-US', { 
+                hour12: true, 
+                hour: '2-digit', 
+                minute: '2-digit',
+                second: '2-digit'
+            });
+        }
+
+        function getCurrentDayName() {
+            return new Date().toLocaleDateString('en-US', { weekday: 'long' });
+        }
+
+        function getCurrentStatus() {
+            const currentTime = new Date();
+            const currentDay = getCurrentDayName();
+            const currentHour = currentTime.getHours();
+            const currentMinute = currentTime.getMinutes();
+            const currentTimeNum = currentHour + currentMinute / 60;
+
+            const todayHours = businessHours.find(h => h.day === currentDay);
+            
+            if (!todayHours?.isOpen) {
+                return { status: 'closed', message: 'Closed today', type: 'closed-today', hours: 'Closed' };
+            }
+
+            const { openTime, closeTime } = todayHours;
+
+            if (currentTimeNum < openTime) {
+                const minutesUntilOpen = (openTime - currentTimeNum) * 60;
+                const hoursUntilOpen = Math.floor(minutesUntilOpen / 60);
+                const minsUntilOpen = Math.floor(minutesUntilOpen % 60);
+                
+                let openMessage = `Opens at ${openTime === 10 ? '10:00 AM' : openTime === 13 ? '1:00 PM' : '9:00 AM'}`;
+                if (hoursUntilOpen > 0) {
+                    openMessage += ` (in ${hoursUntilOpen}h ${minsUntilOpen}m)`;
+                } else if (minsUntilOpen > 0) {
+                    openMessage += ` (in ${minsUntilOpen} minutes)`;
+                }
+                
+                return { 
+                    status: 'closed', 
+                    message: openMessage, 
+                    type: 'before-open', 
+                    timeUntil: minutesUntilOpen,
+                    hours: todayHours.hours
+                };
+            } else if (currentTimeNum >= closeTime) {
+                return { 
+                    status: 'closed', 
+                    message: 'Closed for today', 
+                    type: 'after-close',
+                    hours: todayHours.hours
+                };
+            } else {
+                const minutesUntilClose = (closeTime - currentTimeNum) * 60;
+                
+                if (minutesUntilClose <= 30) {
+                    return { 
+                        status: 'closing', 
+                        message: `Closing in ${Math.floor(minutesUntilClose)} minutes`, 
+                        type: 'closing-soon',
+                        timeUntil: minutesUntilClose,
+                        hours: todayHours.hours
+                    };
+                } else if (minutesUntilClose <= 60) {
+                    return { 
+                        status: 'closing', 
+                        message: 'Closing soon', 
+                        type: 'closing-hour',
+                        timeUntil: minutesUntilClose,
+                        hours: todayHours.hours
+                    };
+                }
+                return { 
+                    status: 'open', 
+                    message: `Open now (closes at ${closeTime >= 19 ? '7:00 PM' : closeTime >= 18 ? '6:00 PM' : '5:00 PM'})`, 
+                    type: 'open',
+                    timeUntil: minutesUntilClose,
+                    hours: todayHours.hours
+                };
+            }
+        }
+
+        function updateTimeDisplays() {
+            const currentTime = new Date();
+            const timeString = formatTime(currentTime);
+            const status = getCurrentStatus();
+
+            // Update all time displays
+            const timeElements = document.querySelectorAll('#headerTime, #footerTime');
+            timeElements.forEach(element => {
+                if (element) element.textContent = timeString;
+            });
+
+            // Update all status indicators
+            const statusElements = [
+                { dot: '#headerStatusDot', text: '#headerStatusText' },
+                { dot: '#heroStatusDot', text: '#heroStatusText' },
+                { dot: '#contactStatusDot', text: '#contactStatusText' },
+                { dot: '#footerStatusDot', text: '#footerStatusText' }
+            ];
+
+            statusElements.forEach(({ dot, text }) => {
+                const dotElement = document.querySelector(dot);
+                const textElement = document.querySelector(text);
+                
+                if (dotElement && textElement) {
+                    // Update status dot
+                    dotElement.className = 'status-dot';
+                    dotElement.classList.add(status.status === 'open' ? 'open' : 
+                                           status.status === 'closing' ? 'closing' : 'closed');
+                    
+                    // Update status text
+                    textElement.textContent = status.message;
+                }
+            });
+
+            // Update hero today hours
+            const heroHoursElement = document.querySelector('#heroTodayHours');
+            if (heroHoursElement) {
+                heroHoursElement.textContent = `Today: ${status.hours}`;
+            }
+        }
+
+        // Initialize time displays
+        function initTimeDisplays() {
+            updateTimeDisplays();
+            
+            // Update every second
+            setInterval(updateTimeDisplays, 1000);
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initTimeDisplays();
+            
+            // Initialize AOS if available
+            if (typeof AOS !== 'undefined') {
+                AOS.init({
+                    duration: 800,
+                    easing: 'ease-in-out',
+                    once: true
+                });
+            }
+            
+            // Your existing script.js functionality would go here
+            // Mobile menu toggle, testimonial slider, contact form, etc.
+        });
+
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+        
+        if (menuToggle && navLinks) {
+            menuToggle.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                menuToggle.classList.toggle('active');
+            });
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (header) {
+                if (window.scrollY > 100) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            }
+        });
+    </script>
     <script src="script.js"></script>
 </body>
 </html>
