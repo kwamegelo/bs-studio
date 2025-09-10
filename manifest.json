@@ -4,52 +4,36 @@
   "description": "Experience premium lash extensions and beauty treatments at BS Studio. Book your appointment today for a transformation that will leave you feeling confident and beautiful.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#1a1a1a",
-  "theme_color": "#d4af37",
+  "background_color": "#f8f2f4",
+  "theme_color": "#7a1c5e",
   "orientation": "portrait-primary",
   "categories": ["beauty", "lifestyle", "health"],
   "lang": "en",
-  "dir": "ltr",
+  "scope": "/",
   "icons": [
     {
-      "src": "images/BS_logo.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "images/BS_logo.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "images/BS_logo_transparent.png",
+      "src": "/images/BS_logo_transparent.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "images/BS_logo_transparent.png",
-      "sizes": "512x512",
+      "src": "/images/BS_logo_transparent.png",
+      "sizes": "512x512", 
       "type": "image/png",
       "purpose": "any"
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "images/screenshot-wide.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "BS Studio Home Page"
     },
     {
-      "src": "images/screenshot-narrow.png",
-      "sizes": "750x1334",
+      "src": "/images/BS_logo_transparent.png",
+      "sizes": "192x192",
       "type": "image/png",
-      "form_factor": "narrow",
-      "label": "BS Studio Mobile View"
+      "purpose": "maskable"
+    },
+    {
+      "src": "/images/BS_logo_transparent.png",
+      "sizes": "512x512",
+      "type": "image/png", 
+      "purpose": "maskable"
     }
   ],
   "shortcuts": [
@@ -60,32 +44,32 @@
       "url": "/booking.html",
       "icons": [
         {
-          "src": "images/icon-calendar.png",
-          "sizes": "96x96"
+          "src": "/images/BS_logo_transparent.png",
+          "sizes": "192x192"
         }
       ]
     },
     {
-      "name": "View Services",
+      "name": "View Services", 
       "short_name": "Services",
       "description": "Browse our lash extension services",
       "url": "/#services",
       "icons": [
         {
-          "src": "images/icon-services.png",
-          "sizes": "96x96"
+          "src": "/images/BS_logo_transparent.png",
+          "sizes": "192x192"
         }
       ]
     },
     {
       "name": "Business Hours",
-      "short_name": "Hours",
+      "short_name": "Hours", 
       "description": "Check our opening hours",
       "url": "/business-hours.html",
       "icons": [
         {
-          "src": "images/icon-clock.png",
-          "sizes": "96x96"
+          "src": "/images/BS_logo_transparent.png",
+          "sizes": "192x192"
         }
       ]
     }
