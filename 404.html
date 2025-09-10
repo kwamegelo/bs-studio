@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>404 — Page Not Found | BS Studio Lashes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-pink: #e91e63;
+      --light-pink: #fce4ec;
+      --dark-pink: #c2185b;
+      --accent-pink: #ff6b9d;
+      --text-dark: #2d2d2d;
+      --text-light: #666;
+      --text-muted: #888;
+      --white: #ffffff;
+      --gray-50: #fafafa;
+      --gray-100: #f5f5f5;
+      --gray-200: #e5e5e5;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, var(--light-pink) 0%, #fdf2f8 50%, var(--white) 100%);
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Subtle geometric background elements */
+    .bg-decoration {
+      position: absolute;
+      opacity: 0.08;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .circle-1 {
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: var(--primary-pink);
+      top: -100px;
+      right: -100px;
+    }
+
+    .circle-2 {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: var(--accent-pink);
+      bottom: -50px;
+      left: -50px;
+    }
+
+    .triangle {
+      width: 0;
+      height: 0;
+      border-left: 150px solid transparent;
+      border-right: 150px solid transparent;
+      border-bottom: 250px solid var(--primary-pink);
+      top: 20%;
+      left: -150px;
+      transform: rotate(45deg);
+    }
+
+    .main-container {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: 24px;
+      padding: 3rem 2.5rem;
+      max-width: 600px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(233, 30, 99, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      z-index: 10;
+      position: relative;
+    }
+
+    .error-code {
+      font-size: clamp(4rem, 12vw, 8rem);
+      font-weight: 700;
+      color: var(--primary-pink);
+      margin-bottom: 1rem;
+      line-height: 0.9;
+      background: linear-gradient(135deg, var(--primary-pink), var(--accent-pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .error-title {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 1.5rem;
+    }
+
+    .error-message {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: var(--text-light);
+      margin-bottom: 2.5rem;
+      max-width: 450px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .highlight-text {
+      color: var(--primary-pink);
+      font-weight: 500;
+    }
+
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: linear-gradient(135deg, var(--primary-pink), var(--accent-pink));
+      color: var(--white);
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(233, 30, 99, 0.3);
+      border: none;
+      cursor: pointer;
+    }
+
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(233, 30, 99, 0.4);
+    }
+
+    .cta-button:active {
+      transform: translateY(0);
+    }
+
+    .secondary-links {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .secondary-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color 0.2s ease;
+      position: relative;
+    }
+
+    .secondary-link:hover {
+      color: var(--primary-pink);
+    }
+
+    .secondary-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -4px;
+      left: 0;
+      background: var(--primary-pink);
+      transition: width 0.2s ease;
+    }
+
+    .secondary-link:hover::after {
+      width: 100%;
+    }
+
+    .footer {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 400;
+      z-index: 10;
+    }
+
+    /* Subtle lash accent */
+    .lash-accent {
+      position: absolute;
+      top: -15px;
+      right: 20px;
+      font-size: 2rem;
+      opacity: 0.6;
+      animation: gentle-float 3s ease-in-out infinite;
+    }
+
+    @keyframes gentle-float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(2deg); }
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .main-container {
+        padding: 2rem 1.5rem;
+        margin: 1rem;
+      }
+
+      .secondary-links {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .bg-decoration {
+        opacity: 0.04;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .error-message {
+        font-size: 1rem;
+      }
+      
+      .cta-button {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Background decorations -->
+  <div class="bg-decoration circle-1"></div>
+  <div class="bg-decoration circle-2"></div>
+  <div class="bg-decoration triangle"></div>
+
+  <div class="main-container">
+    <div class="lash-accent">✨</div>
+    
+    <div class="error-code">404</div>
+    
+    <h1 class="error-title">Page Not Found</h1>
+    
+    <p class="error-message">
+      Oops! This page pulled a disappearing act...<br>
+      <span class="highlight-text">Just like your natural lashes before you met us.</span><br><br>
+      Don't worry, unlike your pre-BS lashes, this is just temporary. 
+      Let's get you back to the gorgeous lash content you're looking for.
+    </p>
+    
+    <a href="index.html" class="cta-button">
+      <span>← Back to Beautiful Lashes</span>
+    </a>
+    
+    <div class="secondary-links">
+      <a href="/services" class="secondary-link">Our Services</a>
+      <a href="/gallery" class="secondary-link">Lash Gallery</a>
+      <a href="/contact" class="secondary-link">Book Appointment</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    © 2025 BS Studio Lashes — Enhancing natural beauty, one lash at a time
+  </footer>
+
+  <script>
+    // Smooth page load animation
+    document.addEventListener('DOMContentLoaded', function() {
+      const container = document.querySelector('.main-container');
+      container.style.opacity = '0';
+      container.style.transform = 'translateY(30px)';
+      
+      setTimeout(() => {
+        container.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        container.style.opacity = '1';
+        container.style.transform = 'translateY(0)';
+      }, 100);
+    });
+
+    // Add subtle parallax effect to background elements
+    document.addEventListener('mousemove', (e) => {
+      const mouseX = e.clientX / window.innerWidth;
+      const mouseY = e.clientY / window.innerHeight;
+      
+      const circle1 = document.querySelector('.circle-1');
+      const circle2 = document.querySelector('.circle-2');
+      const triangle = document.querySelector('.triangle');
+      
+      circle1.style.transform = `translate(${mouseX * 20}px, ${mouseY * 20}px)`;
+      circle2.style.transform = `translate(${mouseX * -15}px, ${mouseY * -15}px)`;
+      triangle.style.transform = `translate(${mouseX * 10}px, ${mouseY * 10}px) rotate(45deg)`;
+    });
+  </script>
+</body>
+</html>
