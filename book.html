@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BS Studio - Premium Lash Extensions Booking</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/book.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Background Pattern -->
+        <div class="background-pattern"></div>
+
+        <!-- Header & Navigation -->
+    <header class="header" id="header">
+        <div class="container">
+            <div class="navbar">
+                <a href="#home" class="logo">
+                    <span class="logo-text">BS STUDIO</span>
+                    <div class="logo-underline"></div>
+                </a>
+                
+
+                
+                <nav class="nav-links" id="navLinks">
+                    <a href="#home" class="nav-link" data-text="HOME">HOME</a>
+                    <a href="#services" class="nav-link" data-text="SERVICES">SERVICES</a>
+                    <a href="#about" class="nav-link" data-text="ABOUT">ABOUT</a>
+                    <a href="#testimonials" class="nav-link" data-text="TESTIMONIALS">TESTIMONIALS</a>
+                    <a href="#contact" class="nav-link" data-text="CONTACT">CONTACT</a>
+                    <a href="business-hours.html" class="nav-link" data-text="HOURS">HOURS</a>
+                    <div class="nav-background"></div>
+                </nav>
+                
+                <div class="header-actions">
+                    <a href="booking.html" class="book-btn">
+                        <span class="book">Book Now</span>
+                        <i class="fas fa-calendar-alt"></i>
+                    </a>
+                    
+                    <div class="mobile-menu-toggle" id="menuToggle">
+                        <span class="hamburger-line"></span>
+                        <span class="hamburger-line"></span>
+                        <span class="hamburger-line"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+        <!-- Progress Bar -->
+        <div class="progress-section">
+            <div class="progress-container">
+                <div class="progress-steps">
+                    <div class="step" data-step="1">
+                        <div class="step-content">
+                            <div class="step-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step" data-step="2">
+                        <div class="step-content">
+                            <div class="step-icon">
+                                <i class="fas fa-calendar"></i>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step" data-step="3">
+                        <div class="step-content">
+                            <div class="step-icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step" data-step="4">
+                        <div class="step-content">
+                            <div class="step-icon">
+                                <i class="fas fa-credit-card"></i>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Step 1: Service Selection -->
+            <div class="step-content-1 active-step">
+                <div class="step-header">
+                    <h2>Choose Your Perfect Look</h2>
+                    <p>Select from our premium collection of lash extension styles, each crafted to enhance your natural beauty with professional expertise.</p>
+                </div>
+                <div class="services-container">
+                    <!-- Classic Collection -->
+                    <div class="service-category">
+                        <div class="category-header">
+                            <h3>Classic Collection</h3>
+                            <div class="category-divider"></div>
+                        </div>
+                        <div class="services-grid" id="classic-services"></div>
+                    </div>
+                    <!-- Hybrid Collection -->
+                    <div class="service-category">
+                        <div class="category-header">
+                            <h3>Hybrid Collection</h3>
+                            <div class="category-divider"></div>
+                        </div>
+                        <div class="services-grid" id="hybrid-services"></div>
+                    </div>
+                    <!-- Volume Collection -->
+                    <div class="service-category">
+                        <div class="category-header">
+                            <h3>Volume Collection</h3>
+                            <div class="category-divider"></div>
+                        </div>
+                        <div class="services-grid" id="volume-services"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Date & Time Selection -->
+            <div class="step-content-2">
+                <div class="step-header">
+                    <h2>Pick Your Appointment</h2>
+                    <p>Choose your preferred date and time slot for your <span id="selected-service-name"></span> service</p>
+                    <div class="hold-countdown" id="hold-countdown" style="display: none;">
+                        <i class="fas fa-clock"></i>
+                        <span>Time slot held for <span id="countdown-timer">5:00</span></span>
+                    </div>
+                </div>
+                <div class="datetime-container">
+                    <div class="calendar-section">
+                        <div class="section-card">
+                            <h3><i class="fas fa-calendar"></i> Select Date</h3>
+                            <div class="calendar-header">
+                                <div class="weekday">Sun</div>
+                                <div class="weekday">Mon</div>
+                                <div class="weekday">Tue</div>
+                                <div class="weekday">Wed</div>
+                                <div class="weekday">Thu</div>
+                                <div class="weekday">Fri</div>
+                                <div class="weekday">Sat</div>
+                            </div>
+                            <div class="calendar-grid" id="calendar-grid"></div>
+                        </div>
+                    </div>
+                    <div class="timeslots-section">
+                        <div class="section-card">
+                            <h3><i class="fas fa-clock"></i> Available Times</h3>
+                            <div class="timeslots-grid" id="timeslots-grid">
+                                <div class="no-date-selected">
+                                    <i class="fas fa-calendar"></i>
+                                    <p>Please select a date first</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: User Details -->
+            <div class="step-content-3">
+                <div class="step-header">
+                    <h2>Your Information</h2>
+                    <p>Please provide your contact details for your appointment</p>
+                </div>
+                <div class="details-container">
+                    <div class="section-card">
+                        <form id="user-details-form">
+                            <div class="form-group">
+                                <label for="user-name">Full Name *</label>
+                                <input type="text" id="user-name" placeholder="Enter your full name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="user-phone">Phone Number *</label>
+                                <input type="tel" id="user-phone" placeholder="+233 XX XXX XXXX" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="user-email">Email Address *</label>
+                                <input type="email" id="user-email" placeholder="your.email@example.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="user-notes">Special Notes (Optional)</label>
+                                <textarea id="user-notes" rows="4" placeholder="Any allergies, preferences, or special requests..."></textarea>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Confirmation -->
+            <div class="step-content-4">
+                <div class="step-header">
+                    <h2>Confirm Your Booking</h2>
+                    <p>Review your details and proceed with the deposit payment</p>
+                </div>
+                <div class="confirmation-container">
+                    <!-- Booking Summary -->
+                    <div class="section-card">
+                        <h3><i class="fas fa-check-circle"></i> Booking Summary</h3>
+                        <div class="booking-summary">
+                            <div class="summary-left">
+                                <div class="summary-item">
+                                    <span class="label">Service</span>
+                                    <div class="value">
+                                        <span class="service-name" id="summary-service-name"></span>
+                                        <p class="service-subtitle" id="summary-service-subtitle"></p>
+                                    </div>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="label">Date</span>
+                                    <span class="value" id="summary-date"></span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="label">Time</span>
+                                    <span class="value" id="summary-time"></span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="label">Duration</span>
+                                    <span class="value" id="summary-duration"></span>
+                                </div>
+                            </div>
+                            <div class="summary-right">
+                                <div class="summary-item">
+                                    <span class="label">Client</span>
+                                    <span class="value" id="summary-client"></span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="label">Phone</span>
+                                    <span class="value" id="summary-phone"></span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="label">Email</span>
+                                    <span class="value" id="summary-email"></span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="label">Total Price</span>
+                                    <span class="value price" id="summary-price"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="deposit-info">
+                            <div class="deposit-left">
+                                <span class="deposit-title">Deposit Required</span>
+                                <p>Secure your appointment with a deposit</p>
+                            </div>
+                            <span class="deposit-amount">Â¢50</span>
+                        </div>
+                    </div>
+
+                    <!-- Policy Agreement with Image -->
+                    <div class="section-card">
+                        <h3><i class="fas fa-shield-alt"></i> Booking Policies</h3>
+                        <div class="policy-card">
+                <div class="policy-icon">
+                    <i class="fas fa-credit-card"></i>
+                </div>
+                <div class="policy-details">
+                    <h4>Deposit Required</h4>
+                    <p>A deposit is required to secure your appointment. This will be deducted from your total service cost.</p>
+                </div>
+            </div>
+            
+            <div class="policy-card">
+                <div class="policy-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="policy-details">
+                    <h4>Punctuality Policy</h4>
+                    <p>Please arrive on time for your appointment. Arriving 20+ minutes late will result in automatic cancellation.</p>
+                </div>
+            </div>
+            
+            <div class="policy-card">
+                <div class="policy-icon">
+                    <i class="fas fa-calendar-times"></i>
+                </div>
+                <div class="policy-details">
+                    <h4>Cancellation Notice</h4>
+                    <p>24-hour cancellation or reschedule notice is required to avoid any inconvenience.</p>
+                </div>
+            </div>
+            
+            <div class="policy-card">
+                <div class="policy-icon">
+                    <i class="fas fa-eye"></i>
+                </div>
+                <div class="policy-details">
+                    <h4>Clean Lashes Only</h4>
+                    <p>Please arrive with clean lashes - no mascara or eye makeup for best results.</p>
+                </div>
+            </div>
+            
+            <div class="policy-card">
+                <div class="policy-icon">
+                    <i class="fas fa-user-friends"></i>
+                </div>
+                <div class="policy-details">
+                    <h4>Solo Appointments</h4>
+                    <p>No extra guests allowed during your appointment to maintain a peaceful environment.</p>
+                </div>
+            </div>
+                        <div class="policy-agreement">
+                            <input type="checkbox" id="policy-checkbox">
+                            <label for="policy-checkbox">I have read and agree to the BS Studio booking policies, terms of service, and understand the cancellation and no-show policies outlined above.</label>
+                        </div>
+                    </div>
+
+                    <!-- Payment Instructions -->
+                    <div class="payment-section">
+                        <h3><i class="fas fa-credit-card"></i> Secure Deposit Payment</h3>
+                        <div class="payment-card">
+                            <div class="payment-header">
+                                <div class="payment-title">
+                                    <span>Mobile Money Payment</span>
+                                    <p>Send deposit via MTN or AirtelTigo</p>
+                                </div>
+                                <div class="payment-number">
+                                    <span class="phone-number">0XX XXX XXXX</span>
+                                    <button class="copy-btn" onclick="copyToClipboard('0XX XXX XXXX')">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="payment-steps">
+                                <div class="payment-step">
+                                    <div class="step-number">1</div>
+                                    <span>Send <strong>Â¢50</strong> to the number above</span>
+                                </div>
+                                <div class="payment-step">
+                                    <div class="step-number">2</div>
+                                    <span>Reference: <strong id="payment-reference">BS-1234567890</strong></span>
+                                </div>
+                                <div class="payment-step">
+                                    <div class="step-number">3</div>
+                                    <span>Keep your transaction receipt</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="payment-form">
+                            <div class="form-group">
+                                <label for="transaction-ref">Transaction Reference (Optional)</label>
+                                <input type="text" id="transaction-ref" placeholder="Enter your transaction ID">
+                            </div>
+                            <div class="form-group">
+                                <label for="payment-proof">Upload Payment Proof (Optional)</label>
+                                <div class="file-upload">
+                                    <i class="fas fa-upload"></i>
+                                    <p>Upload screenshot or receipt</p>
+                                    <input type="file" id="payment-proof" accept="image/*" hidden>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="navigation">
+                <button id="prev-btn" class="nav-btn prev-btn" style="display: none;">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Previous Step</span>
+                </button>
+                <button id="next-btn" class="nav-btn next-btn disabled">
+                    <span id="next-btn-text">Continue</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Auth Modal -->
+    <div class="modal-overlay" id="auth-modal" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-icon">
+                    <i class="fas fa-user"></i>
+                </div>
+                <h3>Account Required</h3>
+                <p>Sign in or create an account to continue with your booking</p>
+            </div>
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-mode="login">Sign In</button>
+                <button class="auth-tab" data-mode="register">Sign Up</button>
+            </div>
+            <div class="auth-form">
+                <input type="email" id="auth-email" placeholder="Email address">
+                <input type="password" id="auth-password" placeholder="Password">
+                <input type="password" id="auth-confirm-password" placeholder="Confirm password" style="display: none;">
+            </div>
+            <div class="auth-buttons">
+                <button id="auth-submit-btn" class="primary-btn">Sign In</button>
+                <button id="google-auth-btn" class="secondary-btn">Continue with Google</button>
+                <button id="cancel-auth-btn" class="text-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal-overlay" id="confirm-modal" style="display: none;">
+        <div class="modal large-modal">
+            <div class="modal-header">
+                <div class="modal-icon large-icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <h3>Almost There!</h3>
+                <p>Please review your booking details before confirming</p>
+            </div>
+            <div class="final-summary">
+                <h4>Final Booking Summary</h4>
+                <div class="final-summary-content">
+                    <div class="summary-row">
+                        <span>Service:</span>
+                        <span id="final-service"></span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Date & Time:</span>
+                        <span id="final-datetime"></span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Client:</span>
+                        <span id="final-client"></span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Contact:</span>
+                        <span id="final-contact"></span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total:</span>
+                        <span id="final-total"></span>
+                    </div>
+                    <div class="summary-row deposit">
+                        <span>Deposit:</span>
+                        <span>Â¢50</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button id="back-btn" class="secondary-btn">Go Back</button>
+                <button id="confirm-submit-btn" class="primary-btn">Confirm & Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="book.js"></script>
+</body>
+</html>
