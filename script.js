@@ -166,23 +166,120 @@ document.querySelectorAll('.nav-link').forEach(link => {
         }
     }
 
-    toggleMobileMenu() {
-        this.state.isMenuOpen = !this.state.isMenuOpen;
-        this.elements.menuToggle?.classList.toggle('active');
-        this.elements.navLinks?.classList.toggle('active');
-        document.body.style.overflow = this.state.isMenuOpen ? 'hidden' : '';
+    // Updated toggleMobileMenu method in your BSStudio class
+toggleMobileMenu() {
+    this.state.isMenuOpen = !this.state.isMenuOpen;
+    
+    // Toggle classes
+    this.elements.menuToggle?.classList.toggle('active');
+    this.elements.navLinks?.classList.toggle('active');
+    
+    // Prevent body scroll when menu is open
+    if (this.state.isMenuOpen) {
+        document.body.classList.add('menu-open');
+        document.body.style.overflow = 'hidden';
+    } else {
+        document.body.classList.remove('menu-open');
+        document.body.style.overflow = '';
+    }
+}
+
+// Updated handleNavClick method to properly close menu
+handleNavClick(e) {
+    e.preventDefault();
+    const link = e.target.closest('a');
+    if (!link) return;
+    
+    const href = link.getAttribute('href');
+    
+    // Close mobile menu immediately when link is clicked
+    if (this.state.isMenuOpen) {
+        this.toggleMobileMenu();
+    }
+    
+    // Handle navigation
+    if (href && href.startsWith('#')) {
+        const target = document.querySelector(href);
+        if (target) {
+            // Small delay to allow menu to start closing
+            setTimeout(() => {
+                this.smoothScrollTo(target.offsetTop - 80);
+            }, 100);
+        }
+    } else if (href && !href.startsWith('#')) {
+        // For external links, navigate normally
+        window.location.href = href;
+    }
+}
+
+// Updated handleResize method to close menu on larger screens
+handleResize() {
+    if (window.innerWidth > 992 && this.state.isMenuOpen) {
+        this.toggleMobileMenu();
+    }
+    if (typeof AOS !== 'undefined') AOS.refresh();
+}
+
+// Add this method to handle clicks outside the menu
+handleClickOutside(e) {
+    if (this.state.isMenuOpen && 
+        !this.elements.navLinks?.contains(e.target) && 
+        !this.elements.menuToggle?.contains(e.target)) {
+        this.toggleMobileMenu();
+    }
+}
+
+// Update the bindEvents method to include the new event listener
+bindEvents() {
+    window.addEventListener('load', () => this.handlePageLoad());
+    window.addEventListener('scroll', this.throttle(() => this.handleScroll(), 16));
+    window.addEventListener('resize', this.debounce(() => this.handleResize(), 200));
+    
+    // Add click outside listener
+    document.addEventListener('click', (e) => this.handleClickOutside(e));
+
+    if (this.elements.cursor) {
+        document.addEventListener('mousemove', (e) => this.updateCursor(e));
     }
 
-    handleNavClick(e) {
-        e.preventDefault();
-        const link = e.target.closest('a');
-        if (!link) return;
-        const href = link.getAttribute('href');
-        if (href && href.startsWith('#')) {
-            const target = document.querySelector(href);
-            if (target) this.smoothScrollTo(target.offsetTop - 80);
-        }
+    if (this.elements.menuToggle) {
+        this.elements.menuToggle.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent event bubbling
+            this.toggleMobileMenu();
+        });
     }
+
+    // Updated nav link event listeners
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+            this.handleNavClick(e);
+        });
+    });
+
+    if (this.elements.scrollTop) {
+        this.elements.scrollTop.addEventListener('click', () => this.scrollToTop());
+    }
+
+    this.elements.filterBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => this.handleServiceFilter(e));
+    });
+
+    if (this.elements.prevBtn) this.elements.prevBtn.addEventListener('click', () => this.previousTestimonial());
+    if (this.elements.nextBtn) this.elements.nextBtn.addEventListener('click', () => this.nextTestimonial());
+
+    this.elements.sliderDots.forEach((dot, index) => {
+        dot.addEventListener('click', () => this.goToTestimonial(index));
+    });
+
+    if (this.elements.contactForm) {
+        this.elements.contactForm.addEventListener('submit', (e) => this.handleContactForm(e));
+    }
+
+    const newsletterForm = document.querySelector('.newsletter-form');
+    if (newsletterForm) {
+        newsletterForm.addEventListener('submit', (e) => this.handleNewsletterForm(e));
+    }
+}
 
     smoothScrollTo(target) {
         window.scrollTo({ top: target, behavior: 'smooth' });
