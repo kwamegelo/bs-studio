@@ -6,6 +6,365 @@
     <title>BS Studio - Admin Dashboard</title>
     <link rel="stylesheet" href="styles/admin.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
+    <!-- Chart.js for analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Additional styles for new features */
+        .date-picker-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        #historical-view {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f9fafb;
+            border-radius: 0.75rem;
+            border: 1px solid #e5e7eb;
+            display: none;
+        }
+        
+        #analytics-chart-container {
+            height: 300px;
+            width: 100%;
+            position: relative;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 100%;
+        }
+        
+        .view-history-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .booking-date-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            background: #fdf2f8;
+            border-radius: 0.5rem;
+            border: 1px solid #f3e8ff;
+        }
+        
+        .booking-date-info i {
+            color: #9333ea;
+        }
+        
+        .booking-date-info span {
+            font-weight: 600;
+            color: #1f2937;
+        }
+        
+        /* Calendar Styles */
+        .calendar-container {
+            margin-bottom: 2rem;
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid #f3f4f6;
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .calendar-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+        
+        .calendar-nav button {
+            background: none;
+            border: none;
+            color: #6b7280;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+        }
+        
+        .calendar-nav button:hover {
+            background: #f3f4f6;
+            color: #374151;
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .calendar-day-header {
+            text-align: center;
+            font-weight: 600;
+            color: #6b7280;
+            padding: 0.5rem;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+        }
+        
+        .calendar-day {
+            height: 4rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 0.25rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+        
+        .calendar-day:hover {
+            background: #f3f4f6;
+        }
+        
+        .calendar-day.current {
+            background: #e879f9;
+            color: white;
+        }
+        
+        .calendar-day.other-month {
+            color: #d1d5db;
+            opacity: 0.5;
+        }
+        
+        .calendar-day.has-bookings {
+            border: 1px solid #9333ea;
+            background: #fdf2f8;
+            color: #9333ea;
+        }
+        
+        .calendar-day.has-bookings::after {
+            content: '';
+            position: absolute;
+            bottom: 0.25rem;
+            width: 0.5rem;
+            height: 0.5rem;
+            background: #9333ea;
+            border-radius: 50%;
+        }
+        
+        .calendar-day.selected {
+            background: linear-gradient(135deg, #9333ea 0%, #ec4899 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(147, 51, 234, 0.3);
+        }
+        
+        .calendar-day-number {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .bookings-for-date {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 1rem;
+            border: 1px solid #f3f4f6;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .bookings-for-date h3 {
+            color: #1f2937;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .booking-list-calendar {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .calendar-booking-card {
+            background: #f9fafb;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            border: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s;
+        }
+        
+        .calendar-booking-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .booking-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .booking-avatar {
+            width: 3rem;
+            height: 3rem;
+            background: linear-gradient(135deg, #9333ea 0%, #ec4899 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1.125rem;
+            box-shadow: 0 4px 12px rgba(147, 51, 234, 0.3);
+        }
+        
+        .booking-details {
+            flex: 1;
+        }
+        
+        .booking-name {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+        
+        .booking-service {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+        
+        .booking-time {
+            color: #9ca3af;
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+        }
+        
+        .booking-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+        
+        .status-pending {
+            color: #d97706;
+            background: #fef3c7;
+            border: 1px solid #fde68a;
+        }
+        
+        .status-confirmed {
+            color: #059669;
+            background: #d1fae5;
+            border: 1px solid #a7f3d0;
+        }
+        
+        .status-cancelled {
+            color: #dc2626;
+            background: #fee2e2;
+            border: 1px solid #fecaca;
+        }
+        
+        .booking-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn-done {
+            background: #d1fae5;
+            color: #059669;
+            border: 1px solid #a7f3d0;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+        }
+        
+        .btn-done:hover {
+            background: #a7f3d0;
+        }
+        
+        .notification-message {
+            background: #d1fae5;
+            border: 1px solid #a7f3d0;
+            color: #059669;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .notification-message i {
+            color: #059669;
+        }
+        
+        @media (max-width: 768px) {
+            .date-picker-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .header-actions {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            
+            .calendar-grid {
+                grid-template-columns: repeat(7, 1fr);
+                gap: 0.25rem;
+            }
+            
+            .calendar-day {
+                height: 3rem;
+                font-size: 0.75rem;
+            }
+            
+            .calendar-day-header {
+                font-size: 0.75rem;
+                padding: 0.25rem;
+            }
+            
+            .booking-info {
+                gap: 0.75rem;
+            }
+            
+            .booking-avatar {
+                width: 2.5rem;
+                height: 2.5rem;
+                font-size: 1rem;
+            }
+            
+            .booking-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .btn-done {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
     <div id="app" class="min-h-screen bg-gradient">
@@ -17,7 +376,6 @@
                 <button onclick="login()" class="login-btn">Login as Admin</button>
             </div>
         </div>
-
         <!-- Main Dashboard -->
         <div id="dashboard" class="dashboard-container" style="display: none;">
             <div class="dashboard-layout">
@@ -36,7 +394,6 @@
                             <i data-feather="menu"></i>
                         </button>
                     </div>
-
                     <!-- Navigation -->
                     <div class="sidebar-nav">
                         <button onclick="setActiveTab('dashboard')" class="nav-item active" data-tab="dashboard">
@@ -65,7 +422,6 @@
                             <span class="nav-label">Settings</span>
                         </button>
                     </div>
-
                     <!-- Sidebar Footer -->
                     <div class="sidebar-footer">
                         <div class="user-profile">
@@ -81,7 +437,6 @@
                         </button>
                     </div>
                 </div>
-
                 <!-- Main Content -->
                 <div class="main-content">
                     <!-- Top Bar -->
@@ -102,7 +457,6 @@
                             </button>
                         </div>
                     </div>
-
                     <!-- Content Area -->
                     <div class="content-area">
                         <!-- Dashboard Content -->
@@ -123,7 +477,6 @@
                                     </button>
                                 </div>
                             </div>
-
                             <!-- Stats Grid -->
                             <div class="stats-grid">
                                 <div class="stat-card">
@@ -140,7 +493,6 @@
                                     <p class="stat-title">Total Bookings</p>
                                     <p class="stat-subtitle">This month</p>
                                 </div>
-
                                 <div class="stat-card">
                                     <div class="stat-header">
                                         <div class="stat-icon bg-green">
@@ -155,7 +507,6 @@
                                     <p class="stat-title">Confirmed</p>
                                     <p class="stat-subtitle">Ready to serve</p>
                                 </div>
-
                                 <div class="stat-card">
                                     <div class="stat-header">
                                         <div class="stat-icon bg-purple">
@@ -170,7 +521,6 @@
                                     <p class="stat-title">Total Customers</p>
                                     <p class="stat-subtitle">Growing community</p>
                                 </div>
-
                                 <div class="stat-card">
                                     <div class="stat-header">
                                         <div class="stat-icon bg-orange">
@@ -186,7 +536,6 @@
                                     <p class="stat-subtitle">This month</p>
                                 </div>
                             </div>
-
                             <!-- Dashboard Grid -->
                             <div class="dashboard-grid">
                                 <!-- Recent Bookings -->
@@ -205,7 +554,6 @@
                                         <!-- Bookings will be populated by JavaScript -->
                                     </div>
                                 </div>
-
                                 <!-- Quick Actions -->
                                 <div class="dashboard-card">
                                     <div class="card-header">
@@ -247,7 +595,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <!-- Bookings Content -->
                         <div id="bookings-content" class="tab-content">
                             <div class="content-header">
@@ -266,13 +613,61 @@
                                         <option value="confirmed">Confirmed</option>
                                         <option value="cancelled">Cancelled</option>
                                     </select>
+                                    
+                                    <button onclick="toggleCalendarView()" class="btn btn-secondary">
+                                        <i data-feather="calendar"></i>
+                                        Calendar View
+                                    </button>
                                 </div>
                             </div>
-                            <div id="bookings-grid" class="bookings-grid">
+                            
+                            <!-- Calendar View Section -->
+                            <div id="calendar-view" style="display: none;">
+                                <div class="calendar-container">
+                                    <div class="calendar-header">
+                                        <h2 class="calendar-title" id="calendar-month-year">September 2024</h2>
+                                        <div class="calendar-nav">
+                                            <button onclick="prevMonth()"><i data-feather="chevron-left"></i></button>
+                                            <button onclick="nextMonth()"><i data-feather="chevron-right"></i></button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="calendar-grid">
+                                        <!-- Day headers -->
+                                        <div class="calendar-day-header">Sun</div>
+                                        <div class="calendar-day-header">Mon</div>
+                                        <div class="calendar-day-header">Tue</div>
+                                        <div class="calendar-day-header">Wed</div>
+                                        <div class="calendar-day-header">Thu</div>
+                                        <div class="calendar-day-header">Fri</div>
+                                        <div class="calendar-day-header">Sat</div>
+                                        
+                                        <!-- Days will be populated by JavaScript -->
+                                        <div id="calendar-days"></div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Selected Date Bookings -->
+                                <div id="selected-date-bookings" style="display: none;">
+                                    <h3><i data-feather="calendar"></i> Bookings for <span id="selected-date-display"></span></h3>
+                                    <div id="bookings-for-selected-date" class="booking-list-calendar">
+                                        <!-- Bookings for selected date will be populated here -->
+                                    </div>
+                                    
+                                    <!-- Notification when service is marked as done -->
+                                    <div id="done-notification" class="notification-message" style="display: none;">
+                                        <i data-feather="check-circle"></i>
+                                        <span id="done-notification-text">Thank you message sent to customer!</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- List View Section -->
+                            <div id="list-view" class="bookings-grid">
                                 <!-- Bookings will be populated by JavaScript -->
                             </div>
                         </div>
-
+                        
                         <!-- Slots Content -->
                         <div id="slots-content" class="tab-content">
                             <div class="content-header">
@@ -293,7 +688,7 @@
                                 <p>Calendar view for managing available time slots will be implemented here.</p>
                             </div>
                         </div>
-
+                        
                         <!-- Services Content -->
                         <div id="services-content" class="tab-content">
                             <div class="content-header">
@@ -312,7 +707,7 @@
                                 <!-- Services will be populated by JavaScript -->
                             </div>
                         </div>
-
+                        
                         <!-- Users Content -->
                         <div id="users-content" class="tab-content">
                             <div class="content-header">
@@ -333,7 +728,7 @@
                                 <p>User list and management features will be implemented here.</p>
                             </div>
                         </div>
-
+                        
                         <!-- Settings Content -->
                         <div id="settings-content" class="tab-content">
                             <div class="content-header">
@@ -375,7 +770,6 @@
                 </div>
             </div>
         </div>
-
         <!-- Booking Details Modal -->
         <div id="booking-modal" class="modal">
             <div class="modal-content">
@@ -390,7 +784,6 @@
                 </div>
             </div>
         </div>
-
         <!-- Service Modal -->
         <div id="service-modal" class="modal">
             <div class="modal-content">
@@ -440,7 +833,6 @@
                 </div>
             </div>
         </div>
-
         <!-- Background Pattern -->
         <div class="background-pattern">
             <div class="pattern-circle circle-1"></div>
@@ -448,7 +840,6 @@
             <div class="pattern-circle circle-3"></div>
         </div>
     </div>
-
     <script>
 // Global State
 let state = {
@@ -492,6 +883,90 @@ let state = {
             phone: '+233 24 345 6789',
             email: 'jennifer@email.com',
             location: 'Tamale, Ghana'
+        },
+        { 
+            id: '4', 
+            customerName: 'Emma Wilson', 
+            service: 'Classic Set', 
+            date: '2024-09-18', 
+            time: '16:00', 
+            status: 'confirmed', 
+            depositRef: 'REF004',
+            phone: '+233 24 456 7890',
+            email: 'emma@email.com',
+            location: 'Cape Coast, Ghana'
+        },
+        { 
+            id: '5', 
+            customerName: 'Olivia Brown', 
+            service: 'Hybrid Lashes', 
+            date: '2024-09-19', 
+            time: '13:00', 
+            status: 'pending', 
+            depositRef: 'REF005',
+            phone: '+233 24 567 8901',
+            email: 'olivia@email.com',
+            location: 'Tema, Ghana'
+        },
+        { 
+            id: '6', 
+            customerName: 'Sophia Davis', 
+            service: 'Volume Set', 
+            date: '2024-09-20', 
+            time: '15:30', 
+            status: 'confirmed', 
+            depositRef: 'REF006',
+            phone: '+233 24 678 9012',
+            email: 'sophia@email.com',
+            location: 'Accra, Ghana'
+        },
+        { 
+            id: '7', 
+            customerName: 'Ava Martinez', 
+            service: 'Classic Set', 
+            date: '2024-09-21', 
+            time: '11:00', 
+            status: 'cancelled', 
+            depositRef: 'REF007',
+            phone: '+233 24 789 0123',
+            email: 'ava@email.com',
+            location: 'Kumasi, Ghana'
+        },
+        { 
+            id: '8', 
+            customerName: 'Isabella Taylor', 
+            service: 'Hybrid Lashes', 
+            date: '2024-09-22', 
+            time: '10:30', 
+            status: 'confirmed', 
+            depositRef: 'REF008',
+            phone: '+233 24 890 1234',
+            email: 'isabella@email.com',
+            location: 'Accra, Ghana'
+        },
+        { 
+            id: '9', 
+            customerName: 'Charlotte Moore', 
+            service: 'Volume Set', 
+            date: '2024-09-23', 
+            time: '14:30', 
+            status: 'pending', 
+            depositRef: 'REF009',
+            phone: '+233 24 901 2345',
+            email: 'charlotte@email.com',
+            location: 'Kumasi, Ghana'
+        },
+        { 
+            id: '10', 
+            customerName: 'Amelia Evans', 
+            service: 'Classic Set', 
+            date: '2024-09-24', 
+            time: '12:00', 
+            status: 'confirmed', 
+            depositRef: 'REF010',
+            phone: '+233 24 012 3456',
+            email: 'amelia@email.com',
+            location: 'Accra, Ghana'
         }
     ],
     services: [
@@ -532,9 +1007,12 @@ let state = {
     searchQuery: '',
     filterStatus: 'all',
     selectedBooking: null,
-    selectedService: null
+    selectedService: null,
+    currentMonth: new Date().getMonth(), // 0-11
+    currentYear: new Date().getFullYear(),
+    selectedCalendarDate: '', // Store selected date in YYYY-MM-DD format
+    viewType: 'list' // 'list' or 'calendar'
 };
-
 // DOM Elements
 const elements = {
     loginScreen: document.getElementById('login-screen'),
@@ -548,9 +1026,16 @@ const elements = {
     searchInput: document.getElementById('search-bookings'),
     statusFilter: document.getElementById('filter-status'),
     bookingModal: document.getElementById('booking-modal'),
-    serviceModal: document.getElementById('service-modal')
+    serviceModal: document.getElementById('service-modal'),
+    calendarView: document.getElementById('calendar-view'),
+    listView: document.getElementById('list-view'),
+    calendarDays: document.getElementById('calendar-days'),
+    calendarMonthYear: document.getElementById('calendar-month-year'),
+    selectedDateDisplay: document.getElementById('selected-date-display'),
+    bookingsForSelectedDate: document.getElementById('bookings-for-selected-date'),
+    doneNotification: document.getElementById('done-notification'),
+    doneNotificationText: document.getElementById('done-notification-text')
 };
-
 // Initialize the application
 function init() {
     feather.replace();
@@ -558,8 +1043,8 @@ function init() {
     renderBookings();
     renderServices();
     renderRecentBookings();
+    renderCalendar();
 }
-
 // Authentication
 function login() {
     state.user = { uid: '123', email: 'admin@bsstudio.com' };
@@ -567,13 +1052,11 @@ function login() {
     elements.dashboard.style.display = 'block';
     updateUI();
 }
-
 function logout() {
     state.user = null;
     elements.loginScreen.style.display = 'flex';
     elements.dashboard.style.display = 'none';
 }
-
 // UI Updates
 function updateUI() {
     // Update sidebar visibility
@@ -582,7 +1065,6 @@ function updateUI() {
     } else {
         elements.sidebar.classList.remove('collapsed');
     }
-
     // Update page title and icon
     const tabConfig = {
         dashboard: { icon: 'bar-chart-3', title: 'Dashboard' },
@@ -592,22 +1074,17 @@ function updateUI() {
         users: { icon: 'users', title: 'Users' },
         settings: { icon: 'settings', title: 'Settings' }
     };
-
     const config = tabConfig[state.activeTab];
     elements.pageIcon.setAttribute('data-feather', config.icon);
     elements.pageTitleText.textContent = config.title;
-
     // Update theme icon
     elements.themeIcon.setAttribute('data-feather', state.isDarkMode ? 'sun' : 'moon');
-
     // Replace feather icons
     feather.replace();
 }
-
 // Navigation
 function setActiveTab(tab) {
     state.activeTab = tab;
-    
     // Update nav items
     document.querySelectorAll('.nav-item').forEach(item => {
         if (item.getAttribute('data-tab') === tab) {
@@ -616,32 +1093,33 @@ function setActiveTab(tab) {
             item.classList.remove('active');
         }
     });
-
     // Update content
     document.querySelectorAll('.tab-content').forEach(content => {
         content.classList.remove('active');
     });
     document.getElementById(`${tab}-content`).classList.add('active');
-
     updateUI();
+    
+    // Reset calendar view when switching tabs
+    if (tab !== 'bookings') {
+        state.viewType = 'list';
+        elements.calendarView.style.display = 'none';
+        elements.listView.style.display = 'grid';
+    }
 }
-
 function toggleSidebar() {
     state.sidebarCollapsed = !state.sidebarCollapsed;
     updateUI();
 }
-
 function toggleTheme() {
     state.isDarkMode = !state.isDarkMode;
     updateUI();
     // Add theme switching logic here if needed
 }
-
 // Booking Management
 function renderBookings() {
-    const container = document.getElementById('bookings-grid');
+    const container = document.getElementById('list-view');
     const filteredBookings = filterBookingsData();
-    
     container.innerHTML = filteredBookings.map(booking => `
         <div class="booking-card">
             <div class="booking-header">
@@ -654,18 +1132,16 @@ function renderBookings() {
                 </div>
                 <span class="status-badge status-${booking.status}">${booking.status}</span>
             </div>
-            
             <div class="booking-details">
                 <div class="booking-detail">
                     <i data-feather="calendar"></i>
-                    <span>${booking.date}</span>
+                    <span>${formatDate(booking.date)}</span>
                 </div>
                 <div class="booking-detail">
                     <i data-feather="clock"></i>
                     <span>${booking.time}</span>
                 </div>
             </div>
-
             <div class="booking-actions">
                 ${booking.status === 'pending' ? `
                     <button class="btn-confirm" onclick="updateBookingStatus('${booking.id}', 'confirmed')">
@@ -684,14 +1160,17 @@ function renderBookings() {
             </div>
         </div>
     `).join('');
-    
     feather.replace();
+}
+
+function formatDate(dateString) {
+    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString('en-US', options);
 }
 
 function renderRecentBookings() {
     const container = document.getElementById('recent-bookings');
     const recentBookings = state.bookings.slice(0, 3);
-    
     container.innerHTML = recentBookings.map(booking => `
         <div class="booking-card">
             <div class="booking-header">
@@ -704,18 +1183,16 @@ function renderRecentBookings() {
                 </div>
                 <span class="status-badge status-${booking.status}">${booking.status}</span>
             </div>
-            
             <div class="booking-details">
                 <div class="booking-detail">
                     <i data-feather="calendar"></i>
-                    <span>${booking.date}</span>
+                    <span>${formatDate(booking.date)}</span>
                 </div>
                 <div class="booking-detail">
                     <i data-feather="clock"></i>
                     <span>${booking.time}</span>
                 </div>
             </div>
-
             <div class="booking-actions">
                 ${booking.status === 'pending' ? `
                     <button class="btn-confirm" onclick="updateBookingStatus('${booking.id}', 'confirmed')">
@@ -734,7 +1211,6 @@ function renderRecentBookings() {
             </div>
         </div>
     `).join('');
-    
     feather.replace();
 }
 
@@ -755,14 +1231,32 @@ function filterBookings() {
 
 function updateBookingStatus(bookingId, newStatus) {
     const booking = state.bookings.find(b => b.id === bookingId);
-    if (booking) {
-        booking.status = newStatus;
-        renderBookings();
-        renderRecentBookings();
-        
-        // Show notification
-        showNotification(`Booking ${newStatus} - notification sent to customer`);
+    if (!booking) return;
+
+    // Update status
+    booking.status = newStatus;
+
+    // If confirmed -> send "Thank You" message (simulated)
+    if (newStatus === 'confirmed') {
+        simulateSendThankYouMessage(booking.customerName, booking.email, booking.phone);
     }
+
+    // Refresh views
+    renderBookings();
+    renderRecentBookings();
+    renderCalendar(); // Update calendar indicators
+    
+    // Show notification
+    showNotification(`Booking ${newStatus} - ${newStatus === 'confirmed' ? 'Thank you message sent!' : ''}`);
+}
+
+// Simulate sending a thank you message via SMS/email
+function simulateSendThankYouMessage(customerName, email, phone) {
+    // In a real app, this would call an API to send SMS/email
+    console.log(`Sending thank you message to ${customerName} (${email}, ${phone})`);
+    
+    // Display notification to admin
+    showNotification(`Thank you message sent to ${customerName}!`);
 }
 
 function showBookingDetails(bookingId) {
@@ -777,7 +1271,6 @@ function showBookingDetails(bookingId) {
 function renderBookingModal() {
     const booking = state.selectedBooking;
     const modalBody = document.getElementById('booking-details');
-    
     modalBody.innerHTML = `
         <div class="booking-details-header">
             <div class="booking-details-avatar">${booking.customerName.charAt(0)}</div>
@@ -786,7 +1279,6 @@ function renderBookingModal() {
                 <span class="status-badge status-${booking.status}">${booking.status}</span>
             </div>
         </div>
-        
         <div class="booking-details-grid">
             <div class="booking-details-row">
                 <span class="booking-details-label">Service:</span>
@@ -794,7 +1286,7 @@ function renderBookingModal() {
             </div>
             <div class="booking-details-row">
                 <span class="booking-details-label">Date:</span>
-                <span class="booking-details-value">${booking.date}</span>
+                <span class="booking-details-value">${formatDate(booking.date)}</span>
             </div>
             <div class="booking-details-row">
                 <span class="booking-details-label">Time:</span>
@@ -805,7 +1297,6 @@ function renderBookingModal() {
                 <span class="booking-details-value reference-text">${booking.depositRef}</span>
             </div>
         </div>
-        
         <div class="contact-section">
             <h5>
                 <i data-feather="phone"></i>
@@ -826,7 +1317,6 @@ function renderBookingModal() {
                 </div>
             </div>
         </div>
-        
         ${booking.status === 'pending' ? `
             <div class="booking-actions" style="margin-top: 1rem;">
                 <button class="btn-confirm" onclick="updateBookingStatusFromModal('${booking.id}', 'confirmed')">
@@ -840,7 +1330,6 @@ function renderBookingModal() {
             </div>
         ` : ''}
     `;
-    
     feather.replace();
 }
 
@@ -857,7 +1346,6 @@ function closeBookingModal() {
 // Service Management
 function renderServices() {
     const container = document.getElementById('services-grid');
-    
     container.innerHTML = state.services.map(service => `
         <div class="service-card">
             <div class="service-header">
@@ -874,7 +1362,6 @@ function renderServices() {
                     </button>
                 </div>
             </div>
-            
             <div class="service-details">
                 <div class="service-detail">
                     <span>Price:</span>
@@ -887,18 +1374,15 @@ function renderServices() {
             </div>
         </div>
     `).join('');
-    
     feather.replace();
 }
 
 function showServiceModal(serviceId = null) {
     const service = serviceId ? state.services.find(s => s.id === serviceId) : null;
     state.selectedService = service;
-    
     // Update modal title
     document.getElementById('service-modal-title').textContent = service ? 'Edit Service' : 'Add New Service';
     document.getElementById('service-submit-text').textContent = service ? 'Update Service' : 'Create Service';
-    
     // Fill form if editing
     if (service) {
         document.getElementById('service-name').value = service.name;
@@ -909,7 +1393,6 @@ function showServiceModal(serviceId = null) {
     } else {
         document.getElementById('service-form').reset();
     }
-    
     elements.serviceModal.classList.add('active');
 }
 
@@ -927,7 +1410,6 @@ function deleteService(serviceId) {
 
 function saveService(event) {
     event.preventDefault();
-    
     const formData = {
         name: document.getElementById('service-name').value,
         category: document.getElementById('service-category').value,
@@ -935,7 +1417,6 @@ function saveService(event) {
         duration: parseInt(document.getElementById('service-duration').value),
         description: document.getElementById('service-description').value
     };
-    
     if (state.selectedService) {
         // Update existing service
         const index = state.services.findIndex(s => s.id === state.selectedService.id);
@@ -950,7 +1431,6 @@ function saveService(event) {
         state.services.push(newService);
         showNotification('Service created successfully');
     }
-    
     renderServices();
     closeServiceModal();
 }
@@ -959,6 +1439,195 @@ function closeServiceModal() {
     elements.serviceModal.classList.remove('active');
     state.selectedService = null;
     document.getElementById('service-form').reset();
+}
+
+// Calendar Functions
+function renderCalendar() {
+    const daysContainer = elements.calendarDays;
+    daysContainer.innerHTML = ''; // Clear previous days
+    
+    const firstDayOfMonth = new Date(state.currentYear, state.currentMonth, 1);
+    const lastDayOfMonth = new Date(state.currentYear, state.currentMonth + 1, 0);
+    const daysInMonth = lastDayOfMonth.getDate();
+    const startingDayOfWeek = firstDayOfMonth.getDay(); // 0 = Sunday, 1 = Monday, etc.
+    
+    // Get days from previous month to fill the grid
+    const daysInPrevMonth = new Date(state.currentYear, state.currentMonth, 0).getDate();
+    const prevMonthDays = [];
+    for (let i = startingDayOfWeek - 1; i >= 0; i--) {
+        prevMonthDays.push(daysInPrevMonth - i);
+    }
+    
+    // Get days from next month to fill the grid
+    const daysInNextMonth = 42 - (startingDayOfWeek + daysInMonth); // 42 = 6 rows * 7 days
+    const nextMonthDays = [];
+    for (let i = 1; i <= daysInNextMonth; i++) {
+        nextMonthDays.push(i);
+    }
+    
+    // Display days from previous month
+    prevMonthDays.forEach(day => {
+        const dayElement = document.createElement('div');
+        dayElement.className = 'calendar-day other-month';
+        dayElement.innerHTML = `<div class="calendar-day-number">${day}</div>`;
+        daysContainer.appendChild(dayElement);
+    });
+    
+    // Display days of current month
+    for (let day = 1; day <= daysInMonth; day++) {
+        const dateString = `${state.currentYear}-${String(state.currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const hasBookings = state.bookings.some(booking => booking.date === dateString);
+        const isSelected = state.selectedCalendarDate === dateString;
+        
+        const dayElement = document.createElement('div');
+        dayElement.className = `calendar-day ${hasBookings ? 'has-bookings' : ''} ${isSelected ? 'selected' : ''}`;
+        dayElement.innerHTML = `<div class="calendar-day-number">${day}</div>`;
+        
+        // Add click event
+        dayElement.addEventListener('click', () => {
+            selectCalendarDate(dateString);
+        });
+        
+        daysContainer.appendChild(dayElement);
+    }
+    
+    // Display days from next month
+    nextMonthDays.forEach(day => {
+        const dayElement = document.createElement('div');
+        dayElement.className = 'calendar-day other-month';
+        dayElement.innerHTML = `<div class="calendar-day-number">${day}</div>`;
+        daysContainer.appendChild(dayElement);
+    });
+    
+    // Update month/year display
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"];
+    elements.calendarMonthYear.textContent = `${monthNames[state.currentMonth]} ${state.currentYear}`;
+    
+    // If we have a selected date, show its bookings
+    if (state.selectedCalendarDate) {
+        showBookingsForSelectedDate();
+    }
+}
+
+function selectCalendarDate(dateString) {
+    state.selectedCalendarDate = dateString;
+    renderCalendar(); // Re-render to highlight selected date
+    showBookingsForSelectedDate();
+}
+
+function showBookingsForSelectedDate() {
+    const selectedDate = state.selectedCalendarDate;
+    if (!selectedDate) {
+        elements.selectedDateDisplay.textContent = '';
+        elements.bookingsForSelectedDate.innerHTML = '';
+        elements.selectedDateBookings.style.display = 'none';
+        return;
+    }
+    
+    // Format date for display
+    const dateObj = new Date(selectedDate);
+    const formattedDate = dateObj.toLocaleDateString('en-US', { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+    });
+    elements.selectedDateDisplay.textContent = formattedDate;
+    
+    // Filter bookings for selected date
+    const bookingsForDate = state.bookings.filter(booking => booking.date === selectedDate);
+    
+    // Render bookings
+    elements.bookingsForSelectedDate.innerHTML = bookingsForDate.map(booking => `
+        <div class="calendar-booking-card">
+            <div class="booking-info">
+                <div class="booking-avatar">${booking.customerName.charAt(0)}</div>
+                <div class="booking-details">
+                    <div class="booking-name">${booking.customerName}</div>
+                    <div class="booking-service">${booking.service}</div>
+                    <div class="booking-time">${booking.time}</div>
+                </div>
+            </div>
+            <div class="booking-status status-${booking.status}">${booking.status}</div>
+            <div class="booking-actions">
+                ${booking.status === 'confirmed' ? `
+                    <button class="btn-done" onclick="markServiceAsDone('${booking.id}')">
+                        <i data-feather="check-circle"></i>
+                        Done
+                    </button>
+                ` : ''}
+            </div>
+        </div>
+    `).join('');
+    
+    // Show section if there are bookings
+    elements.selectedDateBookings.style.display = 'block';
+    
+    // Hide notification if it was visible
+    elements.doneNotification.style.display = 'none';
+    
+    feather.replace();
+}
+
+function markServiceAsDone(bookingId) {
+    const booking = state.bookings.find(b => b.id === bookingId);
+    if (!booking) return;
+    
+    // Only allow marking as done if already confirmed
+    if (booking.status !== 'confirmed') {
+        showNotification('Only confirmed bookings can be marked as done');
+        return;
+    }
+    
+    // Mark as done (could add a new status like 'completed' if needed)
+    // For now, we'll just trigger the thank you message
+    simulateSendThankYouMessage(booking.customerName, booking.email, booking.phone);
+    
+    // Show notification
+    elements.doneNotificationText.textContent = `Thank you message sent to ${booking.customerName}!`;
+    elements.doneNotification.style.display = 'flex';
+    
+    // Auto-hide after 5 seconds
+    setTimeout(() => {
+        elements.doneNotification.style.display = 'none';
+    }, 5000);
+}
+
+function prevMonth() {
+    if (state.currentMonth === 0) {
+        state.currentMonth = 11;
+        state.currentYear--;
+    } else {
+        state.currentMonth--;
+    }
+    state.selectedCalendarDate = ''; // Clear selection when changing months
+    renderCalendar();
+}
+
+function nextMonth() {
+    if (state.currentMonth === 11) {
+        state.currentMonth = 0;
+        state.currentYear++;
+    } else {
+        state.currentMonth++;
+    }
+    state.selectedCalendarDate = ''; // Clear selection when changing months
+    renderCalendar();
+}
+
+function toggleCalendarView() {
+    state.viewType = state.viewType === 'list' ? 'calendar' : 'list';
+    
+    if (state.viewType === 'calendar') {
+        elements.calendarView.style.display = 'block';
+        elements.listView.style.display = 'none';
+        renderCalendar();
+    } else {
+        elements.calendarView.style.display = 'none';
+        elements.listView.style.display = 'grid';
+        renderBookings();
+    }
 }
 
 // Utility Functions
@@ -980,14 +1649,11 @@ function showNotification(message) {
         transition: transform 0.3s ease;
     `;
     notification.textContent = message;
-    
     document.body.appendChild(notification);
-    
     // Animate in
     setTimeout(() => {
         notification.style.transform = 'translateX(0)';
     }, 100);
-    
     // Remove after 3 seconds
     setTimeout(() => {
         notification.style.transform = 'translateX(100%)';
@@ -1027,19 +1693,13 @@ document.addEventListener('keydown', (e) => {
 setTimeout(() => {
     const searchInput = document.getElementById('search-bookings');
     const statusFilter = document.getElementById('filter-status');
-    
     if (searchInput) {
         searchInput.addEventListener('input', filterBookings);
     }
-    
     if (statusFilter) {
         statusFilter.addEventListener('change', filterBookings);
     }
 }, 1000);
-    </script></script>
-    <script>
-        // Initialize Feather Icons
-        feather.replace();
     </script>
 </body>
 </html>
