@@ -4,42 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BS Studio - Admin Dashboard</title>
+    
+    <!-- External Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Firebase -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+        import { getAuth } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyDcb8nrURYAKdDdpxJzrA2lAj3XtKX_Oo4",
+            authDomain: "bs-studio-app.firebaseapp.com",
+            projectId: "bs-studio-app",
+            storageBucket: "bs-studio-app.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:123456789:web:abcd1234efgh5678"
+        };
+        
+        window.firebaseApp = initializeApp(firebaseConfig);
+        window.firebaseAuth = getAuth(window.firebaseApp);
+    </script>
+    
     <link rel="stylesheet" href="styles/admin.css">
-    <style>
-        /* === ALL YOUR CSS FROM PASTED TEXT === */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            line-height: 1.5;
-            color: #374151;
-            background: #f8fafc;
-        }
-        .min-h-screen {
-            min-height: 100vh;
-        }
-        .bg-gradient {
-            background: linear-gradient(135deg, #fdf2f8 0%, #f3e8ff 50%, #f8fafc 100%);
-        }
-        .text-purple {
-            color: #9333ea;
-        }
-        .login-container {
-            display: none;
-        }
-        .dashboard-container {
-            min-height: 100vh;
-            background: linear-gradient(135deg, #fdf2f8 0%, #f3e8ff 50%, #f8fafc 100%);
-        }
-        /* ... (rest of your CSS) ... */
-    </style>
 </head>
 <body>
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+    
     <!-- Main Dashboard -->
     <div id="dashboard" class="dashboard-container">
         <div class="dashboard-layout">
@@ -58,6 +51,7 @@
                         <i data-feather="menu"></i>
                     </button>
                 </div>
+                
                 <!-- Navigation -->
                 <div class="sidebar-nav">
                     <button onclick="setActiveTab('dashboard')" class="nav-item active" data-tab="dashboard">
@@ -86,6 +80,7 @@
                         <span class="nav-label">Settings</span>
                     </button>
                 </div>
+                
                 <!-- Sidebar Footer -->
                 <div class="sidebar-footer">
                     <div class="user-profile">
@@ -101,6 +96,7 @@
                     </button>
                 </div>
             </div>
+            
             <!-- Main Content -->
             <div class="main-content">
                 <!-- Top Bar -->
@@ -121,6 +117,7 @@
                         </button>
                     </div>
                 </div>
+                
                 <!-- Content Area -->
                 <div class="content-area">
                     <!-- Dashboard Content -->
@@ -137,6 +134,7 @@
                                 </button>
                             </div>
                         </div>
+                        
                         <!-- Stats Grid -->
                         <div class="stats-grid">
                             <div class="stat-card">
@@ -196,6 +194,29 @@
                                 <p class="stat-subtitle">This month</p>
                             </div>
                         </div>
+                        
+                        <!-- Charts Grid -->
+                        <div class="charts-grid">
+                            <div class="chart-card">
+                                <div class="chart-header">
+                                    <h2>Monthly Bookings</h2>
+                                    <p>Trend over the last 6 months</p>
+                                </div>
+                                <div class="chart-container">
+                                    <canvas id="bookings-chart"></canvas>
+                                </div>
+                            </div>
+                            <div class="chart-card">
+                                <div class="chart-header">
+                                    <h2>Bookings by Service</h2>
+                                    <p>Distribution of services booked</p>
+                                </div>
+                                <div class="chart-container">
+                                    <canvas id="services-chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        
                         <!-- Dashboard Grid -->
                         <div class="dashboard-grid">
                             <!-- Recent Bookings -->
@@ -214,6 +235,7 @@
                                     <!-- Populated by JS -->
                                 </div>
                             </div>
+                            
                             <!-- Quick Actions -->
                             <div class="dashboard-card">
                                 <div class="card-header">
@@ -255,6 +277,7 @@
                             </div>
                         </div>
                     </div>
+                    
                     <!-- Bookings Content -->
                     <div id="bookings-content" class="tab-content">
                         <div class="content-header">
@@ -265,59 +288,78 @@
                             <div class="header-actions">
                                 <div class="search-box">
                                     <i data-feather="search"></i>
-                                    <input type="text" id="search-bookings-admin" placeholder="Search bookings..." oninput="filterBookingsAdmin()">
+                                    <input type="text" id="search-bookings" placeholder="Search bookings..." oninput="filterBookings()">
                                 </div>
-                                <select id="filter-status-admin" onchange="filterBookingsAdmin()">
+                                <select id="filter-status" onchange="filterBookings()">
                                     <option value="all">All Status</option>
                                     <option value="pending">Pending</option>
                                     <option value="confirmed">Confirmed</option>
                                     <option value="cancelled">Cancelled</option>
                                     <option value="completed">Completed</option>
                                 </select>
-                                <button onclick="toggleCalendarViewAdmin()" class="btn btn-secondary">
+                                <button onclick="toggleCalendarView()" class="btn btn-secondary">
                                     <i data-feather="calendar"></i>
                                     Calendar View
                                 </button>
                             </div>
                         </div>
-                        <!-- Calendar View Section -->
-                        <div id="calendar-view-admin" style="display: none;">
-                            <div class="calendar-container">
-                                <div class="calendar-header">
-                                    <h2 class="calendar-title" id="calendar-month-year-admin">September 2025</h2>
-                                    <div class="calendar-nav">
-                                        <button onclick="prevMonthAdmin()"><i data-feather="chevron-left"></i></button>
-                                        <button onclick="nextMonthAdmin()"><i data-feather="chevron-right"></i></button>
+                        
+                        <!-- Bookings Tabs -->
+                        <div class="sub-tabs">
+                            <button onclick="setBookingsTab('current')" class="sub-tab active" data-tab="current">
+                                Current Bookings
+                            </button>
+                            <button onclick="setBookingsTab('deleted')" class="sub-tab" data-tab="deleted">
+                                Recently Deleted
+                            </button>
+                        </div>
+                        
+                        <!-- Current Bookings -->
+                        <div id="current-bookings" class="sub-tab-content active">
+                            <!-- Calendar View Section -->
+                            <div id="calendar-view" style="display: none;">
+                                <div class="calendar-container">
+                                    <div class="calendar-header">
+                                        <h2 class="calendar-title" id="calendar-month-year">September 2025</h2>
+                                        <div class="calendar-nav">
+                                            <button onclick="prevMonth()"><i data-feather="chevron-left"></i></button>
+                                            <button onclick="nextMonth()"><i data-feather="chevron-right"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="calendar-grid">
+                                        <div class="calendar-day-header">Sun</div>
+                                        <div class="calendar-day-header">Mon</div>
+                                        <div class="calendar-day-header">Tue</div>
+                                        <div class="calendar-day-header">Wed</div>
+                                        <div class="calendar-day-header">Thu</div>
+                                        <div class="calendar-day-header">Fri</div>
+                                        <div class="calendar-day-header">Sat</div>
+                                        <div id="calendar-days"></div>
                                     </div>
                                 </div>
-                                <div class="calendar-grid">
-                                    <div class="calendar-day-header">Sun</div>
-                                    <div class="calendar-day-header">Mon</div>
-                                    <div class="calendar-day-header">Tue</div>
-                                    <div class="calendar-day-header">Wed</div>
-                                    <div class="calendar-day-header">Thu</div>
-                                    <div class="calendar-day-header">Fri</div>
-                                    <div class="calendar-day-header">Sat</div>
-                                    <div id="calendar-days-admin"></div>
+                                <!-- Selected Date Bookings -->
+                                <div id="selected-date-bookings" style="display: none;">
+                                    <h3><i data-feather="calendar"></i> Bookings for <span id="selected-date-display"></span></h3>
+                                    <div id="bookings-for-selected-date" class="booking-list-calendar">
+                                        <!-- Bookings for selected date will be populated here -->
+                                    </div>
                                 </div>
                             </div>
-                            <!-- Selected Date Bookings -->
-                            <div id="selected-date-bookings-admin" style="display: none;">
-                                <h3><i data-feather="calendar"></i> Bookings for <span id="selected-date-display-admin"></span></h3>
-                                <div id="bookings-for-selected-date-admin" class="booking-list-calendar">
-                                    <!-- Bookings for selected date will be populated here -->
-                                </div>
-                                <div id="done-notification-admin" class="notification-message" style="display: none;">
-                                    <i data-feather="check-circle"></i>
-                                    <span id="done-notification-text-admin">Thank you message sent to customer!</span>
-                                </div>
+                            
+                            <!-- List View Section -->
+                            <div id="list-view" class="bookings-grid">
+                                <!-- Bookings will be populated by JavaScript -->
                             </div>
                         </div>
-                        <!-- List View Section -->
-                        <div id="list-view-admin" class="bookings-grid">
-                            <!-- Bookings will be populated by JavaScript -->
+                        
+                        <!-- Recently Deleted -->
+                        <div id="deleted-bookings" class="sub-tab-content">
+                            <div id="deleted-bookings-list" class="bookings-grid">
+                                <!-- Deleted bookings will be populated by JavaScript -->
+                            </div>
                         </div>
                     </div>
+                    
                     <!-- Slots Content -->
                     <div id="slots-content" class="tab-content">
                         <div class="content-header">
@@ -326,7 +368,7 @@
                                 <p>Configure available appointment times</p>
                             </div>
                             <div class="header-actions">
-                                <button class="btn btn-primary" onclick="resetSlotConfig()">
+                                <button class="btn btn-primary" onclick="resetSlotDefaults()">
                                     <i data-feather="refresh-cw"></i>
                                     Reset Defaults
                                 </button>
@@ -334,7 +376,7 @@
                         </div>
                         <div class="slots-container">
                             <h3>Available Time Slots (Daily)</h3>
-                            <div id="slots-grid-admin" class="slots-grid">
+                            <div id="slots-grid" class="slots-grid">
                                 <!-- Generated dynamically -->
                             </div>
                             <div style="margin-top: 2rem;">
@@ -342,12 +384,13 @@
                                 <p>Select a date and toggle availability below:</p>
                                 <div class="date-picker-container">
                                     <input type="date" id="custom-slot-date" onchange="updateCustomSlotDate()">
-                                    <button onclick="saveCustomSlots()">Save Changes</button>
+                                    <button onclick="saveCustomSlots()" class="btn btn-primary">Save Changes</button>
                                 </div>
                                 <div id="custom-slots-container" style="margin-top: 1rem;"></div>
                             </div>
                         </div>
                     </div>
+                    
                     <!-- Services Content -->
                     <div id="services-content" class="tab-content">
                         <div class="content-header">
@@ -356,16 +399,17 @@
                                 <p>Manage your beauty service offerings</p>
                             </div>
                             <div class="header-actions">
-                                <button class="btn btn-primary" onclick="showServiceModalAdmin()">
+                                <button class="btn btn-primary" onclick="showServiceModal()">
                                     <i data-feather="plus"></i>
                                     Add Service
                                 </button>
                             </div>
                         </div>
-                        <div id="services-grid-admin" class="services-grid">
+                        <div id="services-grid" class="services-grid">
                             <!-- Services will be populated by JavaScript -->
                         </div>
                     </div>
+                    
                     <!-- Users Content -->
                     <div id="users-content" class="tab-content">
                         <div class="content-header">
@@ -376,21 +420,22 @@
                             <div class="header-actions">
                                 <div class="search-box">
                                     <i data-feather="search"></i>
-                                    <input type="text" id="search-users-admin" placeholder="Search users..." oninput="filterUsersAdmin()">
+                                    <input type="text" id="search-users" placeholder="Search users..." oninput="filterUsers()">
                                 </div>
                             </div>
                         </div>
-                        <div id="users-grid-admin" class="users-grid">
+                        <div id="users-grid" class="users-grid">
                             <!-- Users will be populated by JavaScript -->
                         </div>
                         <!-- Login History -->
                         <div class="login-history">
-                            <h3>Login History</h3>
+                            <h3>Recent Login Activity</h3>
                             <div id="login-history-container">
-                                <!-- Will be populated from Firebase Auth logs -->
+                                <!-- Will be populated from user login data -->
                             </div>
                         </div>
                     </div>
+                    
                     <!-- Settings Content -->
                     <div id="settings-content" class="tab-content">
                         <div class="content-header">
@@ -435,24 +480,25 @@
             </div>
         </div>
     </div>
+    
     <!-- Service Modal -->
-    <div id="service-modal-admin" class="modal">
+    <div id="service-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 id="service-modal-title-admin">Add New Service</h3>
-                <button onclick="closeServiceModalAdmin()" class="close-btn">
+                <h3 id="service-modal-title">Add New Service</h3>
+                <button onclick="closeServiceModal()" class="close-btn">
                     <i data-feather="x"></i>
                 </button>
             </div>
             <div class="modal-body">
-                <form id="service-form-admin" onsubmit="saveServiceAdmin(event)">
+                <form id="service-form" onsubmit="saveService(event)">
                     <div class="form-group">
                         <label>Service Name</label>
-                        <input type="text" id="service-name-admin" required>
+                        <input type="text" id="service-name" required>
                     </div>
                     <div class="form-group">
                         <label>Category</label>
-                        <select id="service-category-admin">
+                        <select id="service-category">
                             <option value="Classic">Classic</option>
                             <option value="Hybrid">Hybrid</option>
                             <option value="Volume">Volume</option>
@@ -461,22 +507,22 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label>Price (GHS)</label>
-                            <input type="number" id="service-price-admin" required>
+                            <input type="number" id="service-price" required>
                         </div>
                         <div class="form-group">
                             <label>Duration (min)</label>
-                            <input type="number" id="service-duration-admin" required>
+                            <input type="number" id="service-duration" required>
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Description</label>
-                        <textarea id="service-description-admin" rows="3"></textarea>
+                        <textarea id="service-description" rows="3"></textarea>
                     </div>
                     <div class="modal-actions">
                         <button type="submit" class="btn btn-primary">
-                            <span id="service-submit-text-admin">Create Service</span>
+                            <span id="service-submit-text">Create Service</span>
                         </button>
-                        <button type="button" onclick="closeServiceModalAdmin()" class="btn btn-secondary">
+                        <button type="button" onclick="closeServiceModal()" class="btn btn-secondary">
                             Cancel
                         </button>
                     </div>
@@ -484,593 +530,7 @@
             </div>
         </div>
     </div>
-    <!-- Background Pattern -->
-    <div class="background-pattern">
-        <div class="pattern-circle circle-1"></div>
-        <div class="pattern-circle circle-2"></div>
-        <div class="pattern-circle circle-3"></div>
-    </div>
-
-    <script type="module">
-       // =============================================
-// 🔥 ADMIN DASHBOARD - COMPLETE BOOKING MANAGEMENT
-// =============================================
-
-// --- 📦 IMPORTS & CONFIGURATION ---
-import { createClient } from 'https://cdn.skypack.dev/@supabase/supabase-js@2';
-
-// Supabase Configuration
-const SUPABASE_URL = 'https://foauqtwkuublsursedjs.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZvYXVxdHdrdXVibHN1cnNlZGpzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcyODE5OTMsImV4cCI6MjA3Mjg1Nzk5M30.d7Eo8PIeix9Pr1XuLvhDKcgtqmtpherr3OezsR3pm1Y';
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-
-// --- 🗃️ STATE MANAGEMENT ---
-const state = {
-  bookings: [],
-  services: [],
-  users: [],
-  activeTab: 'dashboard',
-  sidebarCollapsed: false,
-  isDarkMode: false,
-  currentMonth: new Date().getMonth(),
-  currentYear: new Date().getFullYear(),
-  selectedCalendarDate: null,
-  viewType: 'list',
-  depositAmount: 50,
-  momoNumber: '+233 XX XXX XXXX',
-  bookingPolicy: 'Please make a 50 cedis deposit to confirm your booking. Cancellations must be made 24 hours in advance.',
-  slotDefaults: [
-    '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
-    '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30'
-  ]
-};
-
-// --- 📌 DOM ELEMENTS ---
-const elements = {
-  // Sidebar
-  sidebar: document.getElementById('sidebar'),
-  brandInfo: document.getElementById('brand-info'),
-  userInfo: document.getElementById('user-info'),
-  userAvatar: document.getElementById('user-avatar'),
-  userName: document.getElementById('user-name'),
-  userEmail: document.getElementById('user-email'),
-
-  // Top Bar
-  pageIcon: document.getElementById('page-icon'),
-  pageTitleText: document.getElementById('page-title-text'),
-  themeIcon: document.getElementById('theme-icon'),
-
-  // Dashboard
-  totalBookings: document.getElementById('total-bookings'),
-  confirmedBookings: document.getElementById('confirmed-bookings'),
-  totalUsers: document.getElementById('total-users'),
-  totalRevenue: document.getElementById('total-revenue'),
-  weeklyGrowth: document.getElementById('weekly-growth'),
-  confirmedGrowth: document.getElementById('confirmed-growth'),
-  userGrowth: document.getElementById('user-growth'),
-  revenueGrowth: document.getElementById('revenue-growth'),
-  bookingCount: document.getElementById('booking-count'),
-
-  // Bookings
-  searchBookings: document.getElementById('search-bookings-admin'),
-  filterStatus: document.getElementById('filter-status-admin'),
-  calendarView: document.getElementById('calendar-view-admin'),
-  listView: document.getElementById('list-view-admin'),
-  calendarDays: document.getElementById('calendar-days-admin'),
-  calendarMonthYear: document.getElementById('calendar-month-year-admin'),
-  selectedDateDisplay: document.getElementById('selected-date-display-admin'),
-  bookingsForSelectedDate: document.getElementById('bookings-for-selected-date-admin'),
-  doneNotification: document.getElementById('done-notification-admin'),
-  doneNotificationText: document.getElementById('done-notification-text-admin'),
-  recentBookings: document.getElementById('recent-bookings'),
-
-  // Services
-  servicesGrid: document.getElementById('services-grid-admin'),
-
-  // Users
-  usersGrid: document.getElementById('users-grid-admin'),
-
-  // Settings
-  depositAmount: document.getElementById('deposit-amount'),
-  momoNumber: document.getElementById('momo-number'),
-  bookingPolicy: document.getElementById('booking-policy'),
-
-  // Slots
-  slotsGrid: document.getElementById('slots-grid-admin'),
-  customSlotsContainer: document.getElementById('custom-slots-container'),
-  customSlotDate: document.getElementById('custom-slot-date')
-};
-
-// --- 🔄 DATA FETCHING ---
-/**
- * Fetch all bookings from Supabase
- */
-async function fetchBookings() {
-  const { data, error } = await supabase
-    .from('bookings')
-    .select('*')
-    .order('created_at', { ascending: false });
-
-  if (error) {
-    console.error('❌ Error fetching bookings:', error);
-    showNotification('Failed to load bookings. Check console.');
-    return [];
-  }
-  return data;
-}
-
-/**
- * Fetch all services from Supabase
- */
-async function fetchServices() {
-  const { data, error } = await supabase
-    .from('services')
-    .select('*')
-    .order('name', { ascending: true });
-
-  if (error) {
-    console.error('❌ Error fetching services:', error);
-    showNotification('Failed to load services. Check console.');
-    return [];
-  }
-  return data;
-}
-
-/**
- * Fetch all users from Supabase
- */
-async function fetchUsers() {
-  const { data, error } = await supabase
-    .from('users')
-    .select('*');
-
-  if (error) {
-    console.error('❌ Error fetching users:', error);
-    showNotification('Failed to load users. Check console.');
-    return [];
-  }
-  return data;
-}
-
-/**
- * Load all data on page load
- */
-async function loadData() {
-  try {
-    state.bookings = await fetchBookings();
-    state.services = await fetchServices();
-    state.users = await fetchUsers();
-    renderDashboard();
-  } catch (error) {
-    console.error('❌ Failed to load data:', error);
-    showNotification('Failed to load data. Check console.');
-  }
-}
-
-// --- 🎨 RENDERING ---
-/**
- * Render the entire dashboard
- */
-function renderDashboard() {
-  updateStats();
-  renderBookings();
-  renderServices();
-  renderUsers();
-  renderSlots();
-  updateUI();
-  updateBookingCount();
-}
-
-/**
- * Update statistics cards
- */
-function updateStats() {
-  const today = new Date();
-  const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
-  const monthEnd = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-
-  const monthlyBookings = state.bookings.filter(b => {
-    const bookingDate = new Date(b.booking_date);
-    return bookingDate >= monthStart && bookingDate <= monthEnd;
-  });
-
-  const confirmedBookings = monthlyBookings.filter(b => b.status === 'confirmed').length;
-  const totalRevenue = monthlyBookings.reduce((sum, b) => sum + (b.service_price || 0), 0);
-
-  elements.totalBookings.textContent = monthlyBookings.length;
-  elements.confirmedBookings.textContent = confirmedBookings;
-  elements.totalUsers.textContent = state.users.length;
-  elements.totalRevenue.textContent = `¢${totalRevenue.toLocaleString()}`;
-  elements.weeklyGrowth.textContent = '+12%';
-  elements.confirmedGrowth.textContent = '+8%';
-  elements.userGrowth.textContent = '+15%';
-  elements.revenueGrowth.textContent = '+23%';
-}
-
-/**
- * Render bookings list
- */
-function renderBookings() {
-  const filteredBookings = filterBookings();
-  elements.listView.innerHTML = filteredBookings.map(booking => `
-    <div class="booking-card">
-      <div class="booking-meta">
-        <h4>${booking.client_name}</h4>
-        <p>${booking.service_name} (${booking.service_subtitle})</p>
-        <p><strong>Date:</strong> ${new Date(booking.booking_date).toLocaleDateString()} |
-           <strong>Time:</strong> ${booking.booking_time}</p>
-        <p><strong>Status:</strong> <span class="status-badge status-${booking.status}">${booking.status}</span></p>
-      </div>
-      <div class="booking-actions">
-        ${booking.status !== 'confirmed' && booking.status !== 'completed' ? `
-          <button class="btn-confirm" onclick="updateBookingStatus('${booking.id}', 'confirmed')">
-            <i data-feather="check"></i> Confirm
-          </button>
-        ` : ''}
-        ${booking.status !== 'cancelled' && booking.status !== 'completed' ? `
-          <button class="btn-cancel" onclick="updateBookingStatus('${booking.id}', 'cancelled')">
-            <i data-feather="x"></i> Cancel
-          </button>
-        ` : ''}
-        <button class="btn-view" onclick="viewBookingDetails('${booking.id}')">
-          <i data-feather="eye"></i> View
-        </button>
-        ${booking.status === 'confirmed' ? `
-          <button class="btn-done" onclick="markAsDone('${booking.id}')">
-            <i data-feather="check-circle"></i> Done
-          </button>
-        ` : ''}
-      </div>
-    </div>
-  `).join('');
-
-  // Re-render Feather icons
-  feather.replace();
-}
-
-/**
- * Filter bookings based on search and status
- */
-function filterBookings() {
-  const query = elements.searchBookings?.value.toLowerCase() || '';
-  const status = elements.filterStatus?.value || 'all';
-
-  return state.bookings.filter(booking => {
-    const matchesQuery =
-      booking.client_name.toLowerCase().includes(query) ||
-      booking.service_name.toLowerCase().includes(query) ||
-      booking.client_email.toLowerCase().includes(query);
-
-    const matchesStatus = status === 'all' || booking.status === status;
-    return matchesQuery && matchesStatus;
-  });
-}
-
-/**
- * Render services grid
- */
-function renderServices() {
-  elements.servicesGrid.innerHTML = state.services.map(service => `
-    <div class="service-card-admin">
-      <div class="service-info">
-        <h3>${service.name}</h3>
-        <span class="category-badge">${service.category}</span>
-        <p>${service.description}</p>
-        <p><strong>Price:</strong> ¢${service.price} | <strong>Duration:</strong> ${service.duration} min</p>
-      </div>
-      <div class="service-actions">
-        <button class="btn-edit" onclick="editService('${service.id}')">
-          <i data-feather="edit"></i>
-        </button>
-        <button class="btn-delete" onclick="deleteService('${service.id}')">
-          <i data-feather="trash-2"></i>
-        </button>
-      </div>
-    </div>
-  `).join('');
-  feather.replace();
-}
-
-/**
- * Render users list
- */
-function renderUsers() {
-  elements.usersGrid.innerHTML = state.users.map(user => `
-    <div class="user-list-item">
-      <div class="user-avatar-small">${user.email.charAt(0)}</div>
-      <div style="flex: 1;">
-        <h4>${user.email}</h4>
-        <p style="color: #6b7280;">Joined: ${new Date(user.created_at).toLocaleDateString()}</p>
-      </div>
-      <div>
-        <button class="btn-view" onclick="viewUserDetails('${user.id}')">View</button>
-      </div>
-    </div>
-  `).join('');
-  feather.replace();
-}
-
-/**
- * Render time slots
- */
-function renderSlots() {
-  elements.slotsGrid.innerHTML = state.slotDefaults.map(time => `
-    <div class="slot-item available" onclick="toggleSlotAvailability('${time}')">
-      ${time}
-    </div>
-  `).join('');
-}
-
-/**
- * Update UI based on state
- */
-function updateUI() {
-  // Update active tab styling
-  document.querySelectorAll('.nav-item').forEach(item => {
-    item.classList.toggle('active', item.dataset.tab === state.activeTab);
-  });
-
-  // Update page title and icon
-  const tabConfig = {
-    dashboard: { icon: 'bar-chart-3', title: 'Dashboard' },
-    bookings: { icon: 'calendar', title: 'Bookings' },
-    slots: { icon: 'clock', title: 'Slots' },
-    services: { icon: 'star', title: 'Services' },
-    users: { icon: 'users', title: 'Users' },
-    settings: { icon: 'settings', title: 'Settings' }
-  };
-
-  const config = tabConfig[state.activeTab];
-  elements.pageIcon.setAttribute('data-feather', config.icon);
-  elements.pageTitleText.textContent = config.title;
-  elements.themeIcon.setAttribute('data-feather', state.isDarkMode ? 'sun' : 'moon');
-
-  // Update user info in sidebar
-  elements.userAvatar.textContent = 'A'; // Replace with actual user initial
-  elements.userName.textContent = 'Admin User'; // Replace with actual user name
-  elements.userEmail.textContent = 'admin@bsstudio.com'; // Replace with actual user email
-
-  feather.replace();
-}
-
-/**
- * Update booking count badge
- */
-function updateBookingCount() {
-  elements.bookingCount.textContent = state.bookings.filter(b => b.status === 'pending').length || '0';
-}
-
-// --- 🔄 BOOKING MANAGEMENT ---
-/**
- * Update the status of a booking (e.g., "confirmed", "cancelled")
- * @param {string} bookingId
- * @param {string} newStatus
- */
-async function updateBookingStatus(bookingId, newStatus) {
-  try {
-    // Update in Supabase
-    const { error } = await supabase
-      .from('bookings')
-      .update({
-        status: newStatus,
-        updated_at: new Date().toISOString()
-      })
-      .eq('id', bookingId);
-
-    if (error) throw error;
-
-    // Update local state
-    const bookingIndex = state.bookings.findIndex(b => b.id === bookingId);
-    if (bookingIndex !== -1) {
-      state.bookings[bookingIndex].status = newStatus;
-    }
-
-    // Re-render UI
-    renderBookings();
-    updateBookingCount();
-    updateStats();
-
-    // Show success notification
-    showNotification(`Booking marked as ${newStatus}.`);
-
-    // If confirmed, simulate sending a thank-you message
-    if (newStatus === 'confirmed') {
-      const booking = state.bookings.find(b => b.id === bookingId);
-      if (booking) {
-        console.log(`📧 Thank you message sent to ${booking.client_name} (${booking.client_email}).`);
-      }
-    }
-  } catch (error) {
-    console.error('❌ Error updating booking status:', error);
-    showNotification(`Failed to update booking: ${error.message}`);
-  }
-}
-
-/**
- * Mark a booking as "completed" (Done)
- * @param {string} bookingId
- */
-async function markAsDone(bookingId) {
-  try {
-    const booking = state.bookings.find(b => b.id === bookingId);
-
-    // Only allow marking confirmed bookings as done
-    if (!booking || booking.status !== 'confirmed') {
-      showNotification('Only confirmed bookings can be marked as done.');
-      return;
-    }
-
-    // Update in Supabase
-    const { error } = await supabase
-      .from('bookings')
-      .update({
-        status: 'completed',
-        updated_at: new Date().toISOString()
-      })
-      .eq('id', bookingId);
-
-    if (error) throw error;
-
-    // Update local state
-    booking.status = 'completed';
-
-    // Re-render UI
-    renderBookings();
-    updateBookingCount();
-    updateStats();
-
-    // Show success notification
-    showNotification(`Booking marked as completed. Thank you message sent to ${booking.client_name}!`);
-
-    // Simulate sending a thank-you message
-    console.log(`📧 Thank you message sent to ${booking.client_name} (${booking.client_email}).`);
-  } catch (error) {
-    console.error('❌ Error marking booking as done:', error);
-    showNotification(`Failed to mark booking as done: ${error.message}`);
-  }
-}
-
-/**
- * Show detailed view of a booking
- * @param {string} bookingId
- */
-function viewBookingDetails(bookingId) {
-  const booking = state.bookings.find(b => b.id === bookingId);
-  if (!booking) {
-    showNotification('Booking not found.');
-    return;
-  }
-
-  // Create a modal (example: using a simple alert for demo)
-  const details = `
-    <div style="text-align: left; font-family: Arial, sans-serif; line-height: 1.5;">
-      <h3 style="color: #1f2937; margin-bottom: 0.5rem;">${booking.client_name}</h3>
-      <p><strong>Service:</strong> ${booking.service_name} (${booking.service_subtitle})</p>
-      <p><strong>Date:</strong> ${new Date(booking.booking_date).toLocaleDateString()}</p>
-      <p><strong>Time:</strong> ${booking.booking_time}</p>
-      <p><strong>Status:</strong> <span style="color: ${booking.status === 'confirmed' ? 'green' : booking.status === 'cancelled' ? 'red' : booking.status === 'completed' ? 'blue' : 'orange'}">${booking.status}</span></p>
-      <p><strong>Price:</strong> ¢${booking.service_price}</p>
-      <p><strong>Client Email:</strong> ${booking.client_email}</p>
-      <p><strong>Client Phone:</strong> ${booking.client_phone}</p>
-      ${booking.client_notes ? `<p><strong>Notes:</strong> ${booking.client_notes}</p>` : ''}
-    </div>
-  `;
-
-  // Use a modal library or custom modal (example: alert for simplicity)
-  alert(`📋 BOOKING DETAILS\n\n${details.replace(/<[^>]*>/g, '')}`);
-}
-
-// --- 🔧 UTILITY FUNCTIONS ---
-/**
- * Show a notification message
- * @param {string} message
- */
-function showNotification(message) {
-  const notification = document.createElement('div');
-  notification.style.cssText = `
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: linear-gradient(135deg, #9333ea 0%, #ec4899 100%);
-    color: white;
-    padding: 1rem 1.5rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-    z-index: 10000;
-    font-weight: 600;
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
-  `;
-  notification.textContent = message;
-  document.body.appendChild(notification);
-
-  setTimeout(() => {
-    notification.style.transform = 'translateX(0)';
-  }, 100);
-
-  setTimeout(() => {
-    notification.style.transform = 'translateX(100%)';
-    setTimeout(() => {
-      document.body.removeChild(notification);
-    }, 300);
-  }, 3000);
-}
-
-/**
- * Set active tab
- * @param {string} tab
- */
-function setActiveTab(tab) {
-  state.activeTab = tab;
-  document.querySelectorAll('.tab-content').forEach(content => {
-    content.classList.remove('active');
-  });
-  document.getElementById(`${tab}-content`).classList.add('active');
-  updateUI();
-}
-
-/**
- * Toggle sidebar collapse
- */
-function toggleSidebar() {
-  state.sidebarCollapsed = !state.sidebarCollapsed;
-  elements.sidebar.classList.toggle('collapsed', state.sidebarCollapsed);
-}
-
-/**
- * Toggle dark mode
- */
-function toggleTheme() {
-  state.isDarkMode = !state.isDarkMode;
-  updateUI();
-}
-
-/**
- * Export data as JSON
- */
-function exportData() {
-  const data = {
-    bookings: state.bookings,
-    services: state.services,
-    users: state.users,
-    settings: {
-      depositAmount: state.depositAmount,
-      momoNumber: state.momoNumber,
-      bookingPolicy: state.bookingPolicy
-    }
-  };
-
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `bs-studio-admin-data-${new Date().toISOString().split('T')[0]}.json`;
-  a.click();
-  URL.revokeObjectURL(url);
-}
-
-// --- 🚀 INITIALIZATION ---
-document.addEventListener('DOMContentLoaded', async () => {
-  // Load data from Supabase
-  await loadData();
-
-  // Set up real-time updates
-  supabase
-    .channel('bookings')
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'bookings' }, () => {
-      loadData();
-    })
-    .subscribe();
-
-  // Make functions globally available for inline event handlers
-  window.updateBookingStatus = updateBookingStatus;
-  window.markAsDone = markAsDone;
-  window.viewBookingDetails = viewBookingDetails;
-  window.setActiveTab = setActiveTab;
-  window.toggleSidebar = toggleSidebar;
-  window.toggleTheme = toggleTheme;
-  window.exportData = exportData;
-});
-    </script>
+    
+    <script src="admin.js"></script>
 </body>
 </html>
