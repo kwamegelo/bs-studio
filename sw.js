@@ -249,6 +249,12 @@ async function handleStaleWhileRevalidate(request) {
     if (networkResponse.status === 200) {
       const cache = caches.open(CACHE_NAME);
       cache.then(c => c.put(request, networkResponse.clone()));
+      return fetch(event.request).then(response => {
+  const responseClone = response.clone(); // create a copy
+  cache.put(event.request, responseClone); // store copy
+  return response; // send original back to browser
+});
+
     }
     return networkResponse;
   }).catch(() => {

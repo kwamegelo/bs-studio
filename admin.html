@@ -5,28 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BS Studio - Admin Dashboard</title>
     
-    <!-- External Libraries -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
-    <!-- Firebase -->
-    <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-        import { getAuth } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-        
-        const firebaseConfig = {
-            apiKey: "AIzaSyDcb8nrURYAKdDdpxJzrA2lAj3XtKX_Oo4",
-            authDomain: "bs-studio-app.firebaseapp.com",
-            projectId: "bs-studio-app",
-            storageBucket: "bs-studio-app.appspot.com",
-            messagingSenderId: "123456789",
-            appId: "1:123456789:web:abcd1234efgh5678"
-        };
-        
-        window.firebaseApp = initializeApp(firebaseConfig);
-        window.firebaseAuth = getAuth(window.firebaseApp);
-    </script>
-    
     <link rel="stylesheet" href="styles/admin.css">
 </head>
 <body>
@@ -530,8 +508,13 @@
             </div>
         </div>
     </div>
-    
+
+    <!-- Required Scripts (in correct order) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
     <script src="admin.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/supabase-js/2.38.4/umd.min.js"></script>
 </body>
 </html>

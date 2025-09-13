@@ -57,7 +57,6 @@ async function init() {
     setupTheme();
     await initializeAuth();
     updateUI();
-    
     // Load initial dashboard data
     if (state.user) {
         await loadDashboardData();
@@ -77,18 +76,15 @@ function setupTheme() {
 // Firebase Auth Setup
 async function initializeAuth() {
     try {
-        // Listen for auth state changes
-        window.firebaseAuth.onAuthStateChanged(async (user) => {
+        // Listen for auth state changes using compat SDK
+        firebase.auth().onAuthStateChanged(async (user) => {
             console.log('Auth state changed:', user?.email || 'No user');
-            
             if (user) {
                 state.user = user;
-                
                 // Update user info in UI
                 const userAvatar = document.getElementById('user-avatar');
                 const userName = document.getElementById('user-name');
                 const userEmail = document.getElementById('user-email');
-                
                 if (userAvatar) {
                     userAvatar.textContent = (user.displayName || user.email || 'A').charAt(0).toUpperCase();
                 }
@@ -98,10 +94,8 @@ async function initializeAuth() {
                 if (userEmail) {
                     userEmail.textContent = user.email || 'admin@bsstudio.com';
                 }
-                
                 // Save user to Supabase if not exists
                 await saveUserToSupabase(user);
-                
                 // Load dashboard data
                 await loadDashboardData();
                 showToast('Welcome back!', 'success');
@@ -132,7 +126,6 @@ async function saveUserToSupabase(user) {
                 updated_at: new Date().toISOString()
             })
             .select();
-        
         if (error) throw error;
         console.log('User saved to Supabase:', data);
     } catch (error) {
@@ -151,7 +144,6 @@ async function loadDashboardData() {
             const element = document.getElementById(id);
             if (element) element.textContent = 'Loading...';
         });
-        
         await Promise.all([
             loadBookings(),
             loadServices(),
@@ -159,11 +151,9 @@ async function loadDashboardData() {
             loadTimeSlots(),
             loadSettings()
         ]);
-        
         updateStats();
         renderDashboard();
         renderCharts();
-        
         console.log('Dashboard data loaded successfully');
     } catch (error) {
         console.error('Error loading dashboard data:', error);
@@ -178,18 +168,14 @@ async function loadBookings() {
             .from('bookings')
             .select('*')
             .order('created_at', { ascending: false });
-        
         if (error) throw error;
-        
         state.bookings = data || [];
         console.log(`Loaded ${state.bookings.length} bookings`);
-        
         // Update booking count in sidebar
         const bookingCount = document.getElementById('booking-count');
         if (bookingCount) {
             bookingCount.textContent = state.bookings.length;
         }
-        
     } catch (error) {
         console.error('Error loading bookings:', error);
         state.bookings = [];
@@ -204,7 +190,6 @@ async function loadDeletedBookings() {
             .from('deleted_bookings')
             .select('*')
             .order('created_at', { ascending: false });
-        
         if (error) throw error;
         state.deletedBookings = data || [];
         console.log(`Loaded ${state.deletedBookings.length} deleted bookings`);
@@ -222,7 +207,6 @@ async function loadServices() {
             .select('*')
             .eq('status', 'active')
             .order('created_at', { ascending: false });
-        
         if (error) throw error;
         state.services = data || [];
         console.log(`Loaded ${state.services.length} services`);
@@ -240,7 +224,6 @@ async function loadUsers() {
             .from('users')
             .select('*')
             .order('created_at', { ascending: false });
-        
         if (error) throw error;
         state.users = data || [];
         console.log(`Loaded ${state.users.length} users`);
@@ -258,7 +241,6 @@ async function loadTimeSlots() {
             .from('time_slots')
             .select('*')
             .order('date', { ascending: true });
-        
         if (error) throw error;
         state.timeSlots = data || [];
         console.log(`Loaded ${state.timeSlots.length} time slots`);
@@ -275,19 +257,15 @@ async function loadSettings() {
             .from('system_settings')
             .select('*')
             .single();
-        
         if (error && error.code !== 'PGRST116') { // PGRST116 is "not found"
             throw error;
         }
-        
         state.settings = data || {};
-        
         // Update settings in UI
         if (data) {
             const depositAmount = document.getElementById('deposit-amount');
             const momoNumber = document.getElementById('momo-number');
             const bookingPolicy = document.getElementById('booking-policy');
-            
             if (depositAmount) depositAmount.value = data.deposit_amount || 50;
             if (momoNumber) momoNumber.value = data.momo_number || '';
             if (bookingPolicy) bookingPolicy.value = data.booking_policy || '';
@@ -302,42 +280,34 @@ async function loadSettings() {
 // Update Stats - This is the key function for real-time dashboard updates
 function updateStats() {
     console.log('Updating dashboard stats...');
-    
     const now = new Date();
     const currentMonth = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0');
-    
     // Calculate booking stats
     state.stats.totalBookings = state.bookings.length;
     state.stats.confirmedBookings = state.bookings.filter(b => b.status === 'confirmed').length;
     state.stats.pendingBookings = state.bookings.filter(b => b.status === 'pending').length;
     state.stats.completedBookings = state.bookings.filter(b => b.status === 'completed').length;
     state.stats.cancelledBookings = state.bookings.filter(b => b.status === 'cancelled').length;
-    
     // Calculate total users
     state.stats.totalUsers = state.users.length;
-    
     // Calculate revenue from this month's confirmed/completed bookings
     state.stats.revenue = state.bookings
         .filter(booking => {
             if (!booking.booking_date) return false;
-            
             const bookingMonth = booking.booking_date.substring(0, 7); // Extract YYYY-MM
             const isCurrentMonth = bookingMonth === currentMonth;
             const isRevenueStatus = booking.status === 'confirmed' || booking.status === 'completed';
-            
             return isCurrentMonth && isRevenueStatus;
         })
         .reduce((total, booking) => {
             const price = parseFloat(booking.service_price) || 0;
             return total + price;
         }, 0);
-    
     // Update DOM elements
     const totalBookingsEl = document.getElementById('total-bookings');
     const confirmedBookingsEl = document.getElementById('confirmed-bookings');
     const totalUsersEl = document.getElementById('total-users');
     const totalRevenueEl = document.getElementById('total-revenue');
-    
     if (totalBookingsEl) {
         totalBookingsEl.textContent = state.stats.totalBookings.toString();
     }
@@ -350,7 +320,6 @@ function updateStats() {
     if (totalRevenueEl) {
         totalRevenueEl.textContent = `₵${state.stats.revenue.toFixed(0)}`;
     }
-    
     console.log('Stats updated:', {
         totalBookings: state.stats.totalBookings,
         confirmedBookings: state.stats.confirmedBookings,
@@ -367,28 +336,24 @@ function updateUI() {
     } else {
         elements.sidebar.classList.remove('collapsed');
     }
-
     // Update page title and icon
     const tabConfig = {
-        dashboard: { icon: 'bar-chart-3', title: 'Dashboard' },
+        dashboard: { icon: 'bar-chart', title: 'Dashboard' }, // FIXED: bar-chart-3 -> bar-chart
         bookings: { icon: 'calendar', title: 'Bookings' },
         slots: { icon: 'clock', title: 'Slots' },
-        services: { icon: 'star', title: 'Services' },
+        services: { icon: 'star', title: 'Services' }, // FIXED: sparkles -> star
         users: { icon: 'users', title: 'Users' },
         settings: { icon: 'settings', title: 'Settings' }
     };
-
     const config = tabConfig[state.activeTab];
     if (config && elements.pageIcon && elements.pageTitleText) {
         elements.pageIcon.setAttribute('data-feather', config.icon);
         elements.pageTitleText.textContent = config.title;
     }
-
     // Update theme icon
     if (elements.themeIcon) {
         elements.themeIcon.setAttribute('data-feather', state.isDarkMode ? 'sun' : 'moon');
     }
-
     // Replace feather icons
     feather.replace();
 }
@@ -396,7 +361,6 @@ function updateUI() {
 // Navigation
 function setActiveTab(tab) {
     state.activeTab = tab;
-    
     // Update nav items
     document.querySelectorAll('.nav-item').forEach(item => {
         if (item.getAttribute('data-tab') === tab) {
@@ -405,7 +369,6 @@ function setActiveTab(tab) {
             item.classList.remove('active');
         }
     });
-
     // Update content
     document.querySelectorAll('.tab-content').forEach(content => {
         content.classList.remove('active');
@@ -414,7 +377,6 @@ function setActiveTab(tab) {
     if (tabContent) {
         tabContent.classList.add('active');
     }
-
     // Load tab-specific data
     switch(tab) {
         case 'bookings':
@@ -433,7 +395,6 @@ function setActiveTab(tab) {
             renderDashboard();
             break;
     }
-
     updateUI();
 }
 
@@ -461,9 +422,7 @@ function renderBookings() {
 function renderCurrentBookings() {
     const container = document.getElementById('list-view');
     if (!container) return;
-    
     const filteredBookings = filterBookingsData();
-    
     if (filteredBookings.length === 0) {
         container.innerHTML = `
             <div class="empty-state">
@@ -475,7 +434,6 @@ function renderCurrentBookings() {
         feather.replace();
         return;
     }
-    
     container.innerHTML = filteredBookings.map(booking => `
         <div class="booking-card">
             <div class="booking-header">
@@ -488,7 +446,6 @@ function renderCurrentBookings() {
                 </div>
                 <span class="status-badge status-${booking.status}">${(booking.status || 'pending').charAt(0).toUpperCase() + (booking.status || 'pending').slice(1)}</span>
             </div>
-            
             <div class="booking-details">
                 <div class="booking-detail">
                     <i data-feather="calendar"></i>
@@ -503,7 +460,6 @@ function renderCurrentBookings() {
                     <span>₵${booking.service_price || 0}</span>
                 </div>
             </div>
-
             <div class="booking-actions">
                 ${booking.status === 'pending' ? `
                     <button class="btn-confirm" onclick="updateBookingStatus('${booking.id}', 'confirmed')">
@@ -528,7 +484,6 @@ function renderCurrentBookings() {
             </div>
         </div>
     `).join('');
-    
     feather.replace();
 }
 
@@ -536,7 +491,6 @@ async function renderDeletedBookings() {
     await loadDeletedBookings();
     const container = document.getElementById('deleted-bookings-list');
     if (!container) return;
-    
     if (state.deletedBookings.length === 0) {
         container.innerHTML = `
             <div class="empty-state">
@@ -548,7 +502,6 @@ async function renderDeletedBookings() {
         feather.replace();
         return;
     }
-    
     container.innerHTML = state.deletedBookings.map(booking => `
         <div class="booking-card deleted">
             <div class="booking-header">
@@ -561,7 +514,6 @@ async function renderDeletedBookings() {
                 </div>
                 <span class="status-badge status-deleted">Deleted</span>
             </div>
-            
             <div class="booking-details">
                 <div class="booking-detail">
                     <i data-feather="calendar"></i>
@@ -576,7 +528,6 @@ async function renderDeletedBookings() {
                     <span>₵${booking.service_price || 0}</span>
                 </div>
             </div>
-
             <div class="booking-actions">
                 <button class="btn-view" onclick="restoreBooking('${booking.id}')">
                     <i data-feather="rotate-ccw"></i>
@@ -585,16 +536,13 @@ async function renderDeletedBookings() {
             </div>
         </div>
     `).join('');
-    
     feather.replace();
 }
 
 function renderRecentBookings() {
     const container = document.getElementById('recent-bookings');
     if (!container) return;
-    
     const recentBookings = state.bookings.slice(0, 3);
-    
     if (recentBookings.length === 0) {
         container.innerHTML = `
             <div class="empty-state-small">
@@ -603,7 +551,6 @@ function renderRecentBookings() {
         `;
         return;
     }
-    
     container.innerHTML = recentBookings.map(booking => `
         <div class="booking-card">
             <div class="booking-header">
@@ -616,7 +563,6 @@ function renderRecentBookings() {
                 </div>
                 <span class="status-badge status-${booking.status}">${(booking.status || 'pending').charAt(0).toUpperCase() + (booking.status || 'pending').slice(1)}</span>
             </div>
-            
             <div class="booking-details">
                 <div class="booking-detail">
                     <i data-feather="calendar"></i>
@@ -629,7 +575,6 @@ function renderRecentBookings() {
             </div>
         </div>
     `).join('');
-    
     feather.replace();
 }
 
@@ -645,7 +590,6 @@ function filterBookingsData() {
             booking.user_email || '',
             booking.service_name || ''
         ].join(' ').toLowerCase();
-        
         const matchesSearch = !state.searchQuery || searchFields.includes(state.searchQuery.toLowerCase());
         const matchesFilter = state.filterStatus === 'all' || booking.status === state.filterStatus;
         return matchesSearch && matchesFilter;
@@ -655,7 +599,6 @@ function filterBookingsData() {
 function filterBookings() {
     const searchInput = document.getElementById('search-bookings');
     const statusFilter = document.getElementById('filter-status');
-    
     state.searchQuery = searchInput ? searchInput.value : '';
     state.filterStatus = statusFilter ? statusFilter.value : 'all';
     renderBookings();
@@ -670,21 +613,17 @@ async function updateBookingStatus(bookingId, newStatus) {
                 updated_at: new Date().toISOString()
             })
             .eq('id', bookingId);
-        
         if (error) throw error;
-        
         // Update local state
         const booking = state.bookings.find(b => b.id === bookingId);
         if (booking) {
             booking.status = newStatus;
             booking.updated_at = new Date().toISOString();
         }
-        
         // Re-render affected components and update stats
         renderBookings();
         renderRecentBookings();
         updateStats(); // This will update the dashboard numbers in real-time
-        
         showToast(`Booking ${newStatus} successfully`, 'success');
     } catch (error) {
         console.error('Error updating booking status:', error);
@@ -696,11 +635,9 @@ async function deleteBooking(bookingId) {
     if (!confirm('Are you sure you want to delete this booking? It will be moved to the deleted bookings section.')) {
         return;
     }
-    
     try {
         const booking = state.bookings.find(b => b.id === bookingId);
         if (!booking) return;
-        
         // Move to deleted_bookings table
         const { error: insertError } = await supabaseClient
             .from('deleted_bookings')
@@ -708,25 +645,19 @@ async function deleteBooking(bookingId) {
                 ...booking,
                 deleted_at: new Date().toISOString()
             });
-        
         if (insertError) throw insertError;
-        
         // Remove from bookings table
         const { error: deleteError } = await supabaseClient
             .from('bookings')
             .delete()
             .eq('id', bookingId);
-        
         if (deleteError) throw deleteError;
-        
         // Update local state
         state.bookings = state.bookings.filter(b => b.id !== bookingId);
-        
         // Re-render and update stats
         renderBookings();
         renderRecentBookings();
         updateStats(); // Update dashboard stats in real-time
-        
         showToast('Booking moved to deleted section', 'success');
     } catch (error) {
         console.error('Error deleting booking:', error);
@@ -738,32 +669,25 @@ async function restoreBooking(bookingId) {
     try {
         const deletedBooking = state.deletedBookings.find(b => b.id === bookingId);
         if (!deletedBooking) return;
-        
         // Remove deleted_at field and restore to bookings table
         const { deleted_at, ...bookingData } = deletedBooking;
-        
         const { error: insertError } = await supabaseClient
             .from('bookings')
             .insert({
                 ...bookingData,
                 updated_at: new Date().toISOString()
             });
-        
         if (insertError) throw insertError;
-        
         // Remove from deleted_bookings table
         const { error: deleteError } = await supabaseClient
             .from('deleted_bookings')
             .delete()
             .eq('id', bookingId);
-        
         if (deleteError) throw deleteError;
-        
         // Reload data and update stats
         await loadBookings();
         renderDeletedBookings();
         updateStats(); // Update dashboard stats in real-time
-        
         showToast('Booking restored successfully', 'success');
     } catch (error) {
         console.error('Error restoring booking:', error);
@@ -774,7 +698,6 @@ async function restoreBooking(bookingId) {
 function showBookingDetails(bookingId) {
     const booking = state.bookings.find(b => b.id === bookingId);
     if (!booking) return;
-    
     // Create modal if it doesn't exist
     let modal = document.getElementById('booking-modal');
     if (!modal) {
@@ -796,7 +719,6 @@ function showBookingDetails(bookingId) {
         `;
         document.body.appendChild(modal);
     }
-    
     state.selectedBooking = booking;
     renderBookingModal();
     modal.classList.add('active');
@@ -805,10 +727,8 @@ function showBookingDetails(bookingId) {
 function renderBookingModal() {
     const booking = state.selectedBooking;
     if (!booking) return;
-    
     const modalBody = document.getElementById('booking-details');
     if (!modalBody) return;
-    
     modalBody.innerHTML = `
         <div class="booking-details-header">
             <div class="booking-details-avatar">${(booking.client_name || booking.user_email || 'U').charAt(0).toUpperCase()}</div>
@@ -817,7 +737,6 @@ function renderBookingModal() {
                 <span class="status-badge status-${booking.status}">${(booking.status || 'pending').charAt(0).toUpperCase() + (booking.status || 'pending').slice(1)}</span>
             </div>
         </div>
-        
         <div class="booking-details-grid">
             <div class="booking-details-row">
                 <span class="booking-details-label">Service:</span>
@@ -842,7 +761,6 @@ function renderBookingModal() {
                 </div>
             ` : ''}
         </div>
-        
         ${booking.client_phone || booking.client_email ? `
             <div class="contact-section">
                 <h5>
@@ -865,7 +783,6 @@ function renderBookingModal() {
                 </div>
             </div>
         ` : ''}
-        
         ${booking.client_notes ? `
             <div class="notes-section">
                 <h5>
@@ -875,7 +792,6 @@ function renderBookingModal() {
                 <p>${booking.client_notes}</p>
             </div>
         ` : ''}
-        
         <div class="booking-actions" style="margin-top: 1rem;">
             ${booking.status === 'pending' ? `
                 <button class="btn-confirm" onclick="updateBookingStatusFromModal('${booking.id}', 'confirmed')">
@@ -895,7 +811,6 @@ function renderBookingModal() {
             </button>
         </div>
     `;
-    
     feather.replace();
 }
 
@@ -921,7 +836,6 @@ function closeBookingModal() {
 function renderServices() {
     const container = document.getElementById('services-grid');
     if (!container) return;
-    
     if (state.services.length === 0) {
         container.innerHTML = `
             <div class="empty-state">
@@ -933,7 +847,6 @@ function renderServices() {
         feather.replace();
         return;
     }
-    
     container.innerHTML = state.services.map(service => `
         <div class="service-card">
             <div class="service-header">
@@ -950,7 +863,6 @@ function renderServices() {
                     </button>
                 </div>
             </div>
-            
             <div class="service-details">
                 <div class="service-detail">
                     <span>Price:</span>
@@ -961,7 +873,6 @@ function renderServices() {
                     <span class="duration-text">${service.duration || 0} min</span>
                 </div>
             </div>
-            
             ${service.description ? `
                 <div class="service-description">
                     <p>${service.description}</p>
@@ -969,21 +880,17 @@ function renderServices() {
             ` : ''}
         </div>
     `).join('');
-    
     feather.replace();
 }
 
 function showServiceModal(serviceId = null) {
     const service = serviceId ? state.services.find(s => s.id === serviceId) : null;
     state.selectedService = service;
-    
     // Update modal title
     const modalTitle = document.getElementById('service-modal-title');
     const submitText = document.getElementById('service-submit-text');
-    
     if (modalTitle) modalTitle.textContent = service ? 'Edit Service' : 'Add New Service';
     if (submitText) submitText.textContent = service ? 'Update Service' : 'Create Service';
-    
     // Fill form if editing
     if (service) {
         const nameInput = document.getElementById('service-name');
@@ -991,7 +898,6 @@ function showServiceModal(serviceId = null) {
         const priceInput = document.getElementById('service-price');
         const durationInput = document.getElementById('service-duration');
         const descriptionInput = document.getElementById('service-description');
-        
         if (nameInput) nameInput.value = service.name || '';
         if (categoryInput) categoryInput.value = service.category || 'Classic';
         if (priceInput) priceInput.value = service.price || '';
@@ -1001,7 +907,6 @@ function showServiceModal(serviceId = null) {
         const form = document.getElementById('service-form');
         if (form) form.reset();
     }
-    
     if (elements.serviceModal) {
         elements.serviceModal.classList.add('active');
     }
@@ -1015,7 +920,6 @@ async function deleteService(serviceId) {
     if (!confirm('Are you sure you want to delete this service?')) {
         return;
     }
-    
     try {
         const { error } = await supabaseClient
             .from('services')
@@ -1024,13 +928,10 @@ async function deleteService(serviceId) {
                 updated_at: new Date().toISOString()
             })
             .eq('id', serviceId);
-        
         if (error) throw error;
-        
         // Remove from local state
         state.services = state.services.filter(s => s.id !== serviceId);
         renderServices();
-        
         showToast('Service deleted successfully', 'success');
     } catch (error) {
         console.error('Error deleting service:', error);
@@ -1040,13 +941,11 @@ async function deleteService(serviceId) {
 
 async function saveService(event) {
     event.preventDefault();
-    
     const nameInput = document.getElementById('service-name');
     const categoryInput = document.getElementById('service-category');
     const priceInput = document.getElementById('service-price');
     const durationInput = document.getElementById('service-duration');
     const descriptionInput = document.getElementById('service-description');
-    
     const formData = {
         name: nameInput ? nameInput.value : '',
         category: categoryInput ? categoryInput.value : 'Classic',
@@ -1056,7 +955,6 @@ async function saveService(event) {
         status: 'active',
         updated_at: new Date().toISOString()
     };
-    
     try {
         if (state.selectedService) {
             // Update existing service
@@ -1064,34 +962,26 @@ async function saveService(event) {
                 .from('services')
                 .update(formData)
                 .eq('id', state.selectedService.id);
-            
             if (error) throw error;
-            
             // Update local state
             const index = state.services.findIndex(s => s.id === state.selectedService.id);
             if (index !== -1) {
                 state.services[index] = { ...state.selectedService, ...formData };
             }
-            
             showToast('Service updated successfully', 'success');
         } else {
             // Add new service
             formData.created_at = new Date().toISOString();
-            
             const { data, error } = await supabaseClient
                 .from('services')
                 .insert(formData)
                 .select()
                 .single();
-            
             if (error) throw error;
-            
             // Add to local state
             state.services.push(data);
-            
             showToast('Service created successfully', 'success');
         }
-        
         renderServices();
         closeServiceModal();
     } catch (error) {
@@ -1113,9 +1003,7 @@ function closeServiceModal() {
 function renderUsers() {
     const container = document.getElementById('users-grid');
     if (!container) return;
-    
     const filteredUsers = filterUsersData();
-    
     if (filteredUsers.length === 0) {
         container.innerHTML = `
             <div class="empty-state">
@@ -1127,7 +1015,6 @@ function renderUsers() {
         feather.replace();
         return;
     }
-    
     container.innerHTML = filteredUsers.map(user => `
         <div class="user-card">
             <div class="user-header">
@@ -1143,7 +1030,6 @@ function renderUsers() {
                     <span class="user-date">Joined: ${formatDate(user.created_at)}</span>
                 </div>
             </div>
-            
             ${user.phone ? `
                 <div class="user-contact">
                     <div class="contact-item">
@@ -1154,23 +1040,19 @@ function renderUsers() {
             ` : ''}
         </div>
     `).join('');
-    
     feather.replace();
 }
 
 function filterUsersData() {
     const searchInput = document.getElementById('search-users');
     const searchQuery = searchInput ? searchInput.value.toLowerCase() : '';
-    
     return state.users.filter(user => {
         if (!searchQuery) return true;
-        
         const searchFields = [
             user.name || '',
             user.email || '',
             user.phone || ''
         ].join(' ').toLowerCase();
-        
         return searchFields.includes(searchQuery);
     });
 }
@@ -1184,16 +1066,13 @@ function renderSlots() {
     generateDefaultSlots();
     renderCustomSlots();
 }
-
 function generateDefaultSlots() {
     const container = document.getElementById('slots-grid');
     if (!container) return;
-    
     const defaultTimes = [
         '08:00', '09:00', '10:00', '11:00', '12:00', 
         '13:00', '14:00', '15:00', '16:00', '17:00', '18:00'
     ];
-    
     container.innerHTML = defaultTimes.map(time => `
         <div class="slot-item">
             <label class="slot-checkbox">
@@ -1204,32 +1083,25 @@ function generateDefaultSlots() {
         </div>
     `).join('');
 }
-
 function renderCustomSlots() {
     const dateInput = document.getElementById('custom-slot-date');
     if (dateInput && dateInput.value) {
         updateCustomSlotDate();
     }
 }
-
 function updateCustomSlotDate() {
     const dateInput = document.getElementById('custom-slot-date');
     const container = document.getElementById('custom-slots-container');
-    
     if (!dateInput || !container) return;
-    
     const selectedDate = dateInput.value;
     if (!selectedDate) return;
-    
     // Find existing slot data for this date
     const existingSlot = state.timeSlots.find(slot => slot.date === selectedDate);
     const availableTimes = existingSlot ? existingSlot.available_times : [];
-    
     const defaultTimes = [
         '08:00', '09:00', '10:00', '11:00', '12:00', 
         '13:00', '14:00', '15:00', '16:00', '17:00', '18:00'
     ];
-    
     container.innerHTML = `
         <h4>Slots for ${formatDate(selectedDate)}</h4>
         <div class="custom-slots-grid">
@@ -1246,27 +1118,21 @@ function updateCustomSlotDate() {
         </div>
     `;
 }
-
 async function saveCustomSlots() {
     const dateInput = document.getElementById('custom-slot-date');
     const container = document.getElementById('custom-slots-container');
-    
     if (!dateInput || !container) return;
-    
     const selectedDate = dateInput.value;
     if (!selectedDate) {
         showToast('Please select a date', 'error');
         return;
     }
-    
     const checkboxes = container.querySelectorAll('input[type="checkbox"]');
     const availableTimes = Array.from(checkboxes)
         .filter(cb => cb.checked)
         .map(cb => cb.dataset.time);
-    
     try {
         const existingSlot = state.timeSlots.find(slot => slot.date === selectedDate);
-        
         if (existingSlot) {
             // Update existing slot
             const { error } = await supabaseClient
@@ -1276,9 +1142,7 @@ async function saveCustomSlots() {
                     updated_at: new Date().toISOString()
                 })
                 .eq('id', existingSlot.id);
-            
             if (error) throw error;
-            
             // Update local state
             existingSlot.available_times = availableTimes;
             existingSlot.updated_at = new Date().toISOString();
@@ -1294,53 +1158,42 @@ async function saveCustomSlots() {
                 })
                 .select()
                 .single();
-            
             if (error) throw error;
-            
             // Add to local state
             state.timeSlots.push(data);
         }
-        
         showToast('Time slots saved successfully', 'success');
     } catch (error) {
         console.error('Error saving time slots:', error);
         showToast('Error saving time slots', 'error');
     }
 }
-
 async function resetSlotDefaults() {
     if (!confirm('This will reset all time slots to default settings. Are you sure?')) {
         return;
     }
-    
     try {
         // Clear all existing slots
         const { error } = await supabaseClient
             .from('time_slots')
             .delete()
             .neq('id', '00000000-0000-0000-0000-000000000000'); // Delete all records
-        
         if (error) throw error;
-        
         // Clear local state
         state.timeSlots = [];
-        
         // Re-render slots
         renderSlots();
-        
         showToast('Time slots reset to defaults', 'success');
     } catch (error) {
         console.error('Error resetting slots:', error);
         showToast('Error resetting slots', 'error');
     }
 }
-
 // Settings Management
 async function saveSettings() {
     const depositAmount = document.getElementById('deposit-amount');
     const momoNumber = document.getElementById('momo-number');
     const bookingPolicy = document.getElementById('booking-policy');
-    
     const settingsData = {
         site_name: 'BS Studio',
         contact_email: state.user?.email || 'admin@bsstudio.com',
@@ -1349,7 +1202,6 @@ async function saveSettings() {
         booking_policy: bookingPolicy ? bookingPolicy.value : '',
         updated_at: new Date().toISOString()
     };
-    
     try {
         if (state.settings && state.settings.id) {
             // Update existing settings
@@ -1357,32 +1209,26 @@ async function saveSettings() {
                 .from('system_settings')
                 .update(settingsData)
                 .eq('id', state.settings.id);
-            
             if (error) throw error;
-            
             // Update local state
             state.settings = { ...state.settings, ...settingsData };
         } else {
             // Create new settings
             settingsData.created_at = new Date().toISOString();
-            
             const { data, error } = await supabaseClient
                 .from('system_settings')
                 .insert(settingsData)
                 .select()
                 .single();
-            
             if (error) throw error;
             state.settings = data;
         }
-        
         showToast('Settings saved successfully', 'success');
     } catch (error) {
         console.error('Error saving settings:', error);
         showToast('Error saving settings', 'error');
     }
 }
-
 async function syncToDatabase() {
     try {
         showToast('Syncing data...', 'info');
@@ -1393,17 +1239,13 @@ async function syncToDatabase() {
         showToast('Error syncing data', 'error');
     }
 }
-
 // Calendar View Functions
 function toggleCalendarView() {
     const calendarView = document.getElementById('calendar-view');
     const listView = document.getElementById('list-view');
     const button = document.querySelector('button[onclick="toggleCalendarView()"]');
-    
     if (!calendarView || !listView || !button) return;
-    
     state.isCalendarView = !state.isCalendarView;
-    
     if (state.isCalendarView) {
         calendarView.style.display = 'block';
         listView.style.display = 'none';
@@ -1415,43 +1257,32 @@ function toggleCalendarView() {
         button.innerHTML = '<i data-feather="calendar"></i> Calendar View';
         renderCurrentBookings();
     }
-    
     feather.replace();
 }
-
 function renderCalendar() {
     const calendarDays = document.getElementById('calendar-days');
     const monthYear = document.getElementById('calendar-month-year');
-    
     if (!calendarDays || !monthYear) return;
-    
     const currentDate = state.calendarCurrentDate;
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
-    
     monthYear.textContent = currentDate.toLocaleDateString('en-US', { 
         month: 'long', 
         year: 'numeric' 
     });
-    
     const firstDay = new Date(year, month, 1);
     const lastDay = new Date(year, month + 1, 0);
     const startDate = new Date(firstDay);
     startDate.setDate(startDate.getDate() - firstDay.getDay());
-    
     let calendarHTML = '';
-    
     for (let i = 0; i < 42; i++) {
         const date = new Date(startDate);
         date.setDate(startDate.getDate() + i);
-        
         const dateString = date.toISOString().split('T')[0];
         const bookingsForDay = state.bookings.filter(b => b.booking_date === dateString);
-        
         const isToday = date.toDateString() === new Date().toDateString();
         const isCurrentMonth = date.getMonth() === month;
         const isSelected = state.selectedDate === dateString;
-        
         calendarHTML += `
             <div class="calendar-day ${!isCurrentMonth ? 'other-month' : ''} 
                         ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''}
@@ -1462,23 +1293,17 @@ function renderCalendar() {
             </div>
         `;
     }
-    
     calendarDays.innerHTML = calendarHTML;
 }
-
 function selectCalendarDate(dateString) {
     state.selectedDate = dateString;
     renderCalendar();
-    
     const bookingsForDate = state.bookings.filter(b => b.booking_date === dateString);
     const selectedDateBookings = document.getElementById('selected-date-bookings');
     const selectedDateDisplay = document.getElementById('selected-date-display');
     const bookingsContainer = document.getElementById('bookings-for-selected-date');
-    
     if (!selectedDateBookings || !selectedDateDisplay || !bookingsContainer) return;
-    
     selectedDateDisplay.textContent = formatDate(dateString);
-    
     if (bookingsForDate.length > 0) {
         bookingsContainer.innerHTML = bookingsForDate.map(booking => `
             <div class="booking-item-calendar">
@@ -1495,30 +1320,24 @@ function selectCalendarDate(dateString) {
                 </div>
             </div>
         `).join('');
-        
         selectedDateBookings.style.display = 'block';
     } else {
         bookingsContainer.innerHTML = '<p>No bookings for this date.</p>';
         selectedDateBookings.style.display = 'block';
     }
-    
     feather.replace();
 }
-
 function prevMonth() {
     state.calendarCurrentDate.setMonth(state.calendarCurrentDate.getMonth() - 1);
     renderCalendar();
 }
-
 function nextMonth() {
     state.calendarCurrentDate.setMonth(state.calendarCurrentDate.getMonth() + 1);
     renderCalendar();
 }
-
 // Bookings Sub-tabs
 function setBookingsTab(tab) {
     state.bookingsSubTab = tab;
-    
     // Update sub-tab buttons
     document.querySelectorAll('.sub-tab').forEach(btn => {
         btn.classList.remove('active');
@@ -1527,12 +1346,10 @@ function setBookingsTab(tab) {
     if (activeTabBtn) {
         activeTabBtn.classList.add('active');
     }
-    
     // Update content
     document.querySelectorAll('.sub-tab-content').forEach(content => {
         content.classList.remove('active');
     });
-    
     if (tab === 'current') {
         const currentBookings = document.getElementById('current-bookings');
         if (currentBookings) {
@@ -1547,34 +1364,27 @@ function setBookingsTab(tab) {
         renderDeletedBookings();
     }
 }
-
 // Chart Rendering
 function renderCharts() {
     renderBookingsChart();
     renderServicesChart();
 }
-
 function renderBookingsChart() {
     const ctx = document.getElementById('bookings-chart');
     if (!ctx) return;
-    
     // Generate last 6 months data
     const months = [];
     const bookingCounts = [];
-    
     for (let i = 5; i >= 0; i--) {
         const date = new Date();
         date.setMonth(date.getMonth() - i);
         const monthString = date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0');
-        
         months.push(date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }));
-        
         const count = state.bookings.filter(b => 
             b.booking_date && b.booking_date.startsWith(monthString)
         ).length;
         bookingCounts.push(count);
     }
-    
     new Chart(ctx, {
         type: 'line',
         data: {
@@ -1607,28 +1417,23 @@ function renderBookingsChart() {
         }
     });
 }
-
 function renderServicesChart() {
     const ctx = document.getElementById('services-chart');
     if (!ctx) return;
-    
     // Count bookings by service
     const serviceCounts = {};
     state.bookings.forEach(booking => {
         const serviceName = booking.service_name || 'Unknown';
         serviceCounts[serviceName] = (serviceCounts[serviceName] || 0) + 1;
     });
-    
     const labels = Object.keys(serviceCounts);
     const data = Object.values(serviceCounts);
     const colors = ['#9333ea', '#ec4899', '#f59e0b', '#10b981', '#3b82f6', '#ef4444'];
-    
     if (labels.length === 0) {
         // Show empty state
         ctx.getContext('2d').clearRect(0, 0, ctx.width, ctx.height);
         return;
     }
-    
     new Chart(ctx, {
         type: 'doughnut',
         data: {
@@ -1650,7 +1455,6 @@ function renderServicesChart() {
         }
     });
 }
-
 // Data Export
 function exportData() {
     const data = {
@@ -1660,7 +1464,6 @@ function exportData() {
         stats: state.stats,
         exportDate: new Date().toISOString()
     };
-    
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -1668,10 +1471,8 @@ function exportData() {
     a.download = `bs-studio-export-${new Date().toISOString().split('T')[0]}.json`;
     a.click();
     URL.revokeObjectURL(url);
-    
     showToast('Data exported successfully', 'success');
 }
-
 // Utility Functions
 function formatDate(dateString) {
     if (!dateString) return 'N/A';
@@ -1686,32 +1487,25 @@ function formatDate(dateString) {
         return 'Invalid Date';
     }
 }
-
 function showToast(message, type = 'info') {
     const toastContainer = document.getElementById('toast-container');
     if (!toastContainer) return;
-    
     const toast = document.createElement('div');
     toast.className = `toast toast-${type}`;
-    
     const icons = {
         success: 'check-circle',
         error: 'x-circle',
         info: 'info',
         warning: 'alert-triangle'
     };
-    
     toast.innerHTML = `
         <i data-feather="${icons[type] || 'info'}"></i>
         <span>${message}</span>
     `;
-    
     toastContainer.appendChild(toast);
     feather.replace();
-    
     // Animate in
     setTimeout(() => toast.classList.add('show'), 100);
-    
     // Remove after 4 seconds
     setTimeout(() => {
         toast.classList.remove('show');
@@ -1722,11 +1516,10 @@ function showToast(message, type = 'info') {
         }, 300);
     }, 4000);
 }
-
 // Logout Function
 async function adminLogout() {
     try {
-        await window.firebaseAuth.signOut();
+        firebase.auth().signOut(); // FIXED: Use firebase.auth().signOut() instead of window.firebaseAuth.signOut()
         showToast('Logged out successfully', 'success');
         // Redirect will be handled by auth state change
         setTimeout(() => {
@@ -1737,10 +1530,8 @@ async function adminLogout() {
         showToast('Error logging out', 'error');
     }
 }
-
 // Event Listeners
 document.addEventListener('DOMContentLoaded', init);
-
 // Modal click outside to close
 document.addEventListener('click', (e) => {
     if (e.target.classList.contains('modal')) {
@@ -1753,7 +1544,6 @@ document.addEventListener('click', (e) => {
         }
     }
 });
-
 // Keyboard shortcuts
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
@@ -1765,7 +1555,6 @@ document.addEventListener('keydown', (e) => {
         state.selectedService = null;
     }
 });
-
 // Search functionality
 document.addEventListener('input', (e) => {
     if (e.target.id === 'search-bookings') {
@@ -1775,7 +1564,6 @@ document.addEventListener('input', (e) => {
         filterUsers();
     }
 });
-
 // Filter functionality
 document.addEventListener('change', (e) => {
     if (e.target.id === 'filter-status') {
@@ -1785,7 +1573,6 @@ document.addEventListener('change', (e) => {
         updateCustomSlotDate();
     }
 });
-
 // Auto-refresh dashboard data every 30 seconds
 setInterval(async () => {
     if (state.user && state.activeTab === 'dashboard') {
@@ -1800,7 +1587,6 @@ setInterval(async () => {
         }
     }
 }, 30000);
-
 // Make functions globally available
 window.setActiveTab = setActiveTab;
 window.toggleSidebar = toggleSidebar;
